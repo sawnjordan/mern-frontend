@@ -1,0 +1,31 @@
+React SPA == Single Page Application
+
+
+===> URL change
+    => Page (component) HOC
+        -> components LOC
+
+
+
+HOC = Higher Order Component
+LOC = Lower Order Component
+
+//Stateful and Stateless
+//functional (Stateless) and Class based (Stateful)
+
+componentDidMount()
+componentDidUpdate()
+componentWIllUnmount()
+
+
+Web Hook
+    special functions given by react for the feature achievement
+    - Rule
+        - Name always start with "use"
+        - Hook function are always called top level function
+
+    a. State
+    b. Effect
+    c. Reference
+    d. Performance
+    
