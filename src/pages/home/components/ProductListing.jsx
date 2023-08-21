@@ -1,4 +1,5 @@
 import React from "react";
+import prodImg from "../../../assets/images/product-one.jpg";
 
 export const ProductListing = () => {
   return (
@@ -23,11 +24,7 @@ export const ProductListing = () => {
                   href="/template/single-product.html"
                   className="text-decoration-none"
                 >
-                  <img
-                    src="../../src/assets/images/product-one.jpg"
-                    className="card-img-top"
-                    alt="..."
-                  />
+                  <img src={prodImg} className="card-img-top" alt="..." />
 
                   <h6 className="card-title pt-2 text-dark">
                     Special title treatment
@@ -52,11 +49,7 @@ export const ProductListing = () => {
                   href="/template/single-product.html"
                   className="text-decoration-none"
                 >
-                  <img
-                    src="../../src/assets/images/product-one.jpg"
-                    className="card-img-top"
-                    alt="..."
-                  />
+                  <img src={prodImg} className="card-img-top" alt="..." />
 
                   <h6 className="card-title pt-2 text-dark">
                     Special title treatment
@@ -81,11 +74,7 @@ export const ProductListing = () => {
                   href="/template/single-product.html"
                   className="text-decoration-none"
                 >
-                  <img
-                    src="../../src/assets/images/product-one.jpg"
-                    className="card-img-top"
-                    alt="..."
-                  />
+                  <img src={prodImg} className="card-img-top" alt="..." />
 
                   <h6 className="card-title pt-2 text-dark">
                     Special title treatment
@@ -110,11 +99,7 @@ export const ProductListing = () => {
                   href="/template/single-product.html"
                   className="text-decoration-none"
                 >
-                  <img
-                    src="../../src/assets/images/product-one.jpg"
-                    className="card-img-top"
-                    alt="..."
-                  />
+                  <img src={prodImg} className="card-img-top" alt="..." />
 
                   <h6 className="card-title pt-2 text-dark">
                     Special title treatment
@@ -139,11 +124,7 @@ export const ProductListing = () => {
                   href="/template/single-product.html"
                   className="text-decoration-none"
                 >
-                  <img
-                    src="../../src/assets/images/product-one.jpg"
-                    className="card-img-top"
-                    alt="..."
-                  />
+                  <img src={prodImg} className="card-img-top" alt="..." />
 
                   <h6 className="card-title pt-2 text-dark">
                     Special title treatment
@@ -168,11 +149,7 @@ export const ProductListing = () => {
                   href="/template/single-product.html"
                   className="text-decoration-none"
                 >
-                  <img
-                    src="../../src/assets/images/product-one.jpg"
-                    className="card-img-top"
-                    alt="..."
-                  />
+                  <img src={prodImg} className="card-img-top" alt="..." />
 
                   <h6 className="card-title pt-2 text-dark">
                     Special title treatment
@@ -197,11 +174,7 @@ export const ProductListing = () => {
                   href="/template/single-product.html"
                   className="text-decoration-none"
                 >
-                  <img
-                    src="../../src/assets/images/product-one.jpg"
-                    className="card-img-top"
-                    alt="..."
-                  />
+                  <img src={prodImg} className="card-img-top" alt="..." />
 
                   <h6 className="card-title pt-2 text-dark">
                     Special title treatment
@@ -226,11 +199,7 @@ export const ProductListing = () => {
                   href="/template/single-product.html"
                   className="text-decoration-none"
                 >
-                  <img
-                    src="../../src/assets/images/product-one.jpg"
-                    className="card-img-top"
-                    alt="..."
-                  />
+                  <img src={prodImg} className="card-img-top" alt="..." />
 
                   <h6 className="card-title pt-2 text-dark">
                     Special title treatment

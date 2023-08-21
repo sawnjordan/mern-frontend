@@ -1,4 +1,7 @@
 import React from "react";
+import bannerImg1 from "../../../assets/images/banner-img-1.jpg";
+import bannerImg2 from "../../../assets/images/banner-img-2.jpg";
+import bannerImg3 from "../../../assets/images/banner-img-3.jpg";
 
 export const Banner = () => {
   return (
@@ -34,7 +37,7 @@ export const Banner = () => {
             </div>
             <div className="carousel-item active">
               <img
-                src="../../src/assets/images/banner-img-1.jpg"
+                src={bannerImg1}
                 className="d-block w-100"
                 alt="banner-img-1"
               />
@@ -48,7 +51,7 @@ export const Banner = () => {
             </div>
             <div className="carousel-item">
               <img
-                src="../../src/assets/images/banner-img-2.jpg"
+                src={bannerImg2}
                 className="d-block w-100"
                 alt="banner-img-2"
               />
@@ -62,7 +65,7 @@ export const Banner = () => {
             </div>
             <div className="carousel-item">
               <img
-                src="../../src/assets/images/banner-img-3.jpg"
+                src={bannerImg3}
                 className="d-block w-100"
                 alt="banner-img-3"
               />

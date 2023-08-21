@@ -53,7 +53,7 @@ export const Header = () => {
                   </Link>
                 </li>
                 <li>
-                  <a href="#" className="dropdown-item">
+                  <a href="/admin" className="dropdown-item">
                     Profile
                   </a>
                 </li>
@@ -74,7 +74,7 @@ export const Header = () => {
           <div className="collapse navbar-collapse order-lg-1" id="navMenu">
             <ul className="navbar-nav mx-auto text-center">
               <li className="nav-items px-2 py-2">
-                <a href="#" className="nav-link text-uppercase text-dark">
+                <a href="/" className="nav-link text-uppercase text-dark">
                   Home
                 </a>
               </li>

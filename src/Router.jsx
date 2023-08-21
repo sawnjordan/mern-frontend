@@ -6,6 +6,8 @@ import { RegisterPage } from "./pages/home/auth/RegisterPage";
 import { CategoryProductList } from "./pages/home/category/CategoryProductList";
 import { CategoryList } from "./pages/home/category/CategoryList";
 import { ForgotPassword } from "./pages/home/auth/ForgotPassword";
+import { AdminLayout } from "./pages/cms/admin/layout/AdminLayout";
+import { AdminDashboard } from "./pages/cms/admin/component/AdminDashboard";
 
 export const Routing = () => {
   return (
@@ -22,6 +24,9 @@ export const Routing = () => {
               path="category/:categorySlug"
               element={<CategoryProductList />}
             />
+          </Route>
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<AdminDashboard />} />
           </Route>
         </Routes>
       </BrowserRouter>
