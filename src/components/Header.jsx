@@ -1,64 +1,73 @@
+import { useState } from "react";
+import {
+  Button,
+  Container,
+  Dropdown,
+  Form,
+  Image,
+  Modal,
+  Navbar,
+} from "react-bootstrap";
+import { FaSearch, FaShoppingCart, FaUser } from "react-icons/fa";
 import { Link, NavLink } from "react-router-dom";
-
 export const Header = () => {
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
   return (
     <>
-      <nav className="navbar navbar-expand-lg py-4 fixed-top bg-white">
-        <div className="container">
+      <Navbar
+        expand="lg"
+        bg="light"
+        variant="light"
+        className=" fixed-top py-4  "
+      >
+        <Container>
           <NavLink
             className="navbar-brand d-flex justify-content-between align-items-center order-lg-0"
             to="/"
           >
-            <img
+            <Image
               src="../../src/assets/images/shopping-bag-icon.png"
               alt="Site Logo"
               srcSet=""
             />
+
             <span className="text-uppercase fw-lighter">eCommerce</span>
           </NavLink>
           <div className="order-lg-3 d-flex justify-content-between">
-            <button className="btn position-relative" type="button">
-              <i className="fa fa-shopping-cart"></i>
+            <Button variant="" className="position-relative" type="button">
+              <FaShoppingCart size={18} className="icon" />
               <span className="position-absolute top-0 start-100 translate-middle badge bg-primary">
                 5
               </span>
-            </button>
-            <button
-              className="btn position-relative"
-              type="button"
-              data-bs-toggle="modal"
-              data-bs-target="#header-search"
-            >
-              <i className="fa fa-search"></i>
-            </button>
+            </Button>
 
-            <div className="dropdown-center">
-              <button
-                className="btn position-relative dropdown-toggle me-5"
-                type="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                <i className="fa-solid fa-user"></i>
-              </button>
-              <ul className="dropdown-menu me-4">
-                <li>
-                  <Link to="/login" className="dropdown-item">
-                    Login
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/register" className="dropdown-item">
-                    Register
-                  </Link>
-                </li>
-                <li>
-                  <a href="/admin" className="dropdown-item">
-                    Profile
-                  </a>
-                </li>
-              </ul>
-            </div>
+            <Button
+              type="button"
+              variant=""
+              className="position-relative"
+              onClick={handleShow}
+            >
+              <FaSearch className="icon" size={18} />
+            </Button>
+            <Dropdown>
+              <Dropdown.Toggle id="dropdown-basic" variant="" className="me-5">
+                <FaUser className="icon" size={18} />
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                <Link to="/login" className="dropdown-item">
+                  Login
+                </Link>
+                <Link to="/register" className="dropdown-item">
+                  Register
+                </Link>
+                <Link to="/admin" className="dropdown-item">
+                  Profile
+                </Link>
+              </Dropdown.Menu>
+            </Dropdown>
           </div>
 
           <button
@@ -84,7 +93,7 @@ export const Header = () => {
                 </a>
               </li>
 
-              <li className="nav-items px-2 py-2 dropdown">
+              <li className="  nav-items px-2 py-2 dropdown">
                 <a
                   className="nav-link text-uppercase text-dark dropdown-toggle"
                   href="#"
@@ -134,42 +143,20 @@ export const Header = () => {
               </li>
             </ul>
           </div>
-        </div>
-      </nav>
+        </Container>
+      </Navbar>
 
-      <div
-        className="modal fade"
-        id="header-search"
-        tabIndex="-1"
-        aria-labelledby="header-search"
-        aria-hidden="true"
-      >
-        <div className="modal-dialog">
-          <div className="modal-content">
-            <div className="modal-header border-0">
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div className="modal-body">
-              <form className="d-flex" role="search">
-                <input
-                  className="form-control me-2"
-                  type="search"
-                  placeholder="Search"
-                  aria-label="Search"
-                />
-                <button className="btn btn-outline-primary" type="submit">
-                  Search
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton></Modal.Header>
+        <Modal.Body>
+          <Form className="d-flex">
+            <Form.Control type="search" placeholder="Search" className="me-2" />
+            <Button variant="outline-primary" type="submit">
+              Search
+            </Button>
+          </Form>
+        </Modal.Body>
+      </Modal>
     </>
   );
 };

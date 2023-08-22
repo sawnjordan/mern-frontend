@@ -1,6 +1,6 @@
 import React from "react";
-import { AdminHeader } from "../component/AdminHeader";
 import { Outlet } from "react-router-dom";
+import { AdminHeader } from "../component/AdminHeader";
 
 export const AdminLayout = () => {
   return (
