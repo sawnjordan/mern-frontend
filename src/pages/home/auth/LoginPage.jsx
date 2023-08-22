@@ -1,7 +1,20 @@
 import { Link } from "react-router-dom";
 import { Button } from "../../../components/common/button.component";
+import { useState } from "react";
 
 export const LoginPage = () => {
+  const [credentials, setCredentials] = useState({
+    email: null,
+    password: null,
+  });
+  const handleChange = (e) => {
+    let { name, value } = e.target;
+    setCredentials({
+      ...credentials,
+      [name]: value,
+    });
+    console.log(credentials);
+  };
   return (
     <>
       <div className="container-fluid mt-5 mb-5 nav-margin">
@@ -23,6 +36,8 @@ export const LoginPage = () => {
                     name="email"
                     className="form-control"
                     placeholder="Enter your email"
+                    onChange={handleChange}
+                    required
                   />
                 </div>
               </div>
@@ -39,6 +54,7 @@ export const LoginPage = () => {
                     name="password"
                     className="form-control"
                     placeholder="Password"
+                    onChange={handleChange}
                   />
                 </div>
               </div>

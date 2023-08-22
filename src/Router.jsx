@@ -8,10 +8,14 @@ import { CategoryList } from "./pages/home/category/CategoryList";
 import { ForgotPassword } from "./pages/home/auth/ForgotPassword";
 import { AdminLayout } from "./pages/cms/admin/layout/AdminLayout";
 import { AdminDashboard } from "./pages/cms/admin/component/AdminDashboard";
+import { CheckPermission } from "./pages/routing/CheckPermission";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const Routing = () => {
   return (
     <>
+      <ToastContainer />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<HomePageLayout />}>
@@ -25,7 +29,12 @@ export const Routing = () => {
               element={<CategoryProductList />}
             />
           </Route>
-          <Route path="/admin" element={<AdminLayout />}>
+          <Route
+            path="/admin"
+            element={
+              <CheckPermission Component={<AdminLayout />} role="admin" />
+            }
+          >
             <Route index element={<AdminDashboard />} />
           </Route>
         </Routes>
