@@ -1,20 +1,44 @@
+import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import { Button } from "../../../components/common/button.component";
-import { useState } from "react";
 
 export const LoginPage = () => {
-  const [credentials, setCredentials] = useState({
-    email: null,
-    password: null,
-  });
-  const handleChange = (e) => {
-    let { name, value } = e.target;
-    setCredentials({
-      ...credentials,
-      [name]: value,
-    });
-    console.log(credentials);
+  const { register, handleSubmit, formState } = useForm();
+  const { errors } = formState;
+  // const [credentials, setCredentials] = useState({
+  //   email: null,
+  //   password: null,
+  // });
+
+  // const [error, setError] = useState();
+
+  // const handleChange = (e) => {
+  //   let { name, value } = e.target;
+  //   setCredentials({
+  //     ...credentials,
+  //     [name]: value,
+  //   });
+
+  //   let msg = handleValidation(value, name);
+
+  //   setError({ ...error, [name]: msg });
+  // };
+
+  // const handleValidation = (value, field) => {
+  //   let msg = null;
+  //   switch (field) {
+  //     case "email":
+  //       msg = !value ? "Email is required" : "";
+  //       break;
+  //     case "password":
+  //       msg = !value ? "Password is required" : "";
+  //       break;
+  //   }
+  //   return msg;
+  // };
+  const handleLogin = (data) => {
+    console.log(data);
   };
+  console.log(errors);
   return (
     <>
       <div className="container-fluid mt-5 mb-5 nav-margin">
@@ -22,7 +46,11 @@ export const LoginPage = () => {
           <div className="col-lg-6 offset-lg-3 col-md-6 offset-md-3 col-sm-10 offset-sm-1 mt-3 p-4 rounded-4 shadow-lg bg-secondary-subtle">
             <h2 className="text-center">Login</h2>
             <p className="border-1 border-bottom border-primary"></p>
-            <form className="form">
+            <form
+              className="form"
+              onSubmit={handleSubmit(handleLogin)}
+              noValidate
+            >
               <div className="row">
                 <div className="col-lg-3 d-flex align-items-center">
                   <label htmlFor="email" className="form-label fw-medium">
@@ -33,12 +61,13 @@ export const LoginPage = () => {
                 <div className="col-lg-9">
                   <input
                     type="email"
-                    name="email"
+                    {...register("email", { required: "Email is required." })}
                     className="form-control"
                     placeholder="Enter your email"
-                    onChange={handleChange}
-                    required
                   />
+                  <div className="text-danger mt-2">
+                    {errors && errors?.email?.message}
+                  </div>
                 </div>
               </div>
               <div className="row mt-3">
@@ -52,15 +81,22 @@ export const LoginPage = () => {
                   <input
                     type="password"
                     name="password"
+                    {...register("password", {
+                      required: "Password is required.",
+                    })}
                     className="form-control"
                     placeholder="Password"
-                    onChange={handleChange}
                   />
+                  <div className="text-danger mt-2">
+                    {errors && errors?.password?.message}
+                  </div>
                 </div>
               </div>
               <div className="row">
                 <div className="col-lg-3 d-flex align-items-center offset-lg-3 mt-4">
-                  <button className="btn btn-primary">Login</button>
+                  <button className="btn btn-primary" type="submit">
+                    Login
+                  </button>
                   {/* <Button $primary>Login</Button> */}
                 </div>
               </div>
@@ -70,7 +106,7 @@ export const LoginPage = () => {
                 </Link>
                 <span>
                   Don't have an account?
-                  <a href="/register" className="link-primary">
+                  <a href="/register" className="ms-2 link-primary">
                     Register
                   </a>
                 </span>

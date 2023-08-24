@@ -1,16 +1,17 @@
-import { Routes, Route, BrowserRouter } from "react-router-dom";
-import { LandingPage } from "./pages/home/landing/LandingPage";
-import { LoginPage } from "./pages/home/auth/LoginPage";
-import { HomePageLayout } from "./pages/home/landing/HomePageLayout";
-import { RegisterPage } from "./pages/home/auth/RegisterPage";
-import { CategoryProductList } from "./pages/home/category/CategoryProductList";
-import { CategoryList } from "./pages/home/category/CategoryList";
-import { ForgotPassword } from "./pages/home/auth/ForgotPassword";
-import { AdminLayout } from "./pages/cms/admin/layout/AdminLayout";
-import { AdminDashboard } from "./pages/cms/admin/component/AdminDashboard";
-import { CheckPermission } from "./pages/routing/CheckPermission";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { AdminCreateBanner } from "./pages/cms/admin/component/AdminCreateBanner";
+import { AdminDashboard } from "./pages/cms/admin/component/AdminDashboard";
+import { AdminLayout } from "./pages/cms/admin/layout/AdminLayout";
+import { ForgotPassword } from "./pages/home/auth/ForgotPassword";
+import { LoginPage } from "./pages/home/auth/LoginPage";
+import { RegisterPage } from "./pages/home/auth/RegisterPage";
+import { CategoryList } from "./pages/home/category/CategoryList";
+import { CategoryProductList } from "./pages/home/category/CategoryProductList";
+import { HomePageLayout } from "./pages/home/landing/HomePageLayout";
+import { LandingPage } from "./pages/home/landing/LandingPage";
+import { CheckPermission } from "./pages/routing/CheckPermission";
 
 export const Routing = () => {
   return (
@@ -36,6 +37,7 @@ export const Routing = () => {
             }
           >
             <Route index element={<AdminDashboard />} />
+            <Route path="banner/create" element={<AdminCreateBanner />} />
           </Route>
         </Routes>
       </BrowserRouter>
