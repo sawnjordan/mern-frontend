@@ -1,3 +1,5 @@
+import axios from "axios";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 
@@ -35,10 +37,24 @@ export const LoginPage = () => {
   //   }
   //   return msg;
   // };
-  const handleLogin = (data) => {
-    console.log(data);
+
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
   };
-  console.log(errors);
+
+  const handleLogin = async (data) => {
+    try {
+      let response = await axios.post(
+        "http://localhost:3005/api/v1/auth/login",
+        data,
+        config
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <>
       <div className="container-fluid mt-5 mb-5 nav-margin">

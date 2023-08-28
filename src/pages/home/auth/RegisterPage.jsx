@@ -1,25 +1,55 @@
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import axiosInstance from "../../../config/axios.config";
 export const RegisterPage = () => {
   const registerSchema = Yup.object({
     name: Yup.string().required("Name is required."),
     email: Yup.string().email().required("Email is required."),
     phone: Yup.string().required("Phone is required."),
     address: Yup.object({
-      shipping: Yup.string().required("Shipping Address is required."),
-      billing: Yup.string().required("Billing Address is required."),
+      shippingAddress: Yup.string().required("Shipping Address is required."),
+      billingAddress: Yup.string().required("Billing Address is required."),
     }),
     role: Yup.string().matches(/seller|customer/, "Invalid value."),
-    image: Yup.string(),
+    // image: Yup,
   });
   const { register, handleSubmit, formState } = useForm({
     resolver: yupResolver(registerSchema),
   });
   const { errors } = formState;
+  // Axios configuration with headers
+  const config = {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  };
 
-  const handleRegister = (data) => {
-    console.log(data);
+  const handleRegister = async (data) => {
+    try {
+      console.log(data);
+      // let response = await axios.post(
+      //   "http://localhost:3005/api/v1/auth/register",
+      //   data,
+      //   config
+      // );
+      data.image = data.image[0];
+      // let formData = new FormData();
+      // formData.append("image", data.image, data.image.name);
+      // formData.append("name", data.name);
+      // formData.append("email", data.email);
+      // formData.append("address", data.address);
+      // formData.append("phone", data.phone);
+      // formData.append("role", data.role);
+      let response = await axiosInstance.post("/v1/auth/register", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <>
@@ -106,12 +136,12 @@ export const RegisterPage = () => {
                 <div className="col-lg-9">
                   <input
                     type="text"
-                    {...register("address[shipping]")}
+                    {...register("address[shippingAddress]")}
                     className="form-control"
                     placeholder="Shipping Address"
                   />
                   <div className="text-danger mt-2">
-                    {errors && errors.address?.shipping?.message}
+                    {errors && errors.address?.shippingAddress?.message}
                   </div>
                 </div>
               </div>
@@ -128,13 +158,12 @@ export const RegisterPage = () => {
                 <div className="col-lg-9">
                   <input
                     type="text"
-                    name="address[billing]"
-                    {...register("address[billing]")}
+                    {...register("address[billingAddress]")}
                     className="form-control"
                     placeholder="Billing Address"
                   />
                   <div className="text-danger mt-2">
-                    {errors && errors.address?.billing?.message}
+                    {errors && errors.address?.billingAddress?.message}
                   </div>
                 </div>
               </div>
@@ -169,12 +198,11 @@ export const RegisterPage = () => {
 
                 <div className="col-lg-9">
                   <input
+                    type="file"
                     className="form-control"
                     {...register("image", {
                       required: "Image is required.",
                     })}
-                    type="file"
-                    id="formFile"
                     accept="image/*"
                   />
                 </div>
