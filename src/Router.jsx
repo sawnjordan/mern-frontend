@@ -12,6 +12,7 @@ import { CategoryProductList } from "./pages/home/category/CategoryProductList";
 import { HomePageLayout } from "./pages/home/landing/HomePageLayout";
 import { LandingPage } from "./pages/home/landing/LandingPage";
 import { CheckPermission } from "./pages/routing/CheckPermission";
+import { ActivateUser } from "./pages/home/auth/ActivateUser";
 
 export const Routing = () => {
   return (
@@ -23,6 +24,8 @@ export const Routing = () => {
             <Route index element={<LandingPage />} />
             <Route path="login" element={<LoginPage />} />
             <Route path="register" element={<RegisterPage />} />
+            <Route path="/activate/:token" element={<ActivateUser />} />
+
             <Route path="forgot-password" element={<ForgotPassword />} />
             <Route path="categories" element={<CategoryList />} />
             <Route

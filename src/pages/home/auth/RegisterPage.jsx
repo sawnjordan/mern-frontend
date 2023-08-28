@@ -1,8 +1,14 @@
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import axiosInstance from "../../../config/axios.config";
+import AuthServiceObj from "./auth.service";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { toast } from "react-toastify";
+
 export const RegisterPage = () => {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const registerSchema = Yup.object({
     name: Yup.string().required("Name is required."),
     email: Yup.string().email().required("Email is required."),
@@ -27,6 +33,7 @@ export const RegisterPage = () => {
 
   const handleRegister = async (data) => {
     try {
+      setLoading(true);
       console.log(data);
       // let response = await axios.post(
       //   "http://localhost:3005/api/v1/auth/register",
@@ -41,14 +48,33 @@ export const RegisterPage = () => {
       // formData.append("address", data.address);
       // formData.append("phone", data.phone);
       // formData.append("role", data.role);
-      let response = await axiosInstance.post("/v1/auth/register", data, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      // let response = await axiosInstance.post("/v1/auth/register", data, {
+      //   headers: {
+      //     "Content-Type": "multipart/form-data",
+      //   },
+      // });
+
+      let response = await AuthServiceObj.register(data);
       console.log(response);
+      toast.success(
+        "Your account has been registered. Check your email for activation link.",
+        {
+          position: "top-right",
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        }
+      );
+      navigate("/login");
     } catch (error) {
       console.log(error);
+      throw error;
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -210,7 +236,9 @@ export const RegisterPage = () => {
 
               <div className="row">
                 <div className="col-lg-3 d-flex align-items-center offset-lg-3 mt-4">
-                  <button className="btn btn-primary">Register</button>
+                  <button className="btn btn-primary" disabled={loading}>
+                    Register
+                  </button>
                 </div>
               </div>
               <div className="mt-3 d-flex justify-content-between">

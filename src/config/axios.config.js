@@ -19,7 +19,7 @@ axiosInstance.interceptors.response.use(
   },
   (reject) => {
     //TODO: Hanlde errors
-    return reject?.response;
+    throw reject?.response;
   }
 );
 
