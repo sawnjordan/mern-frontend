@@ -30,6 +30,27 @@ class AuthService extends HttpService {
       throw error;
     }
   };
+
+  setPassword = async (data, token) => {
+    try {
+      let response = await this.postRequest(
+        `/v1/auth/password-reset/${token}`,
+        data
+      );
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  getLoggedInUser = async () => {
+    try {
+      let response = await this.getRequest("/v1/auth/me", { auth: true });
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  };
 }
 
 const AuthServiceObj = new AuthService();

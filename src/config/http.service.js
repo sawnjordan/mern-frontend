@@ -11,9 +11,13 @@ class HttpService {
     }
     if (config?.auth) {
       //TODO: token
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("User not logged in!!!");
+      }
       this._headers = {
         ...this._headers,
-        Authorization: "Bearer ",
+        Authorization: `Bearer ${token}`,
       };
     }
     if (config?.query) {

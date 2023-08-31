@@ -1,11 +1,14 @@
 import axios from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import AuthServiceObj from "./auth.service";
+import { toast } from "react-toastify";
 
 export const LoginPage = () => {
   const { register, handleSubmit, formState } = useForm();
   const { errors } = formState;
+  const navigate = useNavigate();
   // const [credentials, setCredentials] = useState({
   //   email: null,
   //   password: null,
@@ -38,19 +41,25 @@ export const LoginPage = () => {
   //   return msg;
   // };
 
-  const config = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  };
+  // const config = {
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  // };
 
   const handleLogin = async (data) => {
     try {
-      let response = await axios.post(
-        "http://localhost:3005/api/v1/auth/login",
-        data,
-        config
-      );
+      // let response = await axios.post(
+      //   "http://localhost:3005/api/v1/auth/login",
+      //   data,
+      //   config
+      // );
+      let response = await AuthServiceObj.login(data);
+      console.log(response);
+      localStorage.setItem("token", response.data.data?.accessToken);
+      localStorage.setItem("refreshToken", response.data.data?.refreshToken);
+      toast.success("Successfully logged in.");
+      navigate("/admin");
     } catch (error) {
       console.log(error);
     }

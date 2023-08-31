@@ -13,6 +13,8 @@ import { HomePageLayout } from "./pages/home/landing/HomePageLayout";
 import { LandingPage } from "./pages/home/landing/LandingPage";
 import { CheckPermission } from "./pages/routing/CheckPermission";
 import { ActivateUser } from "./pages/home/auth/ActivateUser";
+import { HomePageBanner } from "./pages/home/components/HomePageBanner";
+import { NotFound } from "./pages/home/error/NotFound";
 
 export const Routing = () => {
   return (
@@ -27,11 +29,14 @@ export const Routing = () => {
             <Route path="/activate/:token" element={<ActivateUser />} />
 
             <Route path="forgot-password" element={<ForgotPassword />} />
+            <Route path="banner" element={<HomePageBanner />} />
+
             <Route path="categories" element={<CategoryList />} />
             <Route
               path="category/:categorySlug"
               element={<CategoryProductList />}
             />
+            <Route path="*" element={<NotFound />} />
           </Route>
           <Route
             path="/admin"
