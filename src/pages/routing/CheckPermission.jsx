@@ -8,7 +8,7 @@ export const CheckPermission = ({ Component, role }) => {
   //   role: "admin",
   // };
   const navigate = useNavigate();
-  const [loggedInUser, setLoggedInUser] = useState();
+  const [loggedInUser, setLoggedInUser] = useState({});
   const [loading, setLoading] = useState(true);
   const loadLoggedInUser = async () => {
     try {
@@ -18,10 +18,14 @@ export const CheckPermission = ({ Component, role }) => {
         navigate("/login");
       } else {
         setLoggedInUser(response?.data?.data);
-        console.log(response);
+        // console.log(response);
       }
     } catch (error) {
-      throw error;
+      console.log(error, "here");
+      toast.error(error?.data?.msg);
+      navigate("/");
+      // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZWRkNTFiZWY1Zjg3YTBlOGRkNjM1NSIsImlhdCI6MTY5MzU2MzcwOCwiZXhwIjoxNjk0MTY4NTA4fQ.QWP9KYgm5jdeZoh1SCyDgT1n44TuApTzvrZc0jCgEzo
+      // {"id":123,"name":"sanjog","role":"admin"}
     } finally {
       setLoading(false);
     }
@@ -44,7 +48,7 @@ export const CheckPermission = ({ Component, role }) => {
       </>
     );
   } else {
-    if (loggedInUser && loggedInUser.role === role) {
+    if (loggedInUser && loggedInUser?.role === role) {
       return Component;
     } else {
       toast.warn("You are not allowed to access the resources.", {
@@ -57,7 +61,7 @@ export const CheckPermission = ({ Component, role }) => {
         progress: undefined,
         theme: "dark",
       });
-      return <Navigate to={"/" + loggedInUser.role}></Navigate>;
+      return <Navigate to={"/" + loggedInUser?.role}></Navigate>;
     }
   }
 };

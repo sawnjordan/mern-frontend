@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import AuthServiceObj from "./auth.service";
@@ -49,21 +49,29 @@ export const LoginPage = () => {
 
   const handleLogin = async (data) => {
     try {
-      // let response = await axios.post(
-      //   "http://localhost:3005/api/v1/auth/login",
-      //   data,
-      //   config
-      // );
       let response = await AuthServiceObj.login(data);
-      console.log(response);
+      // console.log(response);
       localStorage.setItem("token", response.data.data?.accessToken);
       localStorage.setItem("refreshToken", response.data.data?.refreshToken);
+      localStorage.setItem(
+        "user",
+        JSON.stringify(response.data.data?.userDetails)
+      );
       toast.success("Successfully logged in.");
-      navigate("/admin");
+      navigate(`/${response.data.data.userDetails.role}`);
     } catch (error) {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    let token = localStorage.getItem("token");
+    let user = JSON.parse(localStorage.getItem("user"));
+    if (token && user) {
+      toast.info("You are already logged in.");
+      navigate(`/${user.role}`);
+    }
+  }, []);
   return (
     <>
       <div className="container-fluid mt-5 mb-5 nav-margin">

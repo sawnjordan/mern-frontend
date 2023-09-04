@@ -1,9 +1,29 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import AuthServiceObj from "../../../home/auth/auth.service";
+import { toast } from "react-toastify";
 
 export const AdminHeader = () => {
+  const navigate = useNavigate();
   const toggleSidebar = (e) => {
     e.preventDefault();
     document.body.classList.toggle("sb-sidenav-toggled");
+  };
+
+  const handleLogout = async (e) => {
+    try {
+      e.preventDefault();
+
+      let response = await AuthServiceObj.logoutUser();
+      console.log(response);
+      localStorage.removeItem("token");
+      localStorage.removeItem("refreshToken");
+      localStorage.removeItem("user");
+      toast.success("Successfully logged out.");
+      navigate("/login");
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <>
@@ -68,7 +88,11 @@ export const AdminHeader = () => {
                 <hr className="dropdown-divider" />
               </li>
               <li>
-                <a className="dropdown-item" href="#!">
+                <a
+                  className="dropdown-item"
+                  onClick={handleLogout}
+                  href="/login"
+                >
                   Logout
                 </a>
               </li>

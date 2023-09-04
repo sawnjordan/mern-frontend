@@ -51,6 +51,19 @@ class AuthService extends HttpService {
       throw error;
     }
   };
+
+  logoutUser = async () => {
+    try {
+      let response = await this.postRequest(
+        "/v1/auth/logout",
+        {},
+        { auth: true }
+      );
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  };
 }
 
 const AuthServiceObj = new AuthService();

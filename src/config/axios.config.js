@@ -1,4 +1,5 @@
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const axiosInstance = axios.create({
   //using npx
@@ -18,6 +19,16 @@ axiosInstance.interceptors.response.use(
     return success;
   },
   (reject) => {
+    if (reject.response.status === 401) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      // //TODO: API Call for refreshToken
+      localStorage.removeItem("refreshToken");
+      toast.error("Please login firstyubhnji.");
+      // window.location.href = "/login";
+      window.location.href = "/login";
+    }
+    console.log(reject);
     //TODO: Hanlde errors
     throw reject?.response;
   }

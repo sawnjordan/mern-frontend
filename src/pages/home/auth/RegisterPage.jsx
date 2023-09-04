@@ -3,7 +3,7 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import AuthServiceObj from "./auth.service";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 export const RegisterPage = () => {
@@ -77,6 +77,14 @@ export const RegisterPage = () => {
       setLoading(false);
     }
   };
+  useEffect(() => {
+    let token = localStorage.getItem("token");
+    let user = JSON.parse(localStorage.getItem("user"));
+    if (token && user) {
+      toast.info("You are already logged in.");
+      navigate(`/${user.role}`);
+    }
+  }, []);
   return (
     <>
       <div className="container-fluid mt-3 mb-5 nav-margin">
