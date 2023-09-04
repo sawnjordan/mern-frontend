@@ -1,19 +1,70 @@
-import React from "react";
+import React, { useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { FaPlus } from "react-icons/fa";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import * as Yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { bannerServiceObj } from ".";
+import { toast } from "react-toastify";
 
 export const AdminCreateBanner = () => {
-  const { register, handleSubmit, formState } = useForm();
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  let allowedExt = ["jpg", "png", "jpeg", "webp", "gif", "svg"];
+  const bannerSchema = Yup.object().shape({
+    title: Yup.string().required("Title is required."),
+    link: Yup.string().url().nullable(),
+    status: Yup.string()
+      .matches(/active|inactive/, "Invalid value for status.")
+      .default("inactive"),
+    image: Yup.mixed()
+      .test("required", "No any file uploaded.", (value) => {
+        return value && value.length !== 0;
+      })
+      .test(
+        "fileSize",
+        "The file size is too large. Max file size 3 MB",
+        (value) => {
+          return value && value.length !== 0 && value[0].size <= 3000000;
+        }
+      )
+      .test(
+        "fileExtension",
+        "Invalid file type. Please upload image.",
+        (value) => {
+          return (
+            value &&
+            value.length !== 0 &&
+            allowedExt.includes(value[0].name.split(".").pop().toLowerCase())
+          );
+        }
+      ),
+  });
+  const { register, handleSubmit, formState } = useForm({
+    resolver: yupResolver(bannerSchema),
+  });
   const { errors } = formState;
+  // console.log(errors);
 
-  const handleCreateBanner = (data) => {
-    console.log(data, "before");
-    // data.image = data.image[0];
-    // console.log(data);
+  const handleCreateBanner = async (data) => {
+    // console.log(data, "before");
+    data.image = data.image[0];
 
     //API Integration
+
+    try {
+      setLoading(true);
+      let response = await bannerServiceObj.createBanner(data);
+      toast.success(response?.data?.msg);
+      navigate("/admin/banner");
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.data?.msg);
+    } finally {
+      setLoading(false);
+    }
   };
   return (
     <>
@@ -56,22 +107,22 @@ export const AdminCreateBanner = () => {
                   >
                     <div className="row">
                       <div className="col-lg-3 d-flex align-items-center">
-                        <label htmlFor="name" className="form-label fw-medium">
+                        <label htmlFor="title" className="form-label fw-medium">
                           Title:
                         </label>
                       </div>
 
                       <div className="col-lg-9">
                         <input
-                          type="name"
-                          {...register("name", {
+                          type="text"
+                          {...register("title", {
                             required: "Title is required.",
                           })}
                           className="form-control"
                           placeholder="Enter title"
                         />
                         <div className="text-danger mt-2">
-                          {errors && errors.name?.message}
+                          {errors && errors.title?.message}
                         </div>
                       </div>
                     </div>
@@ -91,9 +142,9 @@ export const AdminCreateBanner = () => {
                           className="form-control"
                           placeholder="Enter link"
                         />
-                        <div className="text-danger mt-2">
+                        {/* <div className="text-danger mt-2">
                           {errors && errors.link?.message}
-                        </div>
+                        </div> */}
                       </div>
                     </div>
 
@@ -142,8 +193,6 @@ export const AdminCreateBanner = () => {
                           {...register("image", {
                             required: "Image is required.",
                           })}
-                          id="formFile"
-                          name="image"
                           accept="image/*"
                         />
                         <div className="text-danger mt-2">
@@ -154,7 +203,9 @@ export const AdminCreateBanner = () => {
 
                     <div className="row">
                       <div className="col-lg-3 d-flex align-items-center offset-lg-3 mt-4">
-                        <button className="btn btn-primary">Create</button>
+                        <button className="btn btn-primary" disabled={loading}>
+                          Create
+                        </button>
                       </div>
                     </div>
                   </form>

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Container, Table } from "react-bootstrap";
-import BannerServiceObj from "../banner/banner.service";
+// import BannerServiceObj from "../banner/banner.service";
 import { FaTrash } from "react-icons/fa";
+import { bannerServiceObj } from "../../cms/admin/banner";
 
 export const HomePageBanner = () => {
   const [loading, setLoading] = useState(true);
@@ -9,7 +10,7 @@ export const HomePageBanner = () => {
 
   const getBannerData = async () => {
     try {
-      let response = await BannerServiceObj.getBannerForHomePage();
+      let response = await bannerServiceObj.getBannerForHomePage();
       //   console.log(response.data.data);
       setBannerData(response?.data?.data);
     } catch (error) {

@@ -1,8 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { AdminCreateBanner } from "./pages/cms/admin/component/AdminCreateBanner";
-import { AdminDashboard } from "./pages/cms/admin/component/AdminDashboard";
 import { AdminLayout } from "./pages/cms/admin/layout/AdminLayout";
 import { ForgotPassword } from "./pages/home/auth/ForgotPassword";
 import { LoginPage } from "./pages/home/auth/LoginPage";
@@ -15,7 +13,10 @@ import { CheckPermission } from "./pages/routing/CheckPermission";
 import { ActivateUser } from "./pages/home/auth/ActivateUser";
 import { HomePageBanner } from "./pages/home/components/HomePageBanner";
 import { NotFound } from "./pages/home/error/NotFound";
-import { BannerList } from "./pages/cms/admin/banner/BannerList";
+import { AdminDashboard } from "./pages/cms/admin/component/AdminDashboard";
+import { AdminCreateBanner, AdminBannerList } from "./pages/cms/admin/banner";
+// import { AdminCreateBanner } from "./pages/cms/admin/banner/AdminCreateBanner";
+// import { BannerList } from "./pages/cms/admin/banner/BannerList";
 
 export const Routing = () => {
   return (
@@ -30,7 +31,7 @@ export const Routing = () => {
             <Route path="/activate/:token" element={<ActivateUser />} />
 
             <Route path="forgot-password" element={<ForgotPassword />} />
-            <Route path="banner" element={<HomePageBanner />} />
+            {/* <Route path="banner" element={<HomePageBanner />} /> */}
 
             <Route path="categories" element={<CategoryList />} />
             <Route
@@ -46,7 +47,7 @@ export const Routing = () => {
             }
           >
             <Route index element={<AdminDashboard />} />
-            <Route path="banner" element={<BannerList />} />
+            <Route path="banner" element={<AdminBannerList />} />
             <Route path="banner/create" element={<AdminCreateBanner />} />
           </Route>
         </Routes>
