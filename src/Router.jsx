@@ -14,7 +14,11 @@ import { ActivateUser } from "./pages/home/auth/ActivateUser";
 import { HomePageBanner } from "./pages/home/components/HomePageBanner";
 import { NotFound } from "./pages/home/error/NotFound";
 import { AdminDashboard } from "./pages/cms/admin/component/AdminDashboard";
-import { AdminCreateBanner, AdminBannerList } from "./pages/cms/admin/banner";
+import {
+  AdminCreateBanner,
+  AdminBannerList,
+  AdminUpdateBanner,
+} from "./pages/cms/admin/banner";
 // import { AdminCreateBanner } from "./pages/cms/admin/banner/AdminCreateBanner";
 // import { BannerList } from "./pages/cms/admin/banner/BannerList";
 
@@ -49,6 +53,7 @@ export const Routing = () => {
             <Route index element={<AdminDashboard />} />
             <Route path="banner" element={<AdminBannerList />} />
             <Route path="banner/create" element={<AdminCreateBanner />} />
+            <Route path="banner/:id" element={<AdminUpdateBanner />} />
           </Route>
         </Routes>
       </BrowserRouter>
