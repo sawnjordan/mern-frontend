@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 
 export const AdminCreateBanner = () => {
   const [loading, setLoading] = useState(false);
+  const [imageUrl, setImageUrl] = useState(false);
   const navigate = useNavigate();
   let allowedExt = ["jpg", "png", "jpeg", "webp", "gif", "svg"];
   const bannerSchema = Yup.object().shape({
@@ -186,7 +187,7 @@ export const AdminCreateBanner = () => {
                         </label>
                       </div>
 
-                      <div className="col-lg-9">
+                      <div className={imageUrl ? "col-lg-7" : "col-lg-9"}>
                         <input
                           className="form-control"
                           type="file"
@@ -194,10 +195,30 @@ export const AdminCreateBanner = () => {
                             required: "Image is required.",
                           })}
                           accept="image/*"
+                          onChange={(e) => {
+                            const file = e.target.files[0];
+                            if (file) {
+                              const imageUrl = URL.createObjectURL(file);
+                              // console.log(imageUrl);
+                              setImageUrl(imageUrl);
+                            } else {
+                              setImageUrl("");
+                            }
+                          }}
                         />
                         <div className="text-danger mt-2">
                           {errors && errors.image?.message}
                         </div>
+                      </div>
+                      <div className="col-lg-2">
+                        {imageUrl ? (
+                          <img
+                            src={imageUrl}
+                            className="img img-fluid shadow-lg"
+                          />
+                        ) : (
+                          <></>
+                        )}
                       </div>
                     </div>
 
