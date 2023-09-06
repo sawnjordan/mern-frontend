@@ -5,6 +5,7 @@ import { NavLink } from "react-router-dom";
 import { bannerServiceObj } from ".";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
+import { ImagePreview } from "../../../../components/image.preview";
 
 export const AdminBannerList = () => {
   const [bannerData, setBannerData] = useState();
@@ -99,7 +100,13 @@ export const AdminBannerList = () => {
                     <tr key={index}>
                       <td>{data?._id}</td>
                       <td>{data?.title}</td>
-                      <td>{data?.image}</td>
+                      {/* <td>{data?.image}</td> */}
+                      <td>
+                        <ImagePreview
+                          imageURL={data?.image}
+                          imgFolder="banner"
+                        />
+                      </td>
                       <td>{data?.status}</td>
                       <td>
                         {/* <Button variant="danger me-4" size="sm">

@@ -5,6 +5,7 @@ import { NavLink } from "react-router-dom";
 import { brandServiceObj } from ".";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
+import { ImagePreview } from "../../../../components/image.preview";
 
 export const AdminBrandList = () => {
   const [brandData, setBrandData] = useState();
@@ -99,7 +100,13 @@ export const AdminBrandList = () => {
                     <tr key={index}>
                       <td>{data?._id}</td>
                       <td>{data?.name}</td>
-                      <td>{data?.logo}</td>
+                      {/* <td>{data?.logo}</td> */}
+                      <td>
+                        <ImagePreview
+                          imageURL={data?.logo}
+                          imgFolder="brands"
+                        />
+                      </td>
                       <td>{data?.status}</td>
                       <td>
                         {/* <Button variant="danger me-4" size="sm">

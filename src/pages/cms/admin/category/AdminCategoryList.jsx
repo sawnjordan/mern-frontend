@@ -5,6 +5,7 @@ import { NavLink } from "react-router-dom";
 import { categoryServiceObj } from ".";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
+import { ImagePreview } from "../../../../components/image.preview";
 
 export const AdminCategoryList = () => {
   const [categoryData, setCategoryData] = useState();
@@ -101,7 +102,13 @@ export const AdminCategoryList = () => {
                       <td>{data?._id}</td>
                       <td>{data?.name}</td>
                       <td>{data?.parent?.name ? data?.parent.name : "-"}</td>
-                      <td>{data?.image}</td>
+                      {/* <td>{data?.image}</td> */}
+                      <td>
+                        <ImagePreview
+                          imageURL={data?.image}
+                          imgFolder="category"
+                        />
+                      </td>
                       <td>{data?.status}</td>
                       <td>
                         {/* <Button variant="danger me-4" size="sm">
