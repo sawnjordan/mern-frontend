@@ -24,6 +24,11 @@ import {
   AdminCategoryList,
   AdminUpdateCategory,
 } from "./pages/cms/admin/category";
+import {
+  AdminBrandList,
+  AdminCreateBrand,
+  AdminUpdateBrand,
+} from "./pages/cms/admin/brand";
 // import { AdminCreateBanner } from "./pages/cms/admin/banner/AdminCreateBanner";
 // import { BannerList } from "./pages/cms/admin/banner/BannerList";
 
@@ -63,9 +68,9 @@ export const Routing = () => {
             <Route path="banner/:id" element={<AdminUpdateBanner />} />
 
             {/* Admin Brand Route */}
-            {/* <Route path="brand" element={<AdminBannerList />} />
-            <Route path="brand/create" element={<AdminCreateBanner />} />
-            <Route path="brand/:id" element={<AdminUpdateBanner />} /> */}
+            <Route path="brand" element={<AdminBrandList />} />
+            <Route path="brand/create" element={<AdminCreateBrand />} />
+            <Route path="brand/:id" element={<AdminUpdateBrand />} />
 
             {/* Admin Category Route */}
             <Route path="category" element={<AdminCategoryList />} />
