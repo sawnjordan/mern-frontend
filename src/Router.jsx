@@ -19,6 +19,11 @@ import {
   AdminBannerList,
   AdminUpdateBanner,
 } from "./pages/cms/admin/banner";
+import {
+  AdminCreateCategory,
+  AdminCategoryList,
+  AdminUpdateCategory,
+} from "./pages/cms/admin/category";
 // import { AdminCreateBanner } from "./pages/cms/admin/banner/AdminCreateBanner";
 // import { BannerList } from "./pages/cms/admin/banner/BannerList";
 
@@ -44,6 +49,7 @@ export const Routing = () => {
             />
             <Route path="*" element={<NotFound />} />
           </Route>
+
           <Route
             path="/admin"
             element={
@@ -51,9 +57,20 @@ export const Routing = () => {
             }
           >
             <Route index element={<AdminDashboard />} />
+            {/* Admin Banner Route */}
             <Route path="banner" element={<AdminBannerList />} />
             <Route path="banner/create" element={<AdminCreateBanner />} />
             <Route path="banner/:id" element={<AdminUpdateBanner />} />
+
+            {/* Admin Brand Route */}
+            {/* <Route path="brand" element={<AdminBannerList />} />
+            <Route path="brand/create" element={<AdminCreateBanner />} />
+            <Route path="brand/:id" element={<AdminUpdateBanner />} /> */}
+
+            {/* Admin Category Route */}
+            <Route path="category" element={<AdminCategoryList />} />
+            <Route path="category/create" element={<AdminCreateCategory />} />
+            <Route path="category/:id" element={<AdminUpdateCategory />} />
           </Route>
         </Routes>
       </BrowserRouter>

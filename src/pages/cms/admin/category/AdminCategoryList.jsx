@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Nav, Row, Table } from "react-bootstrap";
 import { FaEdit, FaPlus, FaTrash } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
-import { bannerServiceObj } from ".";
+import { categoryServiceObj } from ".";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 
-export const AdminBannerList = () => {
-  const [bannerData, setBannerData] = useState();
+export const AdminCategoryList = () => {
+  const [categoryData, setCategoryData] = useState();
   const [loading, setLoading] = useState(true);
 
   const handleDelete = (id) => {
@@ -23,21 +23,21 @@ export const AdminBannerList = () => {
       if (result.isConfirmed) {
         setLoading(true);
         try {
-          let response = await bannerServiceObj.deleteBanner(id);
+          let response = await categoryServiceObj.deleteCategory(id);
           toast.success(response.data?.msg);
-          loadBannerData();
+          loadCategoryData();
           setLoading(false);
         } catch (error) {
-          toast.error("Something went wrong while deleting banner.");
+          toast.error("Something went wrong while deleting category.");
         }
       }
     });
   };
-  const loadBannerData = async () => {
+  const loadCategoryData = async () => {
     try {
-      let response = await bannerServiceObj.getAllAdminBanner(10, 1);
+      let response = await categoryServiceObj.getAllAdminCategory(10, 1);
       console.log(response);
-      setBannerData(response?.data?.data);
+      setCategoryData(response?.data?.data);
     } catch (error) {
       console.log(error);
     } finally {
@@ -45,31 +45,31 @@ export const AdminBannerList = () => {
     }
   };
   useEffect(() => {
-    loadBannerData();
+    loadCategoryData();
   }, []);
   return (
     <>
       <div className="container-fluid px-4">
-        <h1 className="mt-4">Banner List</h1>
+        <h1 className="mt-4">Category List</h1>
         <ol className="breadcrumb mb-4">
           <li className="breadcrumb-item">
             <NavLink to="/admin">Dashboard</NavLink>
           </li>
-          <li className="breadcrumb-item active">Banner List</li>
+          <li className="breadcrumb-item active">Category List</li>
         </ol>
         <div className="card mb-4">
           <div className="card-header">
             <Container>
               <Row>
                 <Col sm={12} md={6}>
-                  <h4>Banner List</h4>
+                  <h4>Category List</h4>
                 </Col>
                 <Col sm={12} md={6}>
                   <NavLink
                     className={"btn btn-primary float-end"}
-                    to="/admin/banner/create"
+                    to="/admin/category/create"
                   >
-                    <FaPlus /> Add Banner
+                    <FaPlus /> Add Category
                   </NavLink>
                 </Col>
               </Row>
@@ -80,7 +80,8 @@ export const AdminBannerList = () => {
               <thead>
                 <tr>
                   <th>#ID</th>
-                  <th>Title</th>
+                  <th>Name</th>
+                  <th>Parent</th>
                   <th>Image</th>
                   <th>Status</th>
                   <th>Action</th>
@@ -94,11 +95,12 @@ export const AdminBannerList = () => {
                     </td>
                   </tr>
                 ) : (
-                  bannerData &&
-                  bannerData.map((data, index) => (
+                  categoryData &&
+                  categoryData.map((data, index) => (
                     <tr key={index}>
                       <td>{data?._id}</td>
-                      <td>{data?.title}</td>
+                      <td>{data?.name}</td>
+                      <td>{data?.parent?.name ? data?.parent.name : "-"}</td>
                       <td>{data?.image}</td>
                       <td>{data?.status}</td>
                       <td>
@@ -108,7 +110,7 @@ export const AdminBannerList = () => {
                     <Button variant="success" size="sm">
                       <FaEdit size={12} />
                     </Button> */}
-                        <NavLink to={`/admin/banner/${data?._id}`}>
+                        <NavLink to={`/admin/category/${data?._id}`}>
                           <Button
                             onClick={(e) => {
                               e.preventDefault();
@@ -121,7 +123,7 @@ export const AdminBannerList = () => {
                             <FaTrash />
                           </Button>
                         </NavLink>
-                        <NavLink to={`/admin/banner/${data?._id}`}>
+                        <NavLink to={`/admin/category/${data?._id}`}>
                           <Button variant="" className="link-success" size="sm">
                             <FaEdit />
                           </Button>

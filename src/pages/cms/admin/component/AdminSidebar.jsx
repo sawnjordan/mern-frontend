@@ -56,13 +56,13 @@ export const AdminSidebar = () => {
                 </div>
                 Banner Manage
               </NavLink>
-              <NavLink className="nav-link" to="/">
+              <NavLink className="nav-link" to="/admin/brand">
                 <div className="sb-nav-link-icon">
                   <i className="fas fa-chart-area"></i>
                 </div>
                 Brand Manage
               </NavLink>
-              <NavLink className="nav-link" to="/">
+              <NavLink className="nav-link" to="/admin/category">
                 <div className="sb-nav-link-icon">
                   <i className="fas fa-chart-area"></i>
                 </div>
