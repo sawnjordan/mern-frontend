@@ -2,6 +2,8 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 
 export const AdminSidebar = () => {
+  let user = localStorage.getItem("user");
+  const userData = JSON.parse(user);
   return (
     <>
       <div id="layoutSidenav_nav">
@@ -96,7 +98,7 @@ export const AdminSidebar = () => {
           </div>
           <div className="sb-sidenav-footer">
             <div className="small">Logged in as:</div>
-            Start Bootstrap
+            {userData?.name}
           </div>
         </nav>
       </div>
