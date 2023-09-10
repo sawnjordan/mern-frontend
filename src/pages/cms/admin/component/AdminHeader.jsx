@@ -1,25 +1,26 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import AuthServiceObj from "../../../home/auth/auth.service";
 import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutUser } from "../../../../reducers/user.reducers";
 
 export const AdminHeader = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const toggleSidebar = (e) => {
     e.preventDefault();
     document.body.classList.toggle("sb-sidenav-toggled");
   };
 
-  const handleLogout = async (e) => {
-    try {
-      e.preventDefault();
+  const userDetails = useSelector((state) => {
+    return state.User?.loggedInUser;
+  });
 
-      let response = await AuthServiceObj.logoutUser();
-      console.log(response);
-      localStorage.removeItem("token");
-      localStorage.removeItem("refreshToken");
-      localStorage.removeItem("user");
-      toast.success("Successfully logged out.");
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    try {
+      dispatch(logoutUser());
+      toast.success("Logged out.");
       navigate("/login");
     } catch (error) {
       console.log(error);
@@ -68,7 +69,11 @@ export const AdminHeader = () => {
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
-              <i className="fas fa-user fa-fw"></i>
+              {userDetails ? (
+                userDetails?.name
+              ) : (
+                <i className="fas fa-user fa-fw"></i>
+              )}
             </a>
             <ul
               className="dropdown-menu dropdown-menu-end"

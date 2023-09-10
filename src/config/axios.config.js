@@ -55,6 +55,9 @@ axiosInstance.interceptors.response.use(
         // localStorage.removeItem("refreshToken");
 
         // window.location.href = "/login";
+      } else {
+        toast.error("Please login again.");
+        window.location.href = "/login";
       }
       // console.log(reject);
       //TODO: Hanlde errors

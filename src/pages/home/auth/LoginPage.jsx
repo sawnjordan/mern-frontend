@@ -4,48 +4,14 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import AuthServiceObj from "./auth.service";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { setLoggedInUser } from "../../../reducers/user.reducers";
 
 export const LoginPage = () => {
   const { register, handleSubmit, formState } = useForm();
   const { errors } = formState;
   const navigate = useNavigate();
-  // const [credentials, setCredentials] = useState({
-  //   email: null,
-  //   password: null,
-  // });
-
-  // const [error, setError] = useState();
-
-  // const handleChange = (e) => {
-  //   let { name, value } = e.target;
-  //   setCredentials({
-  //     ...credentials,
-  //     [name]: value,
-  //   });
-
-  //   let msg = handleValidation(value, name);
-
-  //   setError({ ...error, [name]: msg });
-  // };
-
-  // const handleValidation = (value, field) => {
-  //   let msg = null;
-  //   switch (field) {
-  //     case "email":
-  //       msg = !value ? "Email is required" : "";
-  //       break;
-  //     case "password":
-  //       msg = !value ? "Password is required" : "";
-  //       break;
-  //   }
-  //   return msg;
-  // };
-
-  // const config = {
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  // };
+  const dispatch = useDispatch();
 
   const handleLogin = async (data) => {
     try {
@@ -57,6 +23,7 @@ export const LoginPage = () => {
         "user",
         JSON.stringify(response.data.data?.userDetails)
       );
+      dispatch(setLoggedInUser(response.data.data?.userDetails));
       toast.success("Successfully logged in.");
       navigate(`/${response.data.data.userDetails.role}`);
     } catch (error) {

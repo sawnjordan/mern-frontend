@@ -1,9 +1,14 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 
 export const AdminSidebar = () => {
-  let user = localStorage.getItem("user");
-  const userData = JSON.parse(user);
+  // let user = localStorage.getItem("user");
+  // const userData = JSON.parse(user);
+  const userData = useSelector((state) => {
+    // console.log(state);
+    return state.User?.loggedInUser;
+  });
   return (
     <>
       <div id="layoutSidenav_nav">

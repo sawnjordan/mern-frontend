@@ -29,6 +29,8 @@ import {
   AdminCreateBrand,
   AdminUpdateBrand,
 } from "./pages/cms/admin/brand";
+import { Provider } from "react-redux";
+import { store } from "./store";
 // import { AdminCreateBanner } from "./pages/cms/admin/banner/AdminCreateBanner";
 // import { BannerList } from "./pages/cms/admin/banner/BannerList";
 
@@ -36,49 +38,51 @@ export const Routing = () => {
   return (
     <>
       <ToastContainer />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<HomePageLayout />}>
-            <Route index element={<LandingPage />} />
-            <Route path="login" element={<LoginPage />} />
-            <Route path="register" element={<RegisterPage />} />
-            <Route path="/activate/:token" element={<ActivateUser />} />
+      <Provider store={store}>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<HomePageLayout />}>
+              <Route index element={<LandingPage />} />
+              <Route path="login" element={<LoginPage />} />
+              <Route path="register" element={<RegisterPage />} />
+              <Route path="/activate/:token" element={<ActivateUser />} />
 
-            <Route path="forgot-password" element={<ForgotPassword />} />
-            {/* <Route path="banner" element={<HomePageBanner />} /> */}
+              <Route path="forgot-password" element={<ForgotPassword />} />
+              {/* <Route path="banner" element={<HomePageBanner />} /> */}
 
-            <Route path="categories" element={<CategoryList />} />
+              <Route path="categories" element={<CategoryList />} />
+              <Route
+                path="category/:categorySlug"
+                element={<CategoryProductList />}
+              />
+              <Route path="*" element={<NotFound />} />
+            </Route>
+
             <Route
-              path="category/:categorySlug"
-              element={<CategoryProductList />}
-            />
-            <Route path="*" element={<NotFound />} />
-          </Route>
+              path="/admin"
+              element={
+                <CheckPermission Component={<AdminLayout />} role="admin" />
+              }
+            >
+              <Route index element={<AdminDashboard />} />
+              {/* Admin Banner Route */}
+              <Route path="banner" element={<AdminBannerList />} />
+              <Route path="banner/create" element={<AdminCreateBanner />} />
+              <Route path="banner/:id" element={<AdminUpdateBanner />} />
 
-          <Route
-            path="/admin"
-            element={
-              <CheckPermission Component={<AdminLayout />} role="admin" />
-            }
-          >
-            <Route index element={<AdminDashboard />} />
-            {/* Admin Banner Route */}
-            <Route path="banner" element={<AdminBannerList />} />
-            <Route path="banner/create" element={<AdminCreateBanner />} />
-            <Route path="banner/:id" element={<AdminUpdateBanner />} />
+              {/* Admin Brand Route */}
+              <Route path="brand" element={<AdminBrandList />} />
+              <Route path="brand/create" element={<AdminCreateBrand />} />
+              <Route path="brand/:id" element={<AdminUpdateBrand />} />
 
-            {/* Admin Brand Route */}
-            <Route path="brand" element={<AdminBrandList />} />
-            <Route path="brand/create" element={<AdminCreateBrand />} />
-            <Route path="brand/:id" element={<AdminUpdateBrand />} />
-
-            {/* Admin Category Route */}
-            <Route path="category" element={<AdminCategoryList />} />
-            <Route path="category/create" element={<AdminCreateCategory />} />
-            <Route path="category/:id" element={<AdminUpdateCategory />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+              {/* Admin Category Route */}
+              <Route path="category" element={<AdminCategoryList />} />
+              <Route path="category/create" element={<AdminCreateCategory />} />
+              <Route path="category/:id" element={<AdminUpdateCategory />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </Provider>
     </>
   );
 };

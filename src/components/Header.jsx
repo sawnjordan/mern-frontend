@@ -9,12 +9,28 @@ import {
   Navbar,
 } from "react-bootstrap";
 import { FaSearch, FaShoppingCart, FaUser } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
+import { logoutUser } from "../reducers/user.reducers";
 export const Header = () => {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const dispatch = useDispatch();
+  const userDetails = useSelector((state) => {
+    // console.log(state);
+    return state.User?.loggedInUser;
+  });
+  const handleLogout = async () => {
+    try {
+      dispatch(logoutUser());
+      toast.success("Logged out.");
+      navigate("/login");
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <>
       <Navbar
@@ -52,22 +68,57 @@ export const Header = () => {
             >
               <FaSearch className="icon" size={18} />
             </Button>
-            <Dropdown>
-              <Dropdown.Toggle id="dropdown-basic" variant="" className="me-5">
-                <FaUser className="icon" size={18} />
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                <Link to="/login" className="dropdown-item">
-                  Login
-                </Link>
-                <Link to="/register" className="dropdown-item">
-                  Register
-                </Link>
-                <Link to="/admin" className="dropdown-item">
-                  Profile
-                </Link>
-              </Dropdown.Menu>
-            </Dropdown>
+            {userDetails ? (
+              <Dropdown>
+                <Dropdown.Toggle
+                  id="dropdown-basic"
+                  variant=""
+                  className="me-5"
+                >
+                  {/* <FaUser className="icon" size={18} /> */}
+                  <span class="fw-medium">{userDetails?.name}</span>
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  {/* <Link to="/login" className="dropdown-item">
+                    Login
+                  </Link>
+                  <Link to="/register" className="dropdown-item">
+                    Register
+                  </Link> */}
+                  <Link to={`/${userDetails?.role}`} className="dropdown-item">
+                    Profile
+                  </Link>
+                  <Link
+                    onClick={handleLogout}
+                    to={`/login`}
+                    className="dropdown-item"
+                  >
+                    Logout
+                  </Link>
+                </Dropdown.Menu>
+              </Dropdown>
+            ) : (
+              <Dropdown>
+                <Dropdown.Toggle
+                  id="dropdown-basic"
+                  variant=""
+                  className="me-5"
+                >
+                  <FaUser className="icon" size={18} />
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Link to="/login" className="dropdown-item">
+                    Login
+                  </Link>
+                  <Link to="/register" className="dropdown-item">
+                    Register
+                  </Link>
+                  {/* <Link to="/admin" className="dropdown-item">
+                    Profile
+                  </Link> */}
+                </Dropdown.Menu>
+              </Dropdown>
+            )}
           </div>
 
           <button
