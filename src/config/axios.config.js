@@ -59,8 +59,11 @@ axiosInstance.interceptors.response.use(
         toast.error("Please login again.");
         window.location.href = "/login";
       }
+      throw reject?.response;
+
       // console.log(reject);
       //TODO: Hanlde errors
+    } else {
       throw reject?.response;
     }
   }

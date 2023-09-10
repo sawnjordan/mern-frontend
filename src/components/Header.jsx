@@ -88,11 +88,7 @@ export const Header = () => {
                   <Link to={`/${userDetails?.role}`} className="dropdown-item">
                     Profile
                   </Link>
-                  <Link
-                    onClick={handleLogout}
-                    to={`/login`}
-                    className="dropdown-item"
-                  >
+                  <Link onClick={handleLogout} className="dropdown-item">
                     Logout
                   </Link>
                 </Dropdown.Menu>

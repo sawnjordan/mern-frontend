@@ -93,11 +93,7 @@ export const AdminHeader = () => {
                 <hr className="dropdown-divider" />
               </li>
               <li>
-                <a
-                  className="dropdown-item"
-                  onClick={handleLogout}
-                  href="/login"
-                >
+                <a className="dropdown-item" onClick={handleLogout}>
                   Logout
                 </a>
               </li>
