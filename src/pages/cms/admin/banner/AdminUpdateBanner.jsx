@@ -267,14 +267,18 @@ export const AdminUpdateBanner = () => {
                         {newImageUrl ? (
                           <img
                             src={newImageUrl}
-                            className="img img-fluid shadow-lg"
+                            width="100px"
+                            height="100px !important"
+                            className="rounded"
                           />
                         ) : bannerDetails && bannerDetails.image ? (
                           <img
                             src={`${import.meta.env.VITE_IMAGE_URL}/banner/${
                               bannerDetails.image
                             }`}
-                            className="img img-fluid shadow-lg"
+                            width="100px"
+                            height="100px !important"
+                            className="rounded"
                           />
                         ) : (
                           <></>

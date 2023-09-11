@@ -35,7 +35,7 @@ export const AdminUpdateBrand = () => {
       )
       .test(
         "fileExtension",
-        "Invalid file type. Please upload an logo.",
+        "Invalid file type. Please upload logo.",
         (value) => {
           if (value && value.length > 0) {
             return allowedExt.includes(
@@ -215,14 +215,18 @@ export const AdminUpdateBrand = () => {
                         {newLogoUrl ? (
                           <img
                             src={newLogoUrl}
-                            className="img img-fluid shadow-lg"
+                            width="100px"
+                            height="100px !important"
+                            className="rounded"
                           />
                         ) : brandDetails && brandDetails.logo ? (
                           <img
                             src={`${import.meta.env.VITE_IMAGE_URL}/brands/${
                               brandDetails.logo
                             }`}
-                            className="img img-fluid shadow-lg"
+                            width="100px"
+                            height="100px !important"
+                            className="rounded"
                           />
                         ) : (
                           <></>

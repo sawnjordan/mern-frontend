@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 
 export const AdminUpdateUser = () => {
   const [loading, setLoading] = useState(false);
-  const [newLogoUrl, setNewLogoUrl] = useState("");
+  const [newImageUrl, setNewImageUrl] = useState("");
   const [userDetails, setUserDetails] = useState();
   const params = useParams();
   const { id } = params;
@@ -19,10 +19,14 @@ export const AdminUpdateUser = () => {
 
   const userSchema = Yup.object().shape({
     name: Yup.string().required("Name is required."),
-    status: Yup.string()
-      .matches(/active|inactive/, "Invalid value for status.")
-      .default("inactive"),
-    logo: Yup.mixed()
+    email: Yup.string().email().required("Email is required."),
+    phone: Yup.string().required("Phone is required."),
+    address: Yup.object({
+      shippingAddress: Yup.string().required("Shipping Address is required."),
+      billingAddress: Yup.string().required("Billing Address is required."),
+    }),
+    role: Yup.string().matches(/seller|customer/, "Invalid value."),
+    image: Yup.mixed()
       .test(
         "fileSize",
         "The file size is too large. Max file size 3 MB",
@@ -35,7 +39,7 @@ export const AdminUpdateUser = () => {
       )
       .test(
         "fileExtension",
-        "Invalid file type. Please upload an logo.",
+        "Invalid file type. Please upload an image.",
         (value) => {
           if (value && value.length > 0) {
             return allowedExt.includes(
@@ -53,10 +57,10 @@ export const AdminUpdateUser = () => {
   // console.log(errors);
 
   const handleUpdateUser = async (data) => {
-    if (data.logo.length === 0) {
-      data.logo = userDetails.logo;
+    if (data.image.length === 0) {
+      data.image = userDetails.image;
     } else {
-      data.logo = data.logo[0];
+      data.image = data.image[0];
     }
 
     //API Integration
@@ -79,9 +83,14 @@ export const AdminUpdateUser = () => {
     try {
       let response = await userServiceObj.getUserById(id);
       const userData = response.data?.data;
+      console.log(userData);
       setUserDetails(userData);
       setValue("name", userData?.name);
-      setValue("link", userData?.link);
+      setValue("email", userData?.email);
+      setValue("role", userData?.role);
+      setValue("phone", userData?.phone);
+      setValue("address[billingAddress]", userData?.address.billingAddress);
+      setValue("address[shippingAddress]", userData?.address.shippingAddress);
       setValue("status", userData?.status);
     } catch (error) {
       console.log(error);
@@ -130,6 +139,7 @@ export const AdminUpdateUser = () => {
                   <form
                     className="form"
                     onSubmit={handleSubmit(handleUpdateUser)}
+                    noValidate
                   >
                     <div className="row">
                       <div className="col-lg-3 d-flex align-items-center">
@@ -140,43 +150,125 @@ export const AdminUpdateUser = () => {
 
                       <div className="col-lg-9">
                         <input
-                          type="text"
+                          type="name"
                           {...register("name", {
-                            required: "Name is required.",
+                            required: "Name is required",
                           })}
                           className="form-control"
-                          placeholder="Enter name"
+                          placeholder="Enter your name"
                         />
                         <div className="text-danger mt-2">
                           {errors && errors.name?.message}
                         </div>
                       </div>
                     </div>
+                    <div className="row mt-3">
+                      <div className="col-lg-3 d-flex align-items-center">
+                        <label htmlFor="email" className="form-label fw-medium">
+                          Email:
+                        </label>
+                      </div>
 
+                      <div className="col-lg-9">
+                        <input
+                          type="email"
+                          {...register("email", {
+                            required: "Email is required",
+                          })}
+                          className="form-control"
+                          placeholder="Enter your email"
+                          disabled
+                        />
+                        <div className="text-danger mt-2">
+                          {errors && errors.email?.message}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="row mt-3">
+                      <div className="col-lg-3 d-flex align-items-center">
+                        <label htmlFor="phone" className="form-label fw-medium">
+                          Phone:
+                        </label>
+                      </div>
+
+                      <div className="col-lg-9">
+                        <input
+                          type="tel"
+                          {...register("phone", {
+                            required: "Phone is required",
+                          })}
+                          className="form-control"
+                          placeholder="Phone Number"
+                        />
+                        <div className="text-danger mt-2">
+                          {errors && errors.phone?.message}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="row mt-3">
+                      <div className="col-lg-3 d-flex align-items-center">
+                        <label
+                          htmlFor="shippingAddress"
+                          className="form-label fw-medium"
+                        >
+                          Address 1:
+                        </label>
+                      </div>
+
+                      <div className="col-lg-9">
+                        <input
+                          type="text"
+                          {...register("address[shippingAddress]")}
+                          className="form-control"
+                          placeholder="Shipping Address"
+                        />
+                        <div className="text-danger mt-2">
+                          {errors && errors.address?.shippingAddress?.message}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="row mt-3">
+                      <div className="col-lg-3 d-flex align-items-center">
+                        <label
+                          htmlFor="billingAddress"
+                          className="form-label fw-medium"
+                        >
+                          Address 2:
+                        </label>
+                      </div>
+
+                      <div className="col-lg-9">
+                        <input
+                          type="text"
+                          {...register("address[billingAddress]")}
+                          className="form-control"
+                          placeholder="Billing Address"
+                        />
+                        <div className="text-danger mt-2">
+                          {errors && errors.address?.billingAddress?.message}
+                        </div>
+                      </div>
+                    </div>
                     <div className="row mt-3">
                       <div className="col-lg-3 d-flex align-items-center">
                         <label htmlFor="role" className="form-label fw-medium">
-                          Status:
+                          Role:
                         </label>
                       </div>
 
                       <div className="col-lg-9">
                         <select
                           className="form-select"
-                          name="status"
-                          {...register(
-                            "status",
-                            { value: "inactive" },
-                            {
-                              required: "Status is required.",
-                            }
-                          )}
+                          name="role"
+                          {...register("role", {
+                            required: "Role is required.",
+                          })}
                         >
-                          <option value="active">Publish</option>
-                          <option value="inactive">Un-Publish</option>
+                          <option value="customer">Buyer</option>
+                          <option value="seller">Seller</option>
                         </select>
                         <div className="text-danger mt-2">
-                          {errors && errors.status?.message}
+                          {errors && errors.role?.message}
                         </div>
                       </div>
                     </div>
@@ -187,42 +279,49 @@ export const AdminUpdateUser = () => {
                           htmlFor="formFile"
                           className="form-label fw-medium"
                         >
-                          Logo:
+                          Avatar:
                         </label>
                       </div>
 
                       <div className="col-lg-7">
                         <input
-                          className="form-control"
                           type="file"
-                          {...register("logo")}
+                          className="form-control"
+                          {...register("image", {
+                            required: "Image is required.",
+                          })}
                           accept="image/*"
                           onChange={(e) => {
                             const file = e.target.files[0];
                             if (file) {
-                              const logoUrl = URL.createObjectURL(file);
-                              setNewLogoUrl(logoUrl);
+                              const imageUrl = URL.createObjectURL(file);
+                              // console.log(imageUrl);
+                              setNewImageUrl(imageUrl);
                             } else {
-                              setNewLogoUrl("");
+                              setNewImageUrl("");
                             }
                           }}
                         />
                         <div className="text-danger mt-2">
-                          {errors && errors.logo?.message}
+                          {errors && errors.image?.message}
                         </div>
                       </div>
                       <div className="col-lg-2">
-                        {newLogoUrl ? (
+                        {newImageUrl ? (
                           <img
-                            src={newLogoUrl}
-                            className="img img-fluid shadow-lg"
+                            width="100px"
+                            height="100px !important"
+                            className="rounded"
+                            src={newImageUrl}
                           />
-                        ) : userDetails && userDetails.logo ? (
+                        ) : userDetails && userDetails.image ? (
                           <img
+                            width="100px"
+                            height="100px !important"
+                            className="rounded"
                             src={`${import.meta.env.VITE_IMAGE_URL}/users/${
-                              userDetails.logo
+                              userDetails.image
                             }`}
-                            className="img img-fluid shadow-lg"
                           />
                         ) : (
                           <></>

@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 export const RegisterPage = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [imageUrl, setImageUrl] = useState(false);
   let allowedExt = ["jpg", "png", "jpeg", "webp", "gif", "svg"];
   const registerSchema = Yup.object({
     name: Yup.string().required("Name is required."),
@@ -237,7 +238,7 @@ export const RegisterPage = () => {
                   </label>
                 </div>
 
-                <div className="col-lg-9">
+                <div className={imageUrl ? "col-lg-7" : "col-lg-9"}>
                   <input
                     type="file"
                     className="form-control"
@@ -245,7 +246,32 @@ export const RegisterPage = () => {
                       required: "Image is required.",
                     })}
                     accept="image/*"
+                    onChange={(e) => {
+                      const file = e.target.files[0];
+                      if (file) {
+                        const imageUrl = URL.createObjectURL(file);
+                        // console.log(imageUrl);
+                        setImageUrl(imageUrl);
+                      } else {
+                        setImageUrl("");
+                      }
+                    }}
                   />
+                  <div className="text-danger mt-2">
+                    {errors && errors.image?.message}
+                  </div>
+                </div>
+                <div className="col-lg-2">
+                  {imageUrl ? (
+                    <img
+                      src={imageUrl}
+                      width="100px"
+                      height="100px !important"
+                      className="rounded"
+                    />
+                  ) : (
+                    <></>
+                  )}
                 </div>
               </div>
 

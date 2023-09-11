@@ -320,14 +320,18 @@ export const AdminUpdateCategory = () => {
                             {newImageUrl ? (
                               <img
                                 src={newImageUrl}
-                                className="img img-fluid shadow-lg"
+                                width="100px"
+                                height="100px !important"
+                                className="rounded"
                               />
                             ) : categoryDetails && categoryDetails.image ? (
                               <img
                                 src={`${
                                   import.meta.env.VITE_IMAGE_URL
                                 }/category/${categoryDetails.image}`}
-                                className="img img-fluid shadow-lg"
+                                width="100px"
+                                height="100px !important"
+                                className="rounded"
                               />
                             ) : (
                               <></>

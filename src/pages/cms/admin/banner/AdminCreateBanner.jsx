@@ -214,7 +214,9 @@ export const AdminCreateBanner = () => {
                         {imageUrl ? (
                           <img
                             src={imageUrl}
-                            className="img img-fluid shadow-lg"
+                            width="100px"
+                            height="100px !important"
+                            className="rounded"
                           />
                         ) : (
                           <></>
