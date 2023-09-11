@@ -9,7 +9,7 @@ import lgZoom from "lightgallery/plugins/zoom";
 
 export const ImagePreview = ({ imageURL, imgFolder }) => {
   const onInit = () => {
-    console.log("lightGallery has been initialized");
+    // console.log("lightGallery has been initialized");
   };
   return (
     <LightGallery onInit={onInit} speed={500} plugins={[lgThumbnail, lgZoom]}>
@@ -18,7 +18,7 @@ export const ImagePreview = ({ imageURL, imgFolder }) => {
           width="100px"
           height="100px !important"
           className="rounded"
-          alt="brand-image"
+          alt={`${imgFolder}-image`}
           src={`${import.meta.env.VITE_IMAGE_URL}/${imgFolder}/${imageURL}`}
         />
       </a>

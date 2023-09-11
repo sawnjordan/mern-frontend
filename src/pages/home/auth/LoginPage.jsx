@@ -16,7 +16,7 @@ export const LoginPage = () => {
   const handleLogin = async (data) => {
     try {
       let response = await AuthServiceObj.login(data);
-      console.log(response, "here");
+      // console.log(response, "here");
       localStorage.setItem("token", response.data.data?.accessToken);
       localStorage.setItem("refreshToken", response.data.data?.refreshToken);
       localStorage.setItem(
@@ -27,7 +27,6 @@ export const LoginPage = () => {
       toast.success("Successfully logged in.");
       navigate(`/${response.data.data.userDetails.role}`);
     } catch (error) {
-      console.log(error, "catch");
       toast.error(`${error.data?.msg}`);
     }
   };

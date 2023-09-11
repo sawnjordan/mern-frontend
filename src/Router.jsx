@@ -29,6 +29,11 @@ import {
   AdminCreateBrand,
   AdminUpdateBrand,
 } from "./pages/cms/admin/brand";
+import {
+  AdminUserList,
+  AdminCreateUser,
+  AdminUpdateUser,
+} from "./pages/cms/admin/user";
 import { Provider } from "react-redux";
 import { store } from "./store";
 // import { AdminCreateBanner } from "./pages/cms/admin/banner/AdminCreateBanner";
@@ -79,6 +84,11 @@ export const Routing = () => {
               <Route path="category" element={<AdminCategoryList />} />
               <Route path="category/create" element={<AdminCreateCategory />} />
               <Route path="category/:id" element={<AdminUpdateCategory />} />
+
+              {/* Admin User Route */}
+              <Route path="user" element={<AdminUserList />} />
+              <Route path="user/create" element={<AdminCreateUser />} />
+              <Route path="user/:id" element={<AdminUpdateUser />} />
             </Route>
           </Routes>
         </BrowserRouter>

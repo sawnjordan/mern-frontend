@@ -75,7 +75,7 @@ export const AdminSidebar = () => {
                 </div>
                 Category Manage
               </NavLink>
-              <NavLink className="nav-link" to="/">
+              <NavLink className="nav-link" to="/admin/user">
                 <div className="sb-nav-link-icon">
                   <i className="fas fa-chart-area"></i>
                 </div>
