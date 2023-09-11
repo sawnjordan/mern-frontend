@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 export const RegisterPage = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  let allowedExt = ["jpg", "png", "jpeg", "webp", "gif", "svg"];
   const registerSchema = Yup.object({
     name: Yup.string().required("Name is required."),
     email: Yup.string().email().required("Email is required."),
@@ -18,6 +19,28 @@ export const RegisterPage = () => {
       billingAddress: Yup.string().required("Billing Address is required."),
     }),
     role: Yup.string().matches(/seller|customer/, "Invalid value."),
+    image: Yup.mixed()
+      .test("required", "No any file uploaded.", (value) => {
+        return value && value.length !== 0;
+      })
+      .test(
+        "fileSize",
+        "The file size is too large. Max file size 3 MB",
+        (value) => {
+          return value && value.length !== 0 && value[0].size <= 3000000;
+        }
+      )
+      .test(
+        "fileExtension",
+        "Invalid file type. Please upload an image.",
+        (value) => {
+          return (
+            value &&
+            value.length !== 0 &&
+            allowedExt.includes(value[0].name.split(".").pop().toLowerCase())
+          );
+        }
+      ),
     // image: Yup,
   });
   const { register, handleSubmit, formState } = useForm({
@@ -34,25 +57,9 @@ export const RegisterPage = () => {
   const handleRegister = async (data) => {
     try {
       setLoading(true);
-      console.log(data);
-      // let response = await axios.post(
-      //   "http://localhost:3005/api/v1/auth/register",
-      //   data,
-      //   config
-      // );
+      // console.log(data);
+
       data.image = data.image[0];
-      // let formData = new FormData();
-      // formData.append("image", data.image, data.image.name);
-      // formData.append("name", data.name);
-      // formData.append("email", data.email);
-      // formData.append("address", data.address);
-      // formData.append("phone", data.phone);
-      // formData.append("role", data.role);
-      // let response = await axiosInstance.post("/v1/auth/register", data, {
-      //   headers: {
-      //     "Content-Type": "multipart/form-data",
-      //   },
-      // });
 
       let response = await AuthServiceObj.register(data);
       console.log(response);
