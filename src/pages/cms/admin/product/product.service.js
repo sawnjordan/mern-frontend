@@ -3,7 +3,7 @@ import HttpService from "../../../../config/http.service";
 class ProductService extends HttpService {
   createProduct = async (data) => {
     try {
-      let response = await this.postRequest("/v1/product", data, {
+      let response = await this.postRequest("/v1/products", data, {
         auth: true,
         file: true,
       });
@@ -24,7 +24,7 @@ class ProductService extends HttpService {
   getAllAdminProduct = async (perPage = 10, page = 1) => {
     try {
       let response = await this.getRequest(
-        `/v1/product?perPage=${perPage}&page=${page}`,
+        `/v1/products?perPage=${perPage}&page=${page}`,
         { auth: true }
       );
       return response;

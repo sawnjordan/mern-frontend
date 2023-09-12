@@ -1,12 +1,29 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Row, Table } from "react-bootstrap";
 import { FaEdit, FaPlus, FaTrash } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import { ImagePreview } from "../../../../components/image.preview";
+import { toast } from "react-toastify";
+import { productServiceObj } from ".";
 
 export const AdminProductList = () => {
   const { loading, setLoading } = useState();
   const [productList, setProductList] = useState();
+
+  const getAllProducts = async () => {
+    try {
+      let response = await productServiceObj.getAllAdminProduct();
+      // console.log(response.data.data);
+      setProductList(response.data.data);
+    } catch (error) {
+      toast.warn("Error while fetching product.");
+    }
+  };
+
+  useEffect(() => {
+    getAllProducts();
+  }, []);
+
   return (
     <>
       <div className="container-fluid px-4">
@@ -63,10 +80,12 @@ export const AdminProductList = () => {
                     <tr key={index}>
                       <td>{data?.name}</td>
                       <td>{data?.description}</td>
-                      <td>{data?.categories}</td>
                       <td>{data?.price}</td>
-                      <td>{data?.brand}</td>
-                      <td>{data?.sellerId}</td>
+                      <td>
+                        {data?.categories.map((item) => item.name).join(", ")}
+                      </td>
+                      <td>{data?.brand?.name}</td>
+                      <td>{data?.sellerId?.name}</td>
                       {/* <td>{data?.image}</td> */}
                       {/* <td>
                         <ImagePreview

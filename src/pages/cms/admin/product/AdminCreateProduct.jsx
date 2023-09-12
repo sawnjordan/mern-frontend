@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Col, Container, Row } from "react-bootstrap";
-import { FaPlus } from "react-icons/fa";
+import { Col, Container, Nav, Row } from "react-bootstrap";
+import { FaCircleNotch, FaCross, FaPlus, FaTimesCircle } from "react-icons/fa";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
@@ -17,7 +17,7 @@ import { userServiceObj } from "../user";
 
 export const AdminCreateProduct = () => {
   const [loading, setLoading] = useState(false);
-  const [imageUrl, setImageUrl] = useState(false);
+  const [imageUrl, setImageUrl] = useState("");
   const [catList, setCatList] = useState();
   const [brandList, setBrandList] = useState();
   const [sellerList, setSellerList] = useState();
@@ -62,28 +62,45 @@ export const AdminCreateProduct = () => {
     resolver: yupResolver(productSchema),
   });
   const { errors } = formState;
-  // console.log(errors);
-  // console.log(selectedCategories);
 
   const handleCreateProduct = async (data) => {
+    let catIds = data?.categories.map((cat) => {
+      return cat.value;
+    });
+    catIds = catIds.join(",");
+    data.categories = catIds;
     console.log(data, "before");
+
+    const formData = new FormData();
+    Object.keys(data).map((fieldName) => {
+      if (fieldName === "images") {
+        Object.values(data.images).map((image) => {
+          formData.append("images", image, image.name);
+        });
+      } else {
+        formData.append(fieldName, data[fieldName]);
+      }
+    });
+    for (const [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
 
     // data.image = data.image[0];
 
     //API Integration
 
-    // try {
-    //   setLoading(true);
-    //   let response = await productServiceObj.createProduct(data);
-    //   toast.success(response?.data?.msg);
-    //   navigate("/admin/product");
-    //   console.log(response);
-    // } catch (error) {
-    //   console.log(error);
-    //   toast.error(error?.data?.msg);
-    // } finally {
-    //   setLoading(false);
-    // }
+    try {
+      setLoading(true);
+      let response = await productServiceObj.createProduct(formData);
+      toast.success(response?.data?.msg);
+      navigate("/admin/product");
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.data?.msg);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const listAllCats = async () => {
@@ -119,6 +136,16 @@ export const AdminCreateProduct = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleDeleteImage = (index) => {
+    const updatedImageUrl = [...imageUrl];
+    updatedImageUrl.splice(index, 1);
+    setImageUrl(updatedImageUrl);
+
+    const updatedImageData = [...watch("images")];
+    updatedImageData.splice(index, 1);
+    setValue("images", updatedImageData);
   };
 
   useEffect(() => {
@@ -388,7 +415,7 @@ export const AdminCreateProduct = () => {
                         </label>
                       </div>
 
-                      <div className={imageUrl ? "col-lg-7" : "col-lg-9"}>
+                      <div className={"col-lg-9"}>
                         <input
                           multiple
                           className="form-control"
@@ -398,9 +425,13 @@ export const AdminCreateProduct = () => {
                           })}
                           accept="image/*"
                           onChange={(e) => {
-                            const file = e.target.files[0];
+                            const file = e.target.files;
+                            let imageUrl = [];
                             if (file) {
-                              const imageUrl = URL.createObjectURL(file);
+                              Object.values(file).map((image) => {
+                                // const imageUrlBlob = URL.createObjectURL(file);
+                                imageUrl.push(URL.createObjectURL(image));
+                              });
                               // console.log(imageUrl);
                               setImageUrl(imageUrl);
                             } else {
@@ -412,14 +443,26 @@ export const AdminCreateProduct = () => {
                           {errors && errors.images?.message}
                         </div>
                       </div>
-                      <div className="col-lg-2">
+                      <div className="col-lg-9 offset-lg-3 mt-2">
                         {imageUrl ? (
-                          <img
-                            src={imageUrl}
-                            width="100px"
-                            height="100px !important"
-                            className="rounded"
-                          />
+                          imageUrl.map((url, i) => (
+                            <React.Fragment key={i}>
+                              <div className="btn position-relative">
+                                <img
+                                  src={url}
+                                  width="100px"
+                                  height="100px !important"
+                                  className="rounded position-relative"
+                                />
+                                <NavLink
+                                  onClick={() => handleDeleteImage(i)}
+                                  className="position-absolute top-5 start-90 translate-middle  rounded-circle"
+                                >
+                                  <FaTimesCircle />
+                                </NavLink>
+                              </div>
+                            </React.Fragment>
+                          ))
                         ) : (
                           <></>
                         )}
