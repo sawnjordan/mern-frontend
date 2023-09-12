@@ -32,6 +32,16 @@ class UserService extends HttpService {
       throw error;
     }
   };
+  getUserByRole = async (role) => {
+    try {
+      let response = await this.getRequest(`/v1/user?type=${role}`, {
+        auth: true,
+      });
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  };
 
   deleteUser = async (id) => {
     try {
