@@ -14,7 +14,7 @@ class ProductService extends HttpService {
   };
   getProductForHomePage = async () => {
     try {
-      let response = await this.getRequest("/v1/product/home");
+      let response = await this.getRequest("/v1/products/home");
       return response;
     } catch (error) {
       throw error;
@@ -35,7 +35,7 @@ class ProductService extends HttpService {
 
   deleteProduct = async (id) => {
     try {
-      let response = await this.deleteRequest(`/v1/product/${id}`, {
+      let response = await this.deleteRequest(`/v1/products/${id}`, {
         auth: true,
       });
       return response;
@@ -46,7 +46,7 @@ class ProductService extends HttpService {
 
   updateProduct = async (data, id) => {
     try {
-      let response = await this.putRequest(`/v1/product/${id}`, data, {
+      let response = await this.putRequest(`/v1/products/${id}`, data, {
         auth: true,
         file: true,
       });
@@ -58,7 +58,7 @@ class ProductService extends HttpService {
 
   getProductById = async (id) => {
     try {
-      let response = await this.getRequest(`/v1/product/${id}`, {
+      let response = await this.getRequest(`/v1/products/${id}`, {
         auth: true,
       });
       return response;

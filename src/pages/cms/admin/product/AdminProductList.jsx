@@ -5,9 +5,10 @@ import { NavLink } from "react-router-dom";
 import { ImagePreview } from "../../../../components/image.preview";
 import { toast } from "react-toastify";
 import { productServiceObj } from ".";
+import Swal from "sweetalert2";
 
 export const AdminProductList = () => {
-  const { loading, setLoading } = useState();
+  const [loading, setLoading] = useState();
   const [productList, setProductList] = useState();
 
   const getAllProducts = async () => {
@@ -18,6 +19,30 @@ export const AdminProductList = () => {
     } catch (error) {
       toast.warn("Error while fetching product.");
     }
+  };
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        setLoading(true);
+        try {
+          console.log("first");
+          let response = await productServiceObj.deleteProduct(id);
+          toast.success(response.data?.msg);
+          getAllProducts();
+          setLoading(false);
+        } catch (error) {
+          toast.error("Something went wrong while deleting category.");
+        }
+      }
+    });
   };
 
   useEffect(() => {

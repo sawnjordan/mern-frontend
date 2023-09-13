@@ -37,6 +37,7 @@ import {
 import {
   AdminCreateProduct,
   AdminProductList,
+  AdminUpdateProduct,
 } from "./pages/cms/admin/product";
 import { Provider } from "react-redux";
 import { store } from "./store";
@@ -97,6 +98,7 @@ export const Routing = () => {
               {/* Admin Product Route */}
               <Route path="product" element={<AdminProductList />} />
               <Route path="product/create" element={<AdminCreateProduct />} />
+              <Route path="product/:id" element={<AdminUpdateProduct />} />
               {/* <Route path="user/:id" element={<AdminUpdateUser />} /> */}
             </Route>
           </Routes>
