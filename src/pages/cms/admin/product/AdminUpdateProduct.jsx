@@ -16,7 +16,7 @@ import { userServiceObj } from "../user";
 
 export const AdminUpdateProduct = () => {
   const [loading, setLoading] = useState(false);
-  const [imageUrl, setImageUrl] = useState("");
+  const [newImageUrl, setNewImageUrl] = useState("");
   const [catList, setCatList] = useState();
   const [brandList, setBrandList] = useState();
   const [sellerList, setSellerList] = useState();
@@ -38,25 +38,26 @@ export const AdminUpdateProduct = () => {
       .matches(/active|inactive/, "Invalid value for status.")
       .default("inactive"),
     images: Yup.mixed()
-      .test("required", "No any file uploaded.", (value) => {
-        return value && value.length !== 0;
-      })
       .test(
         "fileSize",
         "The file size is too large. Max file size 3 MB",
         (value) => {
-          return value && value.length !== 0 && value[0].size <= 3000000;
+          if (value && value.length > 0) {
+            return value[0].size <= 3000000;
+          }
+          return true;
         }
       )
       .test(
         "fileExtension",
-        "Invalid file type. Please upload image.",
+        "Invalid file type. Please upload an image.",
         (value) => {
-          return (
-            value &&
-            value.length !== 0 &&
-            allowedExt.includes(value[0].name.split(".").pop().toLowerCase())
-          );
+          if (value && value.length > 0) {
+            return allowedExt.includes(
+              value[0].name.split(".").pop().toLowerCase()
+            );
+          }
+          return true;
         }
       ),
   });
@@ -66,6 +67,7 @@ export const AdminUpdateProduct = () => {
   const { errors } = formState;
 
   const handleUpdateProduct = async (data) => {
+    // console.log(data);
     let catIds = data?.categories.map((cat) => {
       return cat.value;
     });
@@ -83,9 +85,9 @@ export const AdminUpdateProduct = () => {
         formData.append(fieldName, data[fieldName]);
       }
     });
-    // for (const [key, value] of formData.entries()) {
-    //   console.log(key, value);
-    // }
+    for (const [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
 
     // data.image = data.image[0];
 
@@ -93,7 +95,7 @@ export const AdminUpdateProduct = () => {
 
     try {
       setLoading(true);
-      let response = await productServiceObj.updateProduct(formData);
+      let response = await productServiceObj.updateProduct(formData, id);
       toast.success(response?.data?.msg);
       navigate("/admin/product");
       //   console.log(response);
@@ -140,18 +142,19 @@ export const AdminUpdateProduct = () => {
     }
   };
 
-  const handleDeleteImage = (index) => {
-    const updatedImageUrl = [...imageUrl];
-    updatedImageUrl.splice(index, 1);
-    setImageUrl(updatedImageUrl);
+  //   const handleDeleteImage = (index) => {
+  //     const updatedImageUrl = [...imageUrl];
+  //     updatedImageUrl.splice(index, 1);
+  //     setImageUrl(updatedImageUrl);
 
-    const updatedImageData = [...watch("images")];
-    updatedImageData.splice(index, 1);
-    setValue("images", updatedImageData);
-  };
+  //     const updatedImageData = [...watch("images")];
+  //     updatedImageData.splice(index, 1);
+  //     setValue("images", updatedImageData);
+  //   };
 
-  const getProductById = async (id) => {
+  const getProductById = async () => {
     try {
+      setLoading(true);
       let response = await productServiceObj.getProductById(id);
       //   console.log(response.data.data);
       let productData = response.data?.data;
@@ -161,362 +164,426 @@ export const AdminUpdateProduct = () => {
           value: item._id,
         };
       });
+      //   console.log(productData);
+      //   defaultValue={[colourOptions[2], colourOptions[3]]}
+      // defaultValue={[{value:"test",label:"test"}]}
+      //   console.log(selectedCats);
 
       setProductDetails({ ...productData, categories: selectedCats });
+      productData.categories = selectedCats;
       setValue("name", productData.name);
+      setValue("categories", productData.categories);
       setValue("description", productData.description);
       setValue("costPrice", productData.costPrice);
       setValue("price", productData.price);
       setValue("discount", productData.discount);
-      //   setValue("brand", productData?.brand._id);
-      //   setValue("sellerId", productData?.sellerId._id);
+      setValue("brand", productData?.brand?._id);
+      setValue("sellerId", productData?.sellerId?._id);
       setValue("status", productData.status);
     } catch (error) {
-      toast.warn("Error while fetching product.");
+      console.log(error);
+      //   toast.warn("Error while fetching product.");
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    getProductById(id);
     listAllCats();
     listAllBrands();
     listAllSellers();
+    getProductById();
   }, []);
-  // console.log(catList);
+  //   console.log(productData);
   return (
     <>
-      <div className="container-fluid px-4">
-        <h1 className="mt-4">Product List</h1>
-        <ol className="breadcrumb mb-4">
-          <li className="breadcrumb-item">
-            <NavLink to="/admin">Dashboard</NavLink>
-          </li>
-          <li className="breadcrumb-item">
-            <NavLink to="/admin/product">Product List</NavLink>
-          </li>
-          <li className="breadcrumb-item active">Update Product</li>
-        </ol>
-        <div className="card mb-4">
-          <div className="card-header">
-            <Container>
-              <Row>
-                <Col sm={12} md={6}>
-                  <h4>Update Product</h4>
-                </Col>
-                <Col sm={12} md={6}>
-                  <NavLink
-                    className={"btn btn-primary float-end"}
-                    to="/admin/product/create"
-                  >
-                    <FaPlus /> Add Product
-                  </NavLink>
-                </Col>
-              </Row>
-            </Container>
-          </div>
-          <div className="card-body">
-            <div className="container mb-5">
-              <div className="row">
-                <div className="col-lg-8">
-                  <form
-                    className="form"
-                    onSubmit={handleSubmit(handleUpdateProduct)}
-                  >
-                    <div className="row">
-                      <div className="col-lg-3 d-flex align-items-center">
-                        <label htmlFor="name" className="form-label fw-medium">
-                          Name:
-                        </label>
-                      </div>
+      {loading ? (
+        <>Loading...</>
+      ) : (
+        <>
+          <div className="container-fluid px-4">
+            <h1 className="mt-4">Product List</h1>
+            <ol className="breadcrumb mb-4">
+              <li className="breadcrumb-item">
+                <NavLink to="/admin">Dashboard</NavLink>
+              </li>
+              <li className="breadcrumb-item">
+                <NavLink to="/admin/product">Product List</NavLink>
+              </li>
+              <li className="breadcrumb-item active">Update Product</li>
+            </ol>
+            <div className="card mb-4">
+              <div className="card-header">
+                <Container>
+                  <Row>
+                    <Col sm={12} md={6}>
+                      <h4>Update Product</h4>
+                    </Col>
+                    <Col sm={12} md={6}>
+                      <NavLink
+                        className={"btn btn-primary float-end"}
+                        to="/admin/product/create"
+                      >
+                        <FaPlus /> Add Product
+                      </NavLink>
+                    </Col>
+                  </Row>
+                </Container>
+              </div>
+              <div className="card-body">
+                <div className="container mb-5">
+                  <div className="row">
+                    <div className="col-lg-8">
+                      <form
+                        className="form"
+                        onSubmit={handleSubmit(handleUpdateProduct)}
+                      >
+                        <div className="row">
+                          <div className="col-lg-3 d-flex align-items-center">
+                            <label
+                              htmlFor="name"
+                              className="form-label fw-medium"
+                            >
+                              Name:
+                            </label>
+                          </div>
 
-                      <div className="col-lg-9">
-                        <input
-                          type="text"
-                          {...register("name", {
-                            required: "Name is required.",
-                          })}
-                          className="form-control"
-                          placeholder="Enter name"
-                        />
-                        <div className="text-danger mt-2">
-                          {errors && errors.name?.message}
+                          <div className="col-lg-9">
+                            <input
+                              type="text"
+                              {...register("name", {
+                                required: "Name is required.",
+                              })}
+                              className="form-control"
+                              placeholder="Enter name"
+                            />
+                            <div className="text-danger mt-2">
+                              {errors && errors.name?.message}
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
 
-                    <div className="row mt-3">
-                      <div className="col-lg-3 d-flex align-items-center">
-                        <label htmlFor="name" className="form-label fw-medium">
-                          Description:
-                        </label>
-                      </div>
+                        <div className="row mt-3">
+                          <div className="col-lg-3 d-flex align-items-center">
+                            <label
+                              htmlFor="name"
+                              className="form-label fw-medium"
+                            >
+                              Description:
+                            </label>
+                          </div>
 
-                      <div className="col-lg-9">
-                        <CKEditor
-                          editor={ClassicEditor}
-                          data={productDetails?.description}
-                          onChange={(event, editor) => {
-                            const data = editor.getData();
-                            setValue("description", data);
-                          }}
-                        />
-                        <div className="text-danger mt-2">
-                          {errors && errors.description?.message}
+                          <div className="col-lg-9">
+                            <CKEditor
+                              editor={ClassicEditor}
+                              data={
+                                productDetails && productDetails?.description
+                              }
+                              onChange={(event, editor) => {
+                                const data = editor.getData();
+                                setValue("description", data);
+                              }}
+                            />
+                            <div className="text-danger mt-2">
+                              {errors && errors.description?.message}
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
 
-                    <div className="row mt-3">
-                      <div className="col-lg-3 d-flex align-items-center">
-                        <label htmlFor="name" className="form-label fw-medium">
-                          Cost Price:
-                        </label>
-                      </div>
+                        <div className="row mt-3">
+                          <div className="col-lg-3 d-flex align-items-center">
+                            <label
+                              htmlFor="name"
+                              className="form-label fw-medium"
+                            >
+                              Cost Price:
+                            </label>
+                          </div>
 
-                      <div className="col-lg-9">
-                        <input
-                          type="number"
-                          {...register("costPrice", {
-                            required: "Cost Price is required.",
-                          })}
-                          className="form-control"
-                          placeholder="Enter cost price"
-                        />
-                        <div className="text-danger mt-2">
-                          {errors && errors.costPrice?.message}
+                          <div className="col-lg-9">
+                            <input
+                              type="number"
+                              {...register("costPrice", {
+                                required: "Cost Price is required.",
+                              })}
+                              className="form-control"
+                              placeholder="Enter cost price"
+                            />
+                            <div className="text-danger mt-2">
+                              {errors && errors.costPrice?.message}
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
 
-                    <div className="row mt-3">
-                      <div className="col-lg-3 d-flex align-items-center">
-                        <label htmlFor="name" className="form-label fw-medium">
-                          Selling Price:
-                        </label>
-                      </div>
+                        <div className="row mt-3">
+                          <div className="col-lg-3 d-flex align-items-center">
+                            <label
+                              htmlFor="name"
+                              className="form-label fw-medium"
+                            >
+                              Selling Price:
+                            </label>
+                          </div>
 
-                      <div className="col-lg-9">
-                        <input
-                          type="number"
-                          {...register("price", {
-                            required: "Selling Price is required.",
-                          })}
-                          className="form-control"
-                          placeholder="Enter selling price"
-                        />
-                        <div className="text-danger mt-2">
-                          {errors && errors.price?.message}
+                          <div className="col-lg-9">
+                            <input
+                              type="number"
+                              {...register("price", {
+                                required: "Selling Price is required.",
+                              })}
+                              className="form-control"
+                              placeholder="Enter selling price"
+                            />
+                            <div className="text-danger mt-2">
+                              {errors && errors.price?.message}
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
 
-                    <div className="row mt-3">
-                      <div className="col-lg-3 d-flex align-items-center">
-                        <label htmlFor="name" className="form-label fw-medium">
-                          Discount (%):
-                        </label>
-                      </div>
+                        <div className="row mt-3">
+                          <div className="col-lg-3 d-flex align-items-center">
+                            <label
+                              htmlFor="name"
+                              className="form-label fw-medium"
+                            >
+                              Discount (%):
+                            </label>
+                          </div>
 
-                      <div className="col-lg-9">
-                        <input
-                          type="number"
-                          {...register("discount")}
-                          className="form-control"
-                          min={0}
-                          max={100}
-                          placeholder="Enter discount percentage"
-                        />
-                        <div className="text-danger mt-2">
-                          {errors && errors.discount?.message}
+                          <div className="col-lg-9">
+                            <input
+                              type="number"
+                              {...register("discount")}
+                              className="form-control"
+                              min={0}
+                              max={100}
+                              placeholder="Enter discount percentage"
+                            />
+                            <div className="text-danger mt-2">
+                              {errors && errors.discount?.message}
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
 
-                    <div className="row mt-3">
-                      <div className="col-lg-3 d-flex align-items-center">
-                        <label htmlFor="name" className="form-label fw-medium">
-                          Category:
-                        </label>
-                      </div>
+                        <div className="row mt-3">
+                          <div className="col-lg-3 d-flex align-items-center">
+                            <label
+                              htmlFor="name"
+                              className="form-label fw-medium"
+                            >
+                              Category:
+                            </label>
+                          </div>
 
-                      <div className="col-lg-9">
-                        <Select
-                          value={productDetails?.categories}
-                          isMulti
-                          {...register("categories")}
-                          options={catList}
-                          className="basic-multi-select"
-                          classNamePrefix="select"
-                          onChange={(selectedOptions) => {
-                            setValue("categories", selectedOptions);
-                          }}
-                        />
-                        <div className="text-danger mt-2">
-                          {errors && errors.categories?.message}
+                          <div className="col-lg-9">
+                            <Select
+                              //   value={productDetails?.categories}
+                              defaultValue={productDetails?.categories}
+                              isMulti
+                              {...register("categories")}
+                              options={catList}
+                              className="basic-multi-select"
+                              classNamePrefix="select"
+                              onChange={(selectedOptions) => {
+                                setValue("categories", selectedOptions);
+                              }}
+                            />
+                            <div className="text-danger mt-2">
+                              {errors && errors.categories?.message}
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
 
-                    <div className="row mt-3">
-                      <div className="col-lg-3 d-flex align-items-center">
-                        <label htmlFor="name" className="form-label fw-medium">
-                          Brand:
-                        </label>
-                      </div>
+                        <div className="row mt-3">
+                          <div className="col-lg-3 d-flex align-items-center">
+                            <label
+                              htmlFor="name"
+                              className="form-label fw-medium"
+                            >
+                              Brand:
+                            </label>
+                          </div>
 
-                      <div className="col-lg-9">
-                        <select
-                          {...register("brand")}
-                          className="form-select"
-                          value={productDetails?.brand?._id}
-                        >
-                          <option value="">-- Select --</option>
-                          {brandList &&
-                            brandList.map((brand, i) => (
-                              <option key={i} value={brand._id}>
-                                {brand.name}
-                              </option>
-                            ))}
-                        </select>
-                        <div className="text-danger mt-2">
-                          {errors && errors.brand?.message}
+                          <div className="col-lg-9">
+                            <select
+                              name="brand"
+                              {...register("brand")}
+                              className="form-select"
+                            >
+                              <option value="">-- Select --</option>
+                              {brandList &&
+                                brandList.map((brand, i) => (
+                                  <option key={i} value={brand._id}>
+                                    {brand.name}
+                                  </option>
+                                ))}
+                            </select>
+                            <div className="text-danger mt-2">
+                              {errors && errors.brand?.message}
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
 
-                    <div className="row mt-3">
-                      <div className="col-lg-3 d-flex align-items-center">
-                        <label htmlFor="name" className="form-label fw-medium">
-                          Seller:
-                        </label>
-                      </div>
+                        <div className="row mt-3">
+                          <div className="col-lg-3 d-flex align-items-center">
+                            <label
+                              htmlFor="name"
+                              className="form-label fw-medium"
+                            >
+                              Seller:
+                            </label>
+                          </div>
 
-                      <div className="col-lg-9">
-                        <select
-                          {...register("sellerId")}
-                          className="form-select"
-                          value={productDetails?.sellerId?._id}
-                        >
-                          <option value="">-- Select --</option>
-                          {sellerList &&
-                            sellerList.map((seller, i) => (
-                              <option key={i} value={seller._id}>
-                                {seller.name}
-                              </option>
-                            ))}
-                        </select>
-                        <div className="text-danger mt-2">
-                          {errors && errors.sellerId?.message}
+                          <div className="col-lg-9">
+                            <select
+                              {...register("sellerId")}
+                              className="form-select"
+                            >
+                              <option value="">-- Select --</option>
+                              {sellerList &&
+                                sellerList.map((seller, i) => (
+                                  <option key={i} value={seller._id}>
+                                    {seller.name}
+                                  </option>
+                                ))}
+                            </select>
+                            <div className="text-danger mt-2">
+                              {errors && errors.sellerId?.message}
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
 
-                    <div className="row mt-3">
-                      <div className="col-lg-3 d-flex align-items-center">
-                        <label htmlFor="role" className="form-label fw-medium">
-                          Status:
-                        </label>
-                      </div>
+                        <div className="row mt-3">
+                          <div className="col-lg-3 d-flex align-items-center">
+                            <label
+                              htmlFor="role"
+                              className="form-label fw-medium"
+                            >
+                              Status:
+                            </label>
+                          </div>
 
-                      <div className="col-lg-9">
-                        <select
-                          className="form-select"
-                          name="status"
-                          {...register(
-                            "status",
-                            { value: "inactive" },
-                            {
-                              required: "Status is required.",
-                            }
-                          )}
-                        >
-                          <option value="active">Publish</option>
-                          <option value="inactive">Un-Publish</option>
-                        </select>
-                        <div className="text-danger mt-2">
-                          {errors && errors.status?.message}
+                          <div className="col-lg-9">
+                            <select
+                              className="form-select"
+                              name="status"
+                              {...register(
+                                "status",
+                                { value: "inactive" },
+                                {
+                                  required: "Status is required.",
+                                }
+                              )}
+                            >
+                              <option value="active">Publish</option>
+                              <option value="inactive">Un-Publish</option>
+                            </select>
+                            <div className="text-danger mt-2">
+                              {errors && errors.status?.message}
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
 
-                    <div className="row mt-3">
-                      <div className="col-lg-3 d-flex align-items-center">
-                        <label
-                          htmlFor="formFile"
-                          className="form-label fw-medium"
-                        >
-                          Image:
-                        </label>
-                      </div>
+                        <div className="row mt-3">
+                          <div className="col-lg-3 d-flex align-items-center">
+                            <label
+                              htmlFor="formFile"
+                              className="form-label fw-medium"
+                            >
+                              Image:
+                            </label>
+                          </div>
 
-                      <div className={"col-lg-9"}>
-                        <input
-                          multiple
-                          className="form-control"
-                          type="file"
-                          {...register("images", {
-                            required: "Image is required.",
-                          })}
-                          accept="image/*"
-                          onChange={(e) => {
-                            const file = e.target.files;
-                            let imageUrl = [];
-                            if (file) {
-                              Object.values(file).map((image) => {
-                                // const imageUrlBlob = URL.createObjectURL(file);
-                                imageUrl.push(URL.createObjectURL(image));
-                              });
-                              // console.log(imageUrl);
-                              setImageUrl(imageUrl);
-                            } else {
-                              setImageUrl("");
-                            }
-                          }}
-                        />
-                        <div className="text-danger mt-2">
-                          {errors && errors.images?.message}
-                        </div>
-                      </div>
-                      <div className="col-lg-9 offset-lg-3 mt-2">
-                        {imageUrl ? (
-                          imageUrl.map((url, i) => (
-                            <React.Fragment key={i}>
-                              <div className="btn position-relative">
-                                <img
-                                  src={url}
-                                  width="100px"
-                                  height="100px !important"
-                                  className="rounded position-relative"
-                                />
-                                <NavLink
+                          <div className={"col-lg-9"}>
+                            <input
+                              multiple
+                              className="form-control"
+                              type="file"
+                              {...register("images", {
+                                required: "Image is required.",
+                              })}
+                              accept="image/*"
+                              onChange={(e) => {
+                                const file = e.target.files;
+                                let imageUrl = [];
+                                if (file) {
+                                  Object.values(file).map((image) => {
+                                    // const imageUrlBlob = URL.createObjectURL(file);
+                                    imageUrl.push(URL.createObjectURL(image));
+                                  });
+                                  // console.log(imageUrl);
+                                  setNewImageUrl(imageUrl);
+                                } else {
+                                  setImageUrl("");
+                                }
+                              }}
+                            />
+                            <div className="text-danger mt-2">
+                              {errors && errors.images?.message}
+                            </div>
+                          </div>
+                          <div className="col-lg-9 offset-lg-3 mt-2">
+                            {newImageUrl
+                              ? newImageUrl.map((url, i) => (
+                                  <React.Fragment key={i}>
+                                    <div className="btn position-relative">
+                                      <img
+                                        src={url}
+                                        width="100px"
+                                        height="100px !important"
+                                        className="rounded position-relative"
+                                      />
+                                      {/* <NavLink
                                   onClick={() => handleDeleteImage(i)}
                                   className="position-absolute top-5 start-90 translate-middle  rounded-circle"
                                 >
                                   <FaTimesCircle />
-                                </NavLink>
-                              </div>
-                            </React.Fragment>
-                          ))
-                        ) : (
-                          <></>
-                        )}
-                      </div>
-                    </div>
+                                </NavLink> */}
+                                    </div>
+                                  </React.Fragment>
+                                ))
+                              : productDetails?.images.map((url, i) => (
+                                  <React.Fragment key={i}>
+                                    <div className="btn position-relative">
+                                      <img
+                                        src={`${
+                                          import.meta.env.VITE_IMAGE_URL
+                                        }/products/${url}`}
+                                        width="100px"
+                                        height="100px !important"
+                                        className="rounded position-relative"
+                                      />
+                                      {/* <NavLink
+                                      onClick={() => handleDeleteImage(i)}
+                                      className="position-absolute top-5 start-90 translate-middle  rounded-circle"
+                                    >
+                                      <FaTimesCircle />
+                                    </NavLink> */}
+                                    </div>
+                                  </React.Fragment>
+                                ))}
+                          </div>
+                        </div>
 
-                    <div className="row">
-                      <div className="col-lg-3 d-flex align-items-center offset-lg-3 mt-4">
-                        <button className="btn btn-primary" disabled={loading}>
-                          Update
-                        </button>
-                      </div>
+                        <div className="row">
+                          <div className="col-lg-3 d-flex align-items-center offset-lg-3 mt-4">
+                            <button
+                              className="btn btn-primary"
+                              disabled={loading}
+                            >
+                              Update
+                            </button>
+                          </div>
+                        </div>
+                      </form>
                     </div>
-                  </form>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
+        </>
+      )}
     </>
   );
 };
