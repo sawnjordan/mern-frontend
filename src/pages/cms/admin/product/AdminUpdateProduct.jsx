@@ -142,15 +142,32 @@ export const AdminUpdateProduct = () => {
     }
   };
 
-  //   const handleDeleteImage = (index) => {
-  //     const updatedImageUrl = [...imageUrl];
-  //     updatedImageUrl.splice(index, 1);
-  //     setImageUrl(updatedImageUrl);
+  const handleDeleteImage = (index) => {
+    const updatedImageUrl = [...newImageUrl];
+    updatedImageUrl.splice(index, 1);
+    setNewImageUrl(updatedImageUrl);
 
-  //     const updatedImageData = [...watch("images")];
-  //     updatedImageData.splice(index, 1);
-  //     setValue("images", updatedImageData);
-  //   };
+    const updatedImageData = [...watch("images")];
+    updatedImageData.splice(index, 1);
+    setValue("images", updatedImageData);
+  };
+
+  const handleDeleteImageFromServer = async (imgName) => {
+    try {
+      let response = await productServiceObj.deleteImageFromServer(
+        imgName,
+        productDetails._id
+      );
+      console.log(response);
+      if (response) {
+        toast.success(response.data?.msg);
+      }
+      getProductById();
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong!!!");
+    }
+  };
 
   const getProductById = async () => {
     try {
@@ -266,7 +283,7 @@ export const AdminUpdateProduct = () => {
                         <div className="row mt-3">
                           <div className="col-lg-3 d-flex align-items-center">
                             <label
-                              htmlFor="name"
+                              htmlFor="description"
                               className="form-label fw-medium"
                             >
                               Description:
@@ -293,7 +310,7 @@ export const AdminUpdateProduct = () => {
                         <div className="row mt-3">
                           <div className="col-lg-3 d-flex align-items-center">
                             <label
-                              htmlFor="name"
+                              htmlFor="cp"
                               className="form-label fw-medium"
                             >
                               Cost Price:
@@ -318,7 +335,7 @@ export const AdminUpdateProduct = () => {
                         <div className="row mt-3">
                           <div className="col-lg-3 d-flex align-items-center">
                             <label
-                              htmlFor="name"
+                              htmlFor="sp"
                               className="form-label fw-medium"
                             >
                               Selling Price:
@@ -343,7 +360,7 @@ export const AdminUpdateProduct = () => {
                         <div className="row mt-3">
                           <div className="col-lg-3 d-flex align-items-center">
                             <label
-                              htmlFor="name"
+                              htmlFor="discount"
                               className="form-label fw-medium"
                             >
                               Discount (%):
@@ -368,7 +385,7 @@ export const AdminUpdateProduct = () => {
                         <div className="row mt-3">
                           <div className="col-lg-3 d-flex align-items-center">
                             <label
-                              htmlFor="name"
+                              htmlFor="category"
                               className="form-label fw-medium"
                             >
                               Category:
@@ -397,7 +414,7 @@ export const AdminUpdateProduct = () => {
                         <div className="row mt-3">
                           <div className="col-lg-3 d-flex align-items-center">
                             <label
-                              htmlFor="name"
+                              htmlFor="brand"
                               className="form-label fw-medium"
                             >
                               Brand:
@@ -427,7 +444,7 @@ export const AdminUpdateProduct = () => {
                         <div className="row mt-3">
                           <div className="col-lg-3 d-flex align-items-center">
                             <label
-                              htmlFor="name"
+                              htmlFor="seller"
                               className="form-label fw-medium"
                             >
                               Seller:
@@ -514,7 +531,7 @@ export const AdminUpdateProduct = () => {
                                   // console.log(imageUrl);
                                   setNewImageUrl(imageUrl);
                                 } else {
-                                  setImageUrl("");
+                                  setNewImageUrl("");
                                 }
                               }}
                             />
@@ -533,32 +550,38 @@ export const AdminUpdateProduct = () => {
                                         height="100px !important"
                                         className="rounded position-relative"
                                       />
-                                      {/* <NavLink
-                                  onClick={() => handleDeleteImage(i)}
-                                  className="position-absolute top-5 start-90 translate-middle  rounded-circle"
-                                >
-                                  <FaTimesCircle />
-                                </NavLink> */}
+                                      <NavLink
+                                        onClick={(e) => {
+                                          e.preventDefault();
+                                          handleDeleteImage(i);
+                                        }}
+                                        className="position-absolute top-5 start-90 translate-middle  rounded-circle"
+                                      >
+                                        <FaTimesCircle />
+                                      </NavLink>
                                     </div>
                                   </React.Fragment>
                                 ))
-                              : productDetails?.images.map((url, i) => (
+                              : productDetails?.images.map((imgName, i) => (
                                   <React.Fragment key={i}>
                                     <div className="btn position-relative">
                                       <img
                                         src={`${
                                           import.meta.env.VITE_IMAGE_URL
-                                        }/products/${url}`}
+                                        }/products/${imgName}`}
                                         width="100px"
                                         height="100px !important"
                                         className="rounded position-relative"
                                       />
-                                      {/* <NavLink
-                                      onClick={() => handleDeleteImage(i)}
-                                      className="position-absolute top-5 start-90 translate-middle  rounded-circle"
-                                    >
-                                      <FaTimesCircle />
-                                    </NavLink> */}
+                                      <NavLink
+                                        onClick={(e) => {
+                                          e.preventDefault();
+                                          handleDeleteImageFromServer(imgName);
+                                        }}
+                                        className="position-absolute top-5 start-90 translate-middle  rounded-circle"
+                                      >
+                                        <FaTimesCircle />
+                                      </NavLink>
                                     </div>
                                   </React.Fragment>
                                 ))}
