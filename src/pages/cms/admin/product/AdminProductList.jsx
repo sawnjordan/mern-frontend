@@ -82,7 +82,7 @@ export const AdminProductList = () => {
               <thead>
                 <tr>
                   <th>Name</th>
-                  <th>Description</th>
+                  {/* <th>Description</th> */}
                   <th>Category</th>
                   <th>Price</th>
                   <th>Brand</th>
@@ -104,11 +104,11 @@ export const AdminProductList = () => {
                   productList.map((data, index) => (
                     <tr key={index}>
                       <td>{data?.name}</td>
-                      <td>{data?.description}</td>
-                      <td>{data?.price}</td>
+                      {/* <td>{data?.description}</td> */}
                       <td>
                         {data?.categories.map((item) => item.name).join(", ")}
                       </td>
+                      <td>{data?.price}</td>
                       <td>{data?.brand?.name}</td>
                       <td>{data?.sellerId?.name}</td>
                       {/* <td>{data?.image}</td> */}

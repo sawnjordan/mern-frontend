@@ -13,6 +13,7 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { categoryServiceObj } from "../category";
 import { brandServiceObj } from "../brand";
 import { userServiceObj } from "../user";
+import Swal from "sweetalert2";
 
 export const AdminUpdateProduct = () => {
   const [loading, setLoading] = useState(false);
@@ -152,21 +153,34 @@ export const AdminUpdateProduct = () => {
     setValue("images", updatedImageData);
   };
 
-  const handleDeleteImageFromServer = async (imgName) => {
-    try {
-      let response = await productServiceObj.deleteImageFromServer(
-        imgName,
-        productDetails._id
-      );
-      console.log(response);
-      if (response) {
-        toast.success(response.data?.msg);
+  const handleDeleteImageFromServer = (imgName) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        setLoading(true);
+        try {
+          let response = await productServiceObj.deleteImageFromServer(
+            imgName,
+            productDetails._id
+          );
+          console.log(response);
+          if (response) {
+            toast.success(response.data?.msg);
+          }
+          getProductById();
+        } catch (error) {
+          console.log(error);
+          toast.error("Something went wrong!!!");
+        }
       }
-      getProductById();
-    } catch (error) {
-      console.log(error);
-      toast.error("Something went wrong!!!");
-    }
+    });
   };
 
   const getProductById = async () => {

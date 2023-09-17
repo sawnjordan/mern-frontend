@@ -86,14 +86,6 @@ export const AdminCreateBrand = () => {
                 <Col sm={12} md={6}>
                   <h4>Create Brand</h4>
                 </Col>
-                <Col sm={12} md={6}>
-                  <NavLink
-                    className={"btn btn-primary float-end"}
-                    to="/admin/brand/create"
-                  >
-                    <FaPlus /> Add Brand
-                  </NavLink>
-                </Col>
               </Row>
             </Container>
           </div>

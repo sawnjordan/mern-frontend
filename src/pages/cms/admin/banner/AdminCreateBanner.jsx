@@ -87,14 +87,6 @@ export const AdminCreateBanner = () => {
                 <Col sm={12} md={6}>
                   <h4>Create Banner</h4>
                 </Col>
-                <Col sm={12} md={6}>
-                  <NavLink
-                    className={"btn btn-primary float-end"}
-                    to="/admin/banner/create"
-                  >
-                    <FaPlus /> Add Banner
-                  </NavLink>
-                </Col>
               </Row>
             </Container>
           </div>

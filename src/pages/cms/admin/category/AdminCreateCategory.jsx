@@ -101,14 +101,6 @@ export const AdminCreateCategory = () => {
                 <Col sm={12} md={6}>
                   <h4>Create Category</h4>
                 </Col>
-                <Col sm={12} md={6}>
-                  <NavLink
-                    className={"btn btn-primary float-end"}
-                    to="/admin/category/create"
-                  >
-                    <FaPlus /> Add Category
-                  </NavLink>
-                </Col>
               </Row>
             </Container>
           </div>
