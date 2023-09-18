@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import DataTable from "react-data-table-component";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import { FaEdit, FaPlus, FaTrash } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
@@ -6,7 +7,6 @@ import { brandServiceObj } from ".";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 import { ImagePreview } from "../../../../components/image.preview";
-import DataTable from "react-data-table-component";
 
 export const AdminBrandList = () => {
   const [brandData, setBrandData] = useState();
@@ -93,7 +93,7 @@ export const AdminBrandList = () => {
       setLoading(false);
     }
   };
-  console.log(brandData);
+  // console.log(brandData);
   useEffect(() => {
     loadBrandData();
   }, []);

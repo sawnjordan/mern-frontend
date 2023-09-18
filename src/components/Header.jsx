@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Container,
@@ -12,12 +12,31 @@ import { FaSearch, FaShoppingCart, FaUser } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
 import { logoutUser } from "../reducers/user.reducers";
+import { categoryServiceObj } from "../pages/cms/admin/category";
 export const Header = () => {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true);
+  const [categoryData, setCategoryData] = useState(null);
+
+  const getAllCategories = async () => {
+    try {
+      let response = await categoryServiceObj.getCategoryForHomePage();
+      setCategoryData(response.data?.data);
+    } catch (error) {
+      toast.error("Something went wrong!!!");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getAllCategories();
+  }, []);
+
   const userDetails = useSelector((state) => {
     // console.log(state);
     return state.User?.loggedInUser;
@@ -31,182 +50,193 @@ export const Header = () => {
       console.log(error);
     }
   };
+  // console.log(categoryData);
   return (
     <>
-      <Navbar
-        expand="lg"
-        bg="light"
-        variant="light"
-        className=" fixed-top py-4  "
-      >
-        <Container>
-          <NavLink
-            className="navbar-brand d-flex justify-content-between align-items-center order-lg-0"
-            to="/"
+      {loading ? (
+        <>
+          <div className="nav-margin text-center fw-medium h3">Loading...</div>
+        </>
+      ) : (
+        <>
+          <Navbar
+            expand="lg"
+            bg="light"
+            variant="light"
+            className=" fixed-top py-4  "
           >
-            <Image
-              src="../../src/assets/images/shopping-bag-icon.png"
-              alt="Site Logo"
-              srcSet=""
-            />
+            <Container>
+              <NavLink
+                className="navbar-brand d-flex justify-content-between align-items-center order-lg-0"
+                to="/"
+              >
+                <Image
+                  src="../../src/assets/images/shopping-bag-icon.png"
+                  alt="Site Logo"
+                  srcSet=""
+                />
 
-            <span className="text-uppercase fw-lighter">eCommerce</span>
-          </NavLink>
-          <div className="order-lg-3 d-flex justify-content-between">
-            <Button variant="" className="position-relative" type="button">
-              <FaShoppingCart size={18} className="icon" />
-              <span className="position-absolute top-0 start-100 translate-middle badge bg-primary">
-                5
-              </span>
-            </Button>
+                <span className="text-uppercase fw-lighter">eCommerce</span>
+              </NavLink>
+              <div className="order-lg-3 d-flex justify-content-between">
+                <Button variant="" className="position-relative" type="button">
+                  <FaShoppingCart size={18} className="icon" />
+                  <span className="position-absolute top-0 start-100 translate-middle badge bg-primary">
+                    5
+                  </span>
+                </Button>
 
-            <Button
-              type="button"
-              variant=""
-              className="position-relative"
-              onClick={handleShow}
-            >
-              <FaSearch className="icon" size={18} />
-            </Button>
-            {userDetails ? (
-              <Dropdown>
-                <Dropdown.Toggle
-                  id="dropdown-basic"
+                <Button
+                  type="button"
                   variant=""
-                  className="me-5"
+                  className="position-relative"
+                  onClick={handleShow}
                 >
-                  {/* <FaUser className="icon" size={18} /> */}
-                  <span className="fw-medium">{userDetails?.name}</span>
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                  {/* <Link to="/login" className="dropdown-item">
+                  <FaSearch className="icon" size={18} />
+                </Button>
+                {userDetails ? (
+                  <Dropdown>
+                    <Dropdown.Toggle
+                      id="dropdown-basic"
+                      variant=""
+                      className="me-5"
+                    >
+                      {/* <FaUser className="icon" size={18} /> */}
+                      <span className="fw-medium">{userDetails?.name}</span>
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                      {/* <Link to="/login" className="dropdown-item">
                     Login
                   </Link>
                   <Link to="/register" className="dropdown-item">
                     Register
                   </Link> */}
-                  <Link to={`/${userDetails?.role}`} className="dropdown-item">
-                    Profile
-                  </Link>
-                  <Link onClick={handleLogout} className="dropdown-item">
-                    Logout
-                  </Link>
-                </Dropdown.Menu>
-              </Dropdown>
-            ) : (
-              <Dropdown>
-                <Dropdown.Toggle
-                  id="dropdown-basic"
-                  variant=""
-                  className="me-5"
-                >
-                  <FaUser className="icon" size={18} />
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                  <Link to="/login" className="dropdown-item">
-                    Login
-                  </Link>
-                  <Link to="/register" className="dropdown-item">
-                    Register
-                  </Link>
-                  {/* <Link to="/admin" className="dropdown-item">
+                      <Link
+                        to={`/${userDetails?.role}`}
+                        className="dropdown-item"
+                      >
+                        Profile
+                      </Link>
+                      <Link onClick={handleLogout} className="dropdown-item">
+                        Logout
+                      </Link>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                ) : (
+                  <Dropdown>
+                    <Dropdown.Toggle
+                      id="dropdown-basic"
+                      variant=""
+                      className="me-5"
+                    >
+                      <FaUser className="icon" size={18} />
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                      <Link to="/login" className="dropdown-item">
+                        Login
+                      </Link>
+                      <Link to="/register" className="dropdown-item">
+                        Register
+                      </Link>
+                      {/* <Link to="/admin" className="dropdown-item">
                     Profile
                   </Link> */}
-                </Dropdown.Menu>
-              </Dropdown>
-            )}
-          </div>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                )}
+              </div>
 
-          <button
-            className="navbar-toggler border-0"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navMenu"
-            aria-expanded="false"
-            aria-controls="#navMenu"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse order-lg-1" id="navMenu">
-            <ul className="navbar-nav mx-auto text-center">
-              <li className="nav-items px-2 py-2">
-                <a href="/" className="nav-link text-uppercase text-dark">
-                  Home
-                </a>
-              </li>
-              <li className="nav-items px-2 py-2">
-                <NavLink
-                  to="/shop"
-                  className="nav-link text-uppercase text-dark"
-                >
-                  Shop
-                </NavLink>
-              </li>
-
-              <li className="  nav-items px-2 py-2 dropdown">
-                <a
-                  className="nav-link text-uppercase text-dark dropdown-toggle"
-                  href="#"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  Categories
-                </a>
-                <ul className="dropdown-menu">
-                  <li>
-                    <NavLink to="/categories" className="dropdown-item">
-                      All
-                    </NavLink>
+              <button
+                className="navbar-toggler border-0"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navMenu"
+                aria-expanded="false"
+                aria-controls="#navMenu"
+              >
+                <span className="navbar-toggler-icon"></span>
+              </button>
+              <div className="collapse navbar-collapse order-lg-1" id="navMenu">
+                <ul className="navbar-nav mx-auto text-center">
+                  <li className="nav-items px-2 py-2">
+                    <a href="/" className="nav-link text-uppercase text-dark">
+                      Home
+                    </a>
+                  </li>
+                  <li className="nav-items px-2 py-2">
                     <NavLink
-                      to="/category/electronics-devices"
-                      className="dropdown-item"
+                      to="/shop"
+                      className="nav-link text-uppercase text-dark"
                     >
-                      Electronics Devices
+                      Shop
                     </NavLink>
                   </li>
-                  <li>
-                    <NavLink to="/category/clothing" className="dropdown-item">
-                      Clothing
-                    </NavLink>
+
+                  {categoryData && (
+                    <li className="nav-items px-2 py-2 dropdown">
+                      <a
+                        className="nav-link text-uppercase text-dark dropdown-toggle"
+                        href="#"
+                        role="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        Categories
+                      </a>
+                      <ul className="dropdown-menu">
+                        <li>
+                          <NavLink to="/categories" className="dropdown-item">
+                            All
+                          </NavLink>
+                        </li>
+                        {categoryData.map((cat, i) => (
+                          <React.Fragment key={i}>
+                            <li>
+                              <NavLink
+                                to={`/category/${cat?.slug}`}
+                                className="dropdown-item"
+                              >
+                                {cat?.name}
+                              </NavLink>
+                            </li>
+                          </React.Fragment>
+                        ))}
+                      </ul>
+                    </li>
+                  )}
+
+                  <li className="nav-items px-2 py-2">
+                    <a href="#" className="nav-link text-uppercase text-dark">
+                      About Us
+                    </a>
                   </li>
-                  <li>
-                    <NavLink
-                      to="/category/babies-toys"
-                      className="dropdown-item"
-                    >
-                      Babies and Toys
-                    </NavLink>
+                  <li className="nav-items px-2 py-2">
+                    <a href="#" className="nav-link text-uppercase text-dark">
+                      Contact
+                    </a>
                   </li>
                 </ul>
-              </li>
+              </div>
+            </Container>
+          </Navbar>
 
-              <li className="nav-items px-2 py-2">
-                <a href="#" className="nav-link text-uppercase text-dark">
-                  About Us
-                </a>
-              </li>
-              <li className="nav-items px-2 py-2">
-                <a href="#" className="nav-link text-uppercase text-dark">
-                  Contact
-                </a>
-              </li>
-            </ul>
-          </div>
-        </Container>
-      </Navbar>
-
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton></Modal.Header>
-        <Modal.Body>
-          <Form className="d-flex">
-            <Form.Control type="search" placeholder="Search" className="me-2" />
-            <Button variant="outline-primary" type="submit">
-              Search
-            </Button>
-          </Form>
-        </Modal.Body>
-      </Modal>
+          <Modal show={show} onHide={handleClose}>
+            <Modal.Header closeButton></Modal.Header>
+            <Modal.Body>
+              <Form className="d-flex">
+                <Form.Control
+                  type="search"
+                  placeholder="Search"
+                  className="me-2"
+                />
+                <Button variant="outline-primary" type="submit">
+                  Search
+                </Button>
+              </Form>
+            </Modal.Body>
+          </Modal>
+        </>
+      )}
     </>
   );
 };

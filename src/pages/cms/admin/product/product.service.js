@@ -76,6 +76,14 @@ class ProductService extends HttpService {
       throw error;
     }
   };
+  getProductWithCatSlug = async (catSlug) => {
+    try {
+      let response = await this.getRequest(`/v1/category/product/${catSlug}`);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  };
 }
 
 export default ProductService;

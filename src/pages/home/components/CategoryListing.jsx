@@ -20,7 +20,7 @@ export const CategoryListing = () => {
   useEffect(() => {
     getAllCategories();
   }, []);
-  console.log(categoryData);
+  // console.log(categoryData);
   return (
     <>
       <div
