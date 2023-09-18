@@ -5,7 +5,6 @@ import { AdminLayout } from "./pages/cms/admin/layout/AdminLayout";
 import { ForgotPassword } from "./pages/home/auth/ForgotPassword";
 import { LoginPage } from "./pages/home/auth/LoginPage";
 import { RegisterPage } from "./pages/home/auth/RegisterPage";
-import { CategoryList } from "./pages/home/category/CategoryList";
 import { CategoryProductList } from "./pages/home/category/CategoryProductList";
 import { HomePageLayout } from "./pages/home/landing/HomePageLayout";
 import { LandingPage } from "./pages/home/landing/LandingPage";
@@ -42,6 +41,7 @@ import {
 import { Provider } from "react-redux";
 import { store } from "./store";
 import { AllProductList } from "./pages/home/product/AllProductList";
+import { AllCategories } from "./pages/home/category/AllCategories";
 // import { AdminCreateBanner } from "./pages/cms/admin/banner/AdminCreateBanner";
 // import { BannerList } from "./pages/cms/admin/banner/BannerList";
 
@@ -55,14 +55,13 @@ export const Routing = () => {
             <Route path="/" element={<HomePageLayout />}>
               <Route index element={<LandingPage />} />
               <Route path="shop" element={<AllProductList />} />
+              <Route path="categories" element={<AllCategories />} />
               <Route path="login" element={<LoginPage />} />
               <Route path="register" element={<RegisterPage />} />
               <Route path="/activate/:token" element={<ActivateUser />} />
 
               <Route path="forgot-password" element={<ForgotPassword />} />
               {/* <Route path="banner" element={<HomePageBanner />} /> */}
-
-              <Route path="categories" element={<CategoryList />} />
               <Route
                 path="category/:categorySlug"
                 element={<CategoryProductList />}

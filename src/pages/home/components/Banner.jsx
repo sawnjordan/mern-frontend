@@ -63,32 +63,39 @@ export const Banner = () => {
                   ></button>
                 </div>
                 {bannerData &&
-                  bannerData.map((banner, i) => (
-                    <div
-                      className={
-                        i == 1 ? "carousel-item active" : "carousel-item"
-                      }
-                    >
-                      <img
-                        src={`${import.meta.env.VITE_IMAGE_URL}/banner/${
-                          banner?.image
-                        }`}
-                        className="d-block w-100"
-                        alt="banner-img-1"
-                      />
-                      <div className="carousel-caption top-0 mt-5 d-md-flex align-items-center flex-column justify-content-center">
-                        <div className="caption-overlay rounded-4">
-                          {/* <p>Samsung</p> */}
-                          <h2>{banner?.title}</h2>
-                          <NavLink to={`${banner?.link}`}>
-                            <button className="btn btn-primary">
+                  bannerData.map((banner, i) =>
+                    banner.status === "active" ? (
+                      <div
+                        key={i}
+                        className={
+                          i == 1 ? "carousel-item active" : "carousel-item"
+                        }
+                      >
+                        <img
+                          src={`${import.meta.env.VITE_IMAGE_URL}/banner/${
+                            banner?.image
+                          }`}
+                          className="d-block w-100"
+                          alt="banner-img-1"
+                        />
+                        <div className="carousel-caption top-0 mt-5 d-md-flex align-items-center flex-column justify-content-center">
+                          <div className="caption-overlay rounded-4">
+                            {/* <p>Samsung</p> */}
+                            <h2>{banner?.title}</h2>
+                            <a
+                              target="_blank"
+                              href={`${banner.link}`}
+                              className="btn btn-primary"
+                            >
                               Shop Now
-                            </button>
-                          </NavLink>
+                            </a>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    ) : (
+                      <>{/* TODO: Default Coming Soon Fallback */}</>
+                    )
+                  )}
               </div>
               <button
                 className="carousel-control-prev"

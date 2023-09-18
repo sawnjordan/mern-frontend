@@ -148,6 +148,12 @@ footer .list-group-item-action:hover {
 /* #category-listing {
   background-color: var(--primary-color-l4) !important;
 } */
+
+.equal-height-image {
+  height: 200px;
+  object-fit: cover;
+  width: 100%;
+}
 /* media queries */
 @media (min-width: 992px) {
   .nav-items {
