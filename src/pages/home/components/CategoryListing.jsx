@@ -1,7 +1,26 @@
-import React from "react";
-import catImg from "../../../assets/images/cat.jpg";
+import React, { useEffect, useState } from "react";
+import { Col, Container, Row } from "react-bootstrap";
+import { CategoryCard } from "../category/CategoryCard";
+import { toast } from "react-toastify";
+import { categoryServiceObj } from "../../cms/admin/category";
 
 export const CategoryListing = () => {
+  const [loading, setLoading] = useState(false);
+  const [categoryData, setCategoryData] = useState();
+
+  const getAllCategories = async () => {
+    try {
+      let response = await categoryServiceObj.getCategoryForHomePage();
+      setCategoryData(response.data?.data);
+    } catch (error) {
+      toast.error("Something went wrong!!!");
+    }
+  };
+
+  useEffect(() => {
+    getAllCategories();
+  }, []);
+  console.log(categoryData);
   return (
     <>
       <div
@@ -16,104 +35,20 @@ export const CategoryListing = () => {
             </a>
           </div>
         </div>
-        <div className="row mt-3 pt-3">
-          <div className="col-sm-4 col-md-3 col-lg-2 mb-3">
-            <div className="card">
-              <a href="" className="text-decoration-none text-dark">
-                <img src={catImg} className="card-img-top" alt="..." />
-                <p className="text-center pt-2 fw-medium">Category title</p>
-              </a>
-            </div>
-          </div>
-          <div className="col-sm-4 col-md-3 col-lg-2 mb-3">
-            <div className="card">
-              <a href="" className="text-decoration-none text-dark">
-                <img src={catImg} className="card-img-top" alt="..." />
-                <p className="text-center pt-2 fw-medium">Category title</p>
-              </a>
-            </div>
-          </div>
-          <div className="col-sm-4 col-md-3 col-lg-2 mb-3">
-            <div className="card">
-              <a href="" className="text-decoration-none text-dark">
-                <img src={catImg} className="card-img-top" alt="..." />
-                <p className="text-center pt-2 fw-medium">Category title</p>
-              </a>
-            </div>
-          </div>
-          <div className="col-sm-4 col-md-3 col-lg-2 mb-3">
-            <div className="card">
-              <a href="" className="text-decoration-none text-dark">
-                <img src={catImg} className="card-img-top" alt="..." />
-                <p className="text-center pt-2 fw-medium">Category title</p>
-              </a>
-            </div>
-          </div>
-          <div className="col-sm-4 col-md-3 col-lg-2 mb-3">
-            <div className="card">
-              <a href="" className="text-decoration-none text-dark">
-                <img src={catImg} className="card-img-top" alt="..." />
-                <p className="text-center pt-2 fw-medium">Category title</p>
-              </a>
-            </div>
-          </div>
-          <div className="col-sm-4 col-md-3 col-lg-2 mb-3">
-            <div className="card">
-              <a href="" className="text-decoration-none text-dark">
-                <img src={catImg} className="card-img-top" alt="..." />
-                <p className="text-center pt-2 fw-medium">Category title</p>
-              </a>
-            </div>
-          </div>
-          <div className="col-sm-4 col-md-3 col-lg-2 mb-3">
-            <div className="card">
-              <a href="" className="text-decoration-none text-dark">
-                <img src={catImg} className="card-img-top" alt="..." />
-                <p className="text-center pt-2 fw-medium">Category title</p>
-              </a>
-            </div>
-          </div>
-          <div className="col-sm-4 col-md-3 col-lg-2 mb-3">
-            <div className="card">
-              <a href="" className="text-decoration-none text-dark">
-                <img src={catImg} className="card-img-top" alt="..." />
-                <p className="text-center pt-2 fw-medium">Category title</p>
-              </a>
-            </div>
-          </div>
-          <div className="col-sm-4 col-md-3 col-lg-2 mb-3">
-            <div className="card">
-              <a href="" className="text-decoration-none text-dark">
-                <img src={catImg} className="card-img-top" alt="..." />
-                <p className="text-center pt-2 fw-medium">Category title</p>
-              </a>
-            </div>
-          </div>
-          <div className="col-sm-4 col-md-3 col-lg-2 mb-3">
-            <div className="card">
-              <a href="" className="text-decoration-none text-dark">
-                <img src={catImg} className="card-img-top" alt="..." />
-                <p className="text-center pt-2 fw-medium">Category title</p>
-              </a>
-            </div>
-          </div>
-          <div className="col-sm-4 col-md-3 col-lg-2 mb-3">
-            <div className="card">
-              <a href="" className="text-decoration-none text-dark">
-                <img src={catImg} className="card-img-top" alt="..." />
-                <p className="text-center pt-2 fw-medium">Category title</p>
-              </a>
-            </div>
-          </div>
-          <div className="col-sm-4 col-md-3 col-lg-2 mb-3">
-            <div className="card">
-              <a href="" className="text-decoration-none text-dark">
-                <img src={catImg} className="card-img-top" alt="..." />
-                <p className="text-center pt-2 fw-medium">Category title</p>
-              </a>
-            </div>
-          </div>
-        </div>
+        <Container fluid>
+          <Row className="my-3">
+            {categoryData &&
+              categoryData.map((cat, i) =>
+                cat.status === "active" ? (
+                  <Col key={i} sm={6} md={3} lg={3} xl={2} className="mb-4">
+                    <CategoryCard cat={cat} />
+                  </Col>
+                ) : (
+                  <></>
+                )
+              )}
+          </Row>
+        </Container>
       </div>
     </>
   );

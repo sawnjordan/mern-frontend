@@ -20,7 +20,7 @@ export const AllCategories = () => {
   useEffect(() => {
     getAllCategories();
   }, []);
-  console.log(categoryData);
+  // console.log(categoryData);
 
   return (
     <>
