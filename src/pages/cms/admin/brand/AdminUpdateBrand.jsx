@@ -191,7 +191,7 @@ export const AdminUpdateBrand = () => {
                         </label>
                       </div>
 
-                      <div className="col-lg-7">
+                      <div className="col-lg-9">
                         <input
                           className="form-control"
                           type="file"
@@ -211,7 +211,7 @@ export const AdminUpdateBrand = () => {
                           {errors && errors.logo?.message}
                         </div>
                       </div>
-                      <div className="col-lg-2">
+                      <div className="col-lg-9 offset-lg-3 mt-2 text-center">
                         {newLogoUrl ? (
                           <img
                             src={newLogoUrl}

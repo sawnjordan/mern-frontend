@@ -204,7 +204,7 @@ export const AdminCreateCategory = () => {
                         </label>
                       </div>
 
-                      <div className={imageUrl ? "col-lg-7" : "col-lg-9"}>
+                      <div className={"col-lg-9"}>
                         <input
                           className="form-control"
                           type="file"
@@ -227,7 +227,7 @@ export const AdminCreateCategory = () => {
                           {errors && errors.image?.message}
                         </div>
                       </div>
-                      <div className="col-lg-2">
+                      <div className="col-lg-9 offset-lg-3 mt-2 text-center">
                         {imageUrl ? (
                           <img
                             src={imageUrl}

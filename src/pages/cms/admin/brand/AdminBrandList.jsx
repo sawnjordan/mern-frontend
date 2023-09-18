@@ -6,10 +6,57 @@ import { brandServiceObj } from ".";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 import { ImagePreview } from "../../../../components/image.preview";
+import DataTable from "react-data-table-component";
 
 export const AdminBrandList = () => {
   const [brandData, setBrandData] = useState();
   const [loading, setLoading] = useState(true);
+  const columns = [
+    {
+      name: "Id",
+      selector: (row) => row._id,
+    },
+    {
+      name: "Name",
+      selector: (row) => row.name,
+    },
+    {
+      name: "Logo",
+      selector: (row) => (
+        <ImagePreview imageURL={row?.logo} imgFolder="brands" />
+      ),
+      sortable: true,
+    },
+    {
+      name: "Status",
+      selector: (row) => row.status,
+    },
+    {
+      name: "Actions",
+      selector: (row) => (
+        <>
+          <NavLink to={`/admin/brand/${row?._id}`}>
+            <Button
+              onClick={(e) => {
+                e.preventDefault();
+                handleDelete(row?._id);
+              }}
+              className="link-danger"
+              variant=""
+              size="sm"
+            >
+              <FaTrash />
+            </Button>
+          </NavLink>
+          <NavLink to={`/admin/brand/${row?._id}`}>
+            <Button variant="" className="link-success" size="sm">
+              <FaEdit />
+            </Button>
+          </NavLink>
+        </>
+      ),
+    },
+  ];
 
   const handleDelete = (id) => {
     Swal.fire({
@@ -77,68 +124,13 @@ export const AdminBrandList = () => {
             </Container>
           </div>
           <div className="card-body">
-            <Table responsive striped bordered hover>
-              <thead>
-                <tr>
-                  <th>#ID</th>
-                  <th>Name</th>
-                  <th>Logo</th>
-                  <th>Status</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {loading ? (
-                  <tr>
-                    <td colSpan={5} className="text-center py-3">
-                      Loading...
-                    </td>
-                  </tr>
-                ) : (
-                  brandData &&
-                  brandData.map((data, index) => (
-                    <tr key={index}>
-                      <td>{data?._id}</td>
-                      <td>{data?.name}</td>
-                      {/* <td>{data?.logo}</td> */}
-                      <td>
-                        <ImagePreview
-                          imageURL={data?.logo}
-                          imgFolder="brands"
-                        />
-                      </td>
-                      <td>{data?.status}</td>
-                      <td>
-                        {/* <Button variant="danger me-4" size="sm">
-                      <FaTrash className="" />
-                    </Button>
-                    <Button variant="success" size="sm">
-                      <FaEdit size={12} />
-                    </Button> */}
-                        <NavLink to={`/admin/brand/${data?._id}`}>
-                          <Button
-                            onClick={(e) => {
-                              e.preventDefault();
-                              handleDelete(data?._id);
-                            }}
-                            className="link-danger"
-                            variant=""
-                            size="sm"
-                          >
-                            <FaTrash />
-                          </Button>
-                        </NavLink>
-                        <NavLink to={`/admin/brand/${data?._id}`}>
-                          <Button variant="" className="link-success" size="sm">
-                            <FaEdit />
-                          </Button>
-                        </NavLink>
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </Table>
+            <DataTable
+              highlightOnHover
+              columns={columns}
+              data={brandData}
+              pagination
+              fixedHeader
+            />
           </div>
         </div>
       </div>

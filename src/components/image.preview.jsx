@@ -17,7 +17,7 @@ export const ImagePreview = ({ imageURL, imgFolder }) => {
         <img
           width="100px"
           height="100px !important"
-          className="rounded"
+          className="rounded p-2"
           alt={`${imgFolder}-image`}
           src={`${import.meta.env.VITE_IMAGE_URL}/${imgFolder}/${imageURL}`}
         />
