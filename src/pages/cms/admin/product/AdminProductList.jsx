@@ -24,7 +24,6 @@ export const AdminProductList = () => {
     {
       name: "Price",
       selector: (row) => row.price.toLocaleString(),
-      sortable: true,
     },
     {
       name: "Brand",
@@ -133,9 +132,9 @@ export const AdminProductList = () => {
           </div>
           <div className="card-body">
             <DataTable
-              highlightOnHover
               columns={columns}
               data={productList}
+              highlightOnHover
               pagination
               fixedHeader
             />

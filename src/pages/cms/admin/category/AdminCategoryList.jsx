@@ -6,10 +6,61 @@ import { categoryServiceObj } from ".";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 import { ImagePreview } from "../../../../components/image.preview";
+import DataTable from "react-data-table-component";
 
 export const AdminCategoryList = () => {
   const [categoryData, setCategoryData] = useState();
   const [loading, setLoading] = useState(true);
+
+  const columns = [
+    {
+      name: "Id",
+      selector: (row) => row._id,
+    },
+    {
+      name: "Name",
+      selector: (row) => row.name,
+    },
+    {
+      name: "Parent",
+      selector: (row) => (row?.parent?.name ? row?.parent.name : "-"),
+    },
+    {
+      name: "Image",
+      selector: (row) => (
+        <ImagePreview imageURL={row?.image} imgFolder="category" />
+      ),
+    },
+    {
+      name: "Status",
+      selector: (row) => row.status,
+    },
+    {
+      name: "Actions",
+      selector: (row) => (
+        <>
+          <NavLink to={`/admin/category/${row?._id}`}>
+            <Button
+              onClick={(e) => {
+                e.preventDefault();
+                handleDelete(row?._id);
+              }}
+              className="link-danger"
+              variant=""
+              size="sm"
+            >
+              <FaTrash />
+            </Button>
+          </NavLink>
+          <NavLink to={`/admin/category/${row?._id}`}>
+            <Button variant="" className="link-success" size="sm">
+              <FaEdit />
+            </Button>
+          </NavLink>
+        </>
+      ),
+    },
+  ];
 
   const handleDelete = (id) => {
     Swal.fire({
@@ -37,7 +88,7 @@ export const AdminCategoryList = () => {
   const loadCategoryData = async () => {
     try {
       let response = await categoryServiceObj.getAllAdminCategory(10, 1);
-      console.log(response);
+      // console.log(response);
       setCategoryData(response?.data?.data);
     } catch (error) {
       console.log(error);
@@ -50,100 +101,51 @@ export const AdminCategoryList = () => {
   }, []);
   return (
     <>
-      <div className="container-fluid px-4">
-        <h1 className="mt-4">Category List</h1>
-        <ol className="breadcrumb mb-4">
-          <li className="breadcrumb-item">
-            <NavLink to="/admin">Dashboard</NavLink>
-          </li>
-          <li className="breadcrumb-item active">Category List</li>
-        </ol>
-        <div className="card mb-4">
-          <div className="card-header">
-            <Container>
-              <Row>
-                <Col sm={12} md={6}>
-                  <h4>Category List</h4>
-                </Col>
-                <Col sm={12} md={6}>
-                  <NavLink
-                    className={"btn btn-primary float-end"}
-                    to="/admin/category/create"
-                  >
-                    <FaPlus /> Add Category
-                  </NavLink>
-                </Col>
-              </Row>
-            </Container>
+      {loading ? (
+        <>
+          <div className="nav-margin">Loading...</div>
+        </>
+      ) : (
+        <>
+          <div className="container-fluid px-4">
+            <h1 className="mt-4">Category List</h1>
+            <ol className="breadcrumb mb-4">
+              <li className="breadcrumb-item">
+                <NavLink to="/admin">Dashboard</NavLink>
+              </li>
+              <li className="breadcrumb-item active">Category List</li>
+            </ol>
+            <div className="card mb-4">
+              <div className="card-header">
+                <Container>
+                  <Row>
+                    <Col sm={12} md={6}>
+                      <h4>Category List</h4>
+                    </Col>
+                    <Col sm={12} md={6}>
+                      <NavLink
+                        className={"btn btn-primary float-end"}
+                        to="/admin/category/create"
+                      >
+                        <FaPlus /> Add Category
+                      </NavLink>
+                    </Col>
+                  </Row>
+                </Container>
+              </div>
+              <div className="card-body">
+                <DataTable
+                  columns={columns}
+                  data={categoryData}
+                  highlightOnHover
+                  pagination
+                  fixedHeader
+                />
+              </div>
+            </div>
           </div>
-          <div className="card-body">
-            <Table responsive striped bordered hover>
-              <thead>
-                <tr>
-                  <th>#ID</th>
-                  <th>Name</th>
-                  <th>Parent</th>
-                  <th>Image</th>
-                  <th>Status</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {loading ? (
-                  <tr>
-                    <td colSpan={5} className="text-center py-3">
-                      Loading...
-                    </td>
-                  </tr>
-                ) : (
-                  categoryData &&
-                  categoryData.map((data, index) => (
-                    <tr key={index}>
-                      <td>{data?._id}</td>
-                      <td>{data?.name}</td>
-                      <td>{data?.parent?.name ? data?.parent.name : "-"}</td>
-                      {/* <td>{data?.image}</td> */}
-                      <td>
-                        <ImagePreview
-                          imageURL={data?.image}
-                          imgFolder="category"
-                        />
-                      </td>
-                      <td>{data?.status}</td>
-                      <td>
-                        {/* <Button variant="danger me-4" size="sm">
-                      <FaTrash className="" />
-                    </Button>
-                    <Button variant="success" size="sm">
-                      <FaEdit size={12} />
-                    </Button> */}
-                        <NavLink to={`/admin/category/${data?._id}`}>
-                          <Button
-                            onClick={(e) => {
-                              e.preventDefault();
-                              handleDelete(data?._id);
-                            }}
-                            className="link-danger"
-                            variant=""
-                            size="sm"
-                          >
-                            <FaTrash />
-                          </Button>
-                        </NavLink>
-                        <NavLink to={`/admin/category/${data?._id}`}>
-                          <Button variant="" className="link-success" size="sm">
-                            <FaEdit />
-                          </Button>
-                        </NavLink>
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </Table>
-          </div>
-        </div>
-      </div>
+        </>
+      )}
     </>
   );
 };

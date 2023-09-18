@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Container, Nav, Row, Table } from "react-bootstrap";
+import { Button, Col, Container, Row } from "react-bootstrap";
 import { FaEdit, FaPlus, FaTrash } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import { brandServiceObj } from ".";
@@ -11,25 +11,25 @@ import DataTable from "react-data-table-component";
 export const AdminBrandList = () => {
   const [brandData, setBrandData] = useState();
   const [loading, setLoading] = useState(true);
+
   const columns = [
     {
       name: "Id",
-      selector: (row) => row._id,
+      selector: (row) => row?._id,
     },
     {
       name: "Name",
-      selector: (row) => row.name,
+      selector: (row) => row?.name,
     },
     {
       name: "Logo",
       selector: (row) => (
         <ImagePreview imageURL={row?.logo} imgFolder="brands" />
       ),
-      sortable: true,
     },
     {
       name: "Status",
-      selector: (row) => row.status,
+      selector: (row) => row?.status,
     },
     {
       name: "Actions",
@@ -81,10 +81,11 @@ export const AdminBrandList = () => {
       }
     });
   };
+
   const loadBrandData = async () => {
     try {
       let response = await brandServiceObj.getAllAdminBrand(10, 1);
-      console.log(response);
+      // console.log(response);
       setBrandData(response?.data?.data);
     } catch (error) {
       console.log(error);
@@ -92,48 +93,57 @@ export const AdminBrandList = () => {
       setLoading(false);
     }
   };
+  console.log(brandData);
   useEffect(() => {
     loadBrandData();
   }, []);
   return (
     <>
-      <div className="container-fluid px-4">
-        <h1 className="mt-4">Brand List</h1>
-        <ol className="breadcrumb mb-4">
-          <li className="breadcrumb-item">
-            <NavLink to="/admin">Dashboard</NavLink>
-          </li>
-          <li className="breadcrumb-item active">Brand List</li>
-        </ol>
-        <div className="card mb-4">
-          <div className="card-header">
-            <Container>
-              <Row>
-                <Col sm={12} md={6}>
-                  <h4>Brand List</h4>
-                </Col>
-                <Col sm={12} md={6}>
-                  <NavLink
-                    className={"btn btn-primary float-end"}
-                    to="/admin/brand/create"
-                  >
-                    <FaPlus /> Add Brand
-                  </NavLink>
-                </Col>
-              </Row>
-            </Container>
+      {loading ? (
+        <>
+          <div className="nav-margin">Loading...</div>
+        </>
+      ) : (
+        <>
+          <div className="container-fluid px-4">
+            <h1 className="mt-4">Brand List</h1>
+            <ol className="breadcrumb mb-4">
+              <li className="breadcrumb-item">
+                <NavLink to="/admin">Dashboard</NavLink>
+              </li>
+              <li className="breadcrumb-item active">Brand List</li>
+            </ol>
+            <div className="card mb-4">
+              <div className="card-header">
+                <Container>
+                  <Row>
+                    <Col sm={12} md={6}>
+                      <h4>Brand List</h4>
+                    </Col>
+                    <Col sm={12} md={6}>
+                      <NavLink
+                        className={"btn btn-primary float-end"}
+                        to="/admin/brand/create"
+                      >
+                        <FaPlus /> Add Brand
+                      </NavLink>
+                    </Col>
+                  </Row>
+                </Container>
+              </div>
+              <div className="card-body">
+                <DataTable
+                  columns={columns}
+                  data={brandData}
+                  highlightOnHover
+                  pagination
+                  fixedHeader
+                />
+              </div>
+            </div>
           </div>
-          <div className="card-body">
-            <DataTable
-              highlightOnHover
-              columns={columns}
-              data={brandData}
-              pagination
-              fixedHeader
-            />
-          </div>
-        </div>
-      </div>
+        </>
+      )}
     </>
   );
 };

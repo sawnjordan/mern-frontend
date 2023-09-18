@@ -1,7 +1,7 @@
 import { Banner } from "../components/Banner";
 import { BannerAds } from "../components/BannerAds";
 import { CategoryListing } from "../components/CategoryListing";
-import { ProductListing } from "../components/ProductListing";
+import { HomeProductListing } from "../components/HomeProductListing";
 
 export const LandingPage = () => {
   return (
@@ -14,7 +14,7 @@ export const LandingPage = () => {
 
       <BannerAds />
 
-      <ProductListing />
+      <HomeProductListing />
     </>
   );
 };

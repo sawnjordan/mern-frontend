@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../../../../reducers/user.reducers";
@@ -29,9 +29,9 @@ export const AdminHeader = () => {
   return (
     <>
       <nav className="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-        <a className="navbar-brand ps-3" href="index.html">
-          Start Bootstrap
-        </a>
+        <NavLink className="navbar-brand ps-3" to="/">
+          Home/Landing Page
+        </NavLink>
         <button
           className="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0"
           id="sidebarToggle"

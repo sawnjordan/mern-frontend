@@ -76,7 +76,7 @@ export const Header = () => {
                   className="me-5"
                 >
                   {/* <FaUser className="icon" size={18} /> */}
-                  <span class="fw-medium">{userDetails?.name}</span>
+                  <span className="fw-medium">{userDetails?.name}</span>
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                   {/* <Link to="/login" className="dropdown-item">
@@ -135,9 +135,12 @@ export const Header = () => {
                 </a>
               </li>
               <li className="nav-items px-2 py-2">
-                <a href="/shop" className="nav-link text-uppercase text-dark">
+                <NavLink
+                  to="/shop"
+                  className="nav-link text-uppercase text-dark"
+                >
                   Shop
-                </a>
+                </NavLink>
               </li>
 
               <li className="  nav-items px-2 py-2 dropdown">
