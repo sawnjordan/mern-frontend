@@ -66,6 +66,16 @@ class ProductService extends HttpService {
       throw error;
     }
   };
+
+  getProductBySlug = async (productSlug) => {
+    try {
+      let response = await this.getRequest(`/v1/products/slug/${productSlug}`);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  };
+
   deleteImageFromServer = async (imgName, productId) => {
     try {
       let response = await this.deleteRequest(
