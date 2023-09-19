@@ -37,7 +37,15 @@
 nav .btn i:hover {
   color: var(--primary-color);
 }
-
+.nav-items:hover > .dropdown-menu,
+.dropend:hover > .dropdown-menu {
+  display: block !important;
+}
+.dropend:hover > .dropdown-menu {
+  position: absolute;
+  top: 0;
+  left: 100%;
+}
 .nav-margin {
   padding-top: 104px;
 }
@@ -154,6 +162,7 @@ footer .list-group-item-action:hover {
   object-fit: cover;
   width: 100%;
 }
+
 /* media queries */
 @media (min-width: 992px) {
   .nav-items {

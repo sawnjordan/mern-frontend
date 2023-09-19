@@ -4,6 +4,10 @@ import { NavLink } from "react-router-dom";
 
 export const ProductCard = ({ product }) => {
   // console.log(product);
+  const limitedCat = product?.categories.slice(0, 2)
+    ? product?.categories.slice(0, 2)
+    : null;
+  // console.log(limitedCat);
   return (
     <>
       <div className="card mb-3">
@@ -13,20 +17,21 @@ export const ProductCard = ({ product }) => {
               src={`${import.meta.env.VITE_IMAGE_URL}/products/${
                 product.images[0]
               }`}
-              className="card-img-top img-thumbnail"
+              className="card-img-top img-thumbnail equal-height-image"
               alt="..."
             />
           </NavLink>
+          {/* <p>
+            {limitedCat &&
+              limitedCat.map((cat, i) => (
+                <NavLink key={i} to={`/category/${cat?.slug}`}>
+                  <Badge bg="warning me-1 mt-3">{cat.name}</Badge>
+                </NavLink>
+              ))}
+          </p> */}
           <p>
-            {product?.categories.map((cat, i) => (
-              <NavLink key={i} to={`/category/${cat?.slug}`}>
-                <Badge bg="warning me-1 mt-3">{cat.name}</Badge>
-              </NavLink>
-            ))}
-          </p>
-          <p>
-            <NavLink to={`/category/${product.brand?.slug}`}>
-              <Badge bg="info" className="me-1">
+            <NavLink to={`/brand/${product.brand?.slug}`}>
+              <Badge bg="info" className="me-1 mt-4">
                 {product.brand?.name}
               </Badge>
             </NavLink>

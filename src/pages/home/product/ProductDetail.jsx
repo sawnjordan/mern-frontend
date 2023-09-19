@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { productServiceObj } from "../../cms/admin/product";
 import { NavLink, useParams } from "react-router-dom";
 import parse from "html-react-parser";
+import { ProductImagePreview } from "../../../components/common/product.image.preview";
 
 export const ProductDetail = () => {
   const [loading, setLoading] = useState(false);
@@ -65,6 +66,10 @@ export const ProductDetail = () => {
                           alt=""
                           onClick={(e) => setBigImgUrl(e.target?.src)}
                         />
+                        {/* <ProductImagePreview
+                          imgNames={productDetails?.images}
+                          imgFolder={"products"}
+                        /> */}
                       </Col>
                     ))}
                   </Row>
@@ -152,7 +157,9 @@ export const ProductDetail = () => {
               <Row className="bg-body-tertiary mt-4 mb-4 rounded-2 p-2">
                 <Col md={{ span: 10, offset: 1 }} className="mt-3">
                   <h3>Product Details</h3>
-                  {parse(productDetails?.description)}
+                  <div className="product-description mt-3">
+                    {parse(productDetails?.description)}
+                  </div>
                 </Col>
               </Row>
             </Container>

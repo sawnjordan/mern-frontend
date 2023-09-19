@@ -24,7 +24,7 @@ export const Banner = () => {
   useEffect(() => {
     getHomePageBanner();
   }, []);
-  console.log(bannerData);
+  // console.log(bannerData);
   return (
     <>
       {loading ? (

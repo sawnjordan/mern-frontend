@@ -37,6 +37,29 @@ export const Header = () => {
     getAllCategories();
   }, []);
 
+  const renderSubcategories = (parentId) => {
+    const subcategories = categoryData.filter(
+      (cat) => cat.parent && cat.parent._id === parentId
+    );
+
+    if (subcategories.length === 0) {
+      return null; // No subcategories, return null
+    }
+
+    return (
+      <ul className="dropdown-menu">
+        {subcategories.map((subcat, i) => (
+          <li key={i} className="nav-item dropend">
+            <NavLink to={`/category/${subcat?.slug}`} className="dropdown-item">
+              {subcat?.name}
+            </NavLink>
+            {renderSubcategories(subcat._id)}
+          </li>
+        ))}
+      </ul>
+    );
+  };
+
   const userDetails = useSelector((state) => {
     // console.log(state);
     return state.User?.loggedInUser;
@@ -50,7 +73,7 @@ export const Header = () => {
       console.log(error);
     }
   };
-  // console.log(categoryData);
+  console.log(categoryData);
   return (
     <>
       {loading ? (
@@ -191,14 +214,20 @@ export const Header = () => {
                         </li>
                         {categoryData.map((cat, i) => (
                           <React.Fragment key={i}>
-                            <li>
-                              <NavLink
-                                to={`/category/${cat?.slug}`}
-                                className="dropdown-item"
-                              >
-                                {cat?.name}
-                              </NavLink>
-                            </li>
+                            {cat.parent === null && (
+                              <>
+                                <li class="nav-item dropend">
+                                  <NavLink
+                                    to={`/category/${cat?.slug}`}
+                                    className="dropdown-item"
+                                  >
+                                    {cat?.name}
+                                  </NavLink>
+                                  {renderSubcategories(cat?._id)}
+                                </li>
+                                <li></li>
+                              </>
+                            )}
                           </React.Fragment>
                         ))}
                       </ul>
