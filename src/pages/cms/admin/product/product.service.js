@@ -105,6 +105,15 @@ class ProductService extends HttpService {
       throw error;
     }
   };
+
+  listProductWithBrandId = async (brandId) => {
+    try {
+      let response = await this.getRequest(`/v1/brands/product/${brandId}`);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  };
 }
 
 export default ProductService;

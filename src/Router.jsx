@@ -44,6 +44,7 @@ import { AllProductList } from "./pages/home/product/AllProductList";
 import { AllCategories } from "./pages/home/category/AllCategories";
 import { ProductDetail } from "./pages/home/product/ProductDetail";
 import { SearchResult } from "./pages/home/product/SearchResult";
+import { BrandProductList } from "./pages/home/product/BrandProductList";
 // import { AdminCreateBanner } from "./pages/cms/admin/banner/AdminCreateBanner";
 // import { BannerList } from "./pages/cms/admin/banner/BannerList";
 
@@ -69,6 +70,7 @@ export const Routing = () => {
                 path="category/:categorySlug"
                 element={<CategoryProductList />}
               />
+              <Route path="brand/:brandId" element={<BrandProductList />} />
               <Route path="product/:productSlug" element={<ProductDetail />} />
               <Route path="*" element={<NotFound />} />
             </Route>
