@@ -162,7 +162,22 @@ footer .list-group-item-action:hover {
   object-fit: cover;
   width: 100%;
 }
+.product-image-height {
+  min-height: 250px;
+}
 
+/* Use media queries to adjust the height for larger screens */
+@media (min-width: 768px) {
+  .product-image-height {
+    min-height: 300px;
+  }
+}
+
+@media (min-width: 992px) {
+  .product-image-height {
+    min-height: 350px;
+  }
+}
 /* media queries */
 @media (min-width: 992px) {
   .nav-items {

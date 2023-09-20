@@ -47,19 +47,29 @@ export const ProductDetail = () => {
             <Container className="nav-margin">
               <Row>
                 <Col lg={6} className="mt-5">
-                  <img
-                    src={`${bigImgUrl}`}
-                    alt=""
-                    className="mx-auto d-block"
-                    id="product-img"
-                    style={{ width: "50%" }}
-                  />
+                  <div className="product-image-height">
+                    <img
+                      src={`${bigImgUrl}`}
+                      alt=""
+                      className="img img-fluid mx-auto d-block"
+                      id="product-img"
+                      style={{ width: "50%" }}
+                    />
+                  </div>
                   <p className="border-1 border-bottom border-primary"></p>
                   <Row>
                     {productDetails?.images.map((imgName, i) => (
-                      <Col lg={3} key={i} style={{ cursor: "pointer" }}>
+                      <Col
+                        lg={3}
+                        md={3}
+                        sm={3}
+                        key={i}
+                        xs={3}
+                        style={{ cursor: "pointer" }}
+                      >
                         <img
-                          className="img-thumbnail small-img"
+                          width="132px"
+                          height="132px"
                           src={`${
                             import.meta.env.VITE_IMAGE_URL
                           }/products/${imgName}`}
