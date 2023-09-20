@@ -10,15 +10,16 @@ import {
 } from "react-bootstrap";
 import { FaSearch, FaShoppingCart, FaUser } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate, useSearchParams } from "react-router-dom";
 import { logoutUser } from "../reducers/user.reducers";
 import { categoryServiceObj } from "../pages/cms/admin/category";
 export const Header = () => {
   const [show, setShow] = useState(false);
-
+  const [query, setQuery] = useState("");
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [categoryData, setCategoryData] = useState(null);
 
@@ -73,7 +74,20 @@ export const Header = () => {
       console.log(error);
     }
   };
-  console.log(categoryData);
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    let params = `keyword=${query}`;
+    window.location.href = `/search?${params}`;
+    // navigate(`/search?${params}`);
+    // console.log(params);
+    // let params = serializeFormQuery(event.target);
+    // setSearchParams(params);
+    // console.log(params);
+    // console.log(searchParams);
+  };
+
+  // console.log(categoryData);
   return (
     <>
       {loading ? (
@@ -216,7 +230,7 @@ export const Header = () => {
                           <React.Fragment key={i}>
                             {cat.parent === null && (
                               <>
-                                <li class="nav-item dropend">
+                                <li className="nav-item dropend">
                                   <NavLink
                                     to={`/category/${cat?.slug}`}
                                     className="dropdown-item"
@@ -252,11 +266,14 @@ export const Header = () => {
           <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton></Modal.Header>
             <Modal.Body>
-              <Form className="d-flex">
+              <Form className="d-flex" onSubmit={handleSearchSubmit}>
                 <Form.Control
+                  onChange={(e) => setQuery(e.target.value)}
                   type="search"
                   placeholder="Search"
                   className="me-2"
+                  name="search"
+                  autoFocus
                 />
                 <Button variant="outline-primary" type="submit">
                   Search

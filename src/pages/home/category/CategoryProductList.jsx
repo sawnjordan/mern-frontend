@@ -46,7 +46,7 @@ export const CategoryProductList = () => {
             </Row>
           </Container>
           <Container>
-            <Row className="my-3">
+            <Row className="my-3 d-flex justify-content-center">
               {!productList ? (
                 <Col className="text-center fs-3">Products Not Found</Col>
               ) : (

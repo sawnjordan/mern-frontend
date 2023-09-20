@@ -43,6 +43,7 @@ import { store } from "./store";
 import { AllProductList } from "./pages/home/product/AllProductList";
 import { AllCategories } from "./pages/home/category/AllCategories";
 import { ProductDetail } from "./pages/home/product/ProductDetail";
+import { SearchResult } from "./pages/home/product/SearchResult";
 // import { AdminCreateBanner } from "./pages/cms/admin/banner/AdminCreateBanner";
 // import { BannerList } from "./pages/cms/admin/banner/BannerList";
 
@@ -57,6 +58,7 @@ export const Routing = () => {
               <Route index element={<LandingPage />} />
               <Route path="shop" element={<AllProductList />} />
               <Route path="categories" element={<AllCategories />} />
+              <Route path="search" element={<SearchResult />} />
               <Route path="login" element={<LoginPage />} />
               <Route path="register" element={<RegisterPage />} />
               <Route path="/activate/:token" element={<ActivateUser />} />

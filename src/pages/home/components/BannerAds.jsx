@@ -1,5 +1,6 @@
 import React from "react";
 import adsImg from "../../../assets/images/banner-img-1.jpg";
+import { Card, Col, Container, Row } from "react-bootstrap";
 export const BannerAds = () => {
   return (
     <>

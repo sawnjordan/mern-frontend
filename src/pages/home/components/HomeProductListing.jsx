@@ -41,7 +41,7 @@ export const HomeProductListing = () => {
           <>Loading...</>
         ) : (
           <Container fluid>
-            <Row className="my-3">
+            <Row className="my-3 d-flex justify-content-center">
               {productList &&
                 productList.map((product, i) => (
                   <Col key={i} sm={12} md={3} lg={3} xl={2}>

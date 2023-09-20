@@ -21,6 +21,17 @@ class ProductService extends HttpService {
     }
   };
 
+  getProductBySearchKeyword = async (keyword) => {
+    try {
+      let response = await this.getRequest(
+        `/v1/products/search?keyword=${keyword}`
+      );
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  };
+
   getAllAdminProduct = async (perPage = 10, page = 1) => {
     try {
       let response = await this.getRequest(
