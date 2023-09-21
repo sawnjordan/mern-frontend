@@ -5,6 +5,7 @@ import { productServiceObj } from "../../cms/admin/product";
 import { NavLink, useParams } from "react-router-dom";
 import parse from "html-react-parser";
 import { ProductImagePreview } from "../../../components/common/product.image.preview";
+import ReactImageMagnify from "react-image-magnify";
 
 export const ProductDetail = () => {
   const [loading, setLoading] = useState(false);
@@ -48,13 +49,30 @@ export const ProductDetail = () => {
               <Row>
                 <Col lg={6} className="mt-5">
                   <div className="product-image-height">
-                    <img
+                    <ReactImageMagnify
+                      className="img-thumbnail"
+                      {...{
+                        smallImage: {
+                          alt: "Wristwatch by Ted Baker London",
+                          isFluidWidth: true,
+                          src: `${bigImgUrl}`,
+                        },
+                        largeImage: {
+                          src: `${bigImgUrl}`,
+                          width: 1200,
+                          height: 1200,
+                        },
+
+                        shouldUsePositiveSpaceLens: true,
+                      }}
+                    />
+                    {/* <img
                       src={`${bigImgUrl}`}
                       alt=""
                       className="img img-fluid mx-auto d-block"
                       id="product-img"
                       style={{ width: "50%" }}
-                    />
+                    /> */}
                   </div>
                   <p className="border-1 border-bottom border-primary"></p>
                   <Row>
