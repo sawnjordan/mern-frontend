@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Col, Container, Row } from "react-bootstrap";
+import { Badge, Col, Container, Row } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { productServiceObj } from "../../cms/admin/product";
 import { NavLink, useParams } from "react-router-dom";
@@ -13,6 +13,7 @@ export const ProductDetail = () => {
   const [bigImgUrl, setBigImgUrl] = useState("");
   const params = useParams();
   const { productSlug } = params;
+  const [quantity, setQuantity] = useState(0);
   // console.log(productSlug);
 
   const getProductDetails = async () => {
@@ -32,10 +33,22 @@ export const ProductDetail = () => {
     }
   };
 
+  const increaseQty = () => {
+    const stock = quantity + 1;
+    setQuantity(stock);
+  };
+  const decreaseQty = () => {
+    const count = document.querySelector(".count");
+    if (count.valueAsNumber <= 1) return;
+
+    const stock = quantity - 1;
+    setQuantity(stock);
+  };
+
   useEffect(() => {
     getProductDetails();
   }, []);
-  console.log(productDetails);
+  // console.log(productDetails);
   return (
     <>
       {loading ? (
@@ -104,7 +117,7 @@ export const ProductDetail = () => {
                 </Col>
                 <Col lg={6} className="mt-5 p-4 bg-primary-l4 rounded-2">
                   <div className="product-content-right">
-                    <p>
+                    <p style={{ margin: "0" }}>
                       <NavLink
                         className={"nav-link"}
                         style={{ display: "inline-block" }}
@@ -119,6 +132,20 @@ export const ProductDetail = () => {
                         to={`/brand/${productDetails?.brand?._id}`}
                       >
                         {productDetails?.brand?.name}
+                      </NavLink>
+                    </p>
+                    <p style={{ margin: "0" }}>
+                      {productDetails.categories.map((cat, i) => (
+                        <NavLink key={i} to={`/category/${cat?.slug}`}>
+                          <Badge bg="warning me-1 mt-3">{cat.name}</Badge>
+                        </NavLink>
+                      ))}
+                    </p>
+                    <p style={{ margin: "0" }} className="mb-2">
+                      <NavLink to={`/brand/${productDetails.brand?.slug}`}>
+                        <Badge bg="info" className="me-1 mt-4">
+                          {productDetails.brand?.name}
+                        </Badge>
                       </NavLink>
                     </p>
                     <h2>{productDetails?.name}</h2>
@@ -151,18 +178,41 @@ export const ProductDetail = () => {
                     <option value="medium">Medium</option>
                     <option value="small">Small</option>
                   </select> */}
+
                   <div className="d-flex gap-3 align-items-center">
                     <label htmlFor="quantity" className="form-label mt-3">
                       Quantity:
                     </label>
+                    <span
+                      className="btn btn-primary minus"
+                      onClick={decreaseQty}
+                    >
+                      -
+                    </span>
+
                     <input
+                      style={{ width: "118px" }}
+                      type="number"
+                      className="count form-control count d-inline"
+                      readOnly
+                      value={quantity}
+                    />
+
+                    <span
+                      className="btn btn-primary plus"
+                      onClick={increaseQty}
+                    >
+                      +
+                    </span>
+                    {/* <input
                       style={{ width: "118px" }}
                       className="form-control mt-3"
                       type="number"
                       name="quantity"
                       id="quantity"
                       defaultValue="1"
-                    />
+                      onClick={}
+                    /> */}
                   </div>
 
                   <p className="mt-3">

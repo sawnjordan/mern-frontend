@@ -37,10 +37,10 @@ axiosInstance.interceptors.response.use(
             "refreshToken",
             response.data?.data?.refreshToken
           );
-          localStorage.setItem(
-            "user",
-            JSON.stringify(response.data.data?.userDetails)
-          );
+          // localStorage.setItem(
+          //   "user",
+          //   JSON.stringify(response.data.data?.userDetails)
+          // );
           axiosInstance.defaults.headers.common[
             "Authorization"
           ] = `Bearer ${response.data.data}`;
