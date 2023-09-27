@@ -43,15 +43,19 @@ export const ProductCard = ({ product }) => {
           {product?.afterDiscount !== null ? (
             <>
               <p style={{ margin: "0" }} className="fw-medium me-1">
-                Rs.{product.afterDiscount}
+                Rs.{product.afterDiscount.toLocaleString()}
               </p>
               <span className="text-danger text-decoration-line-through me-1">
-                Rs.{product.price}
+                Rs.{product.price.toLocaleString()}
               </span>
               <span className="fw-lighter">(-{product.discount}%)</span>
             </>
           ) : (
-            <></>
+            <>
+              <span className="fw-medium">
+                Rs.{product?.price.toLocaleString()}
+              </span>
+            </>
           )}
           <p className="text-center mt-3">
             <button className="btn btn-sm btn-primary">Add To Cart</button>

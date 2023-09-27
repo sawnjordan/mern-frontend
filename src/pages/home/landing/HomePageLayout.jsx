@@ -4,6 +4,7 @@ import { Outlet } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { getLoggedInUser } from "../../../reducers/user.reducers";
+import { updateCart } from "../../../reducers/cart.reducers";
 
 export const HomePageLayout = () => {
   const dispatch = useDispatch();
@@ -12,6 +13,7 @@ export const HomePageLayout = () => {
     if (token) {
       dispatch(getLoggedInUser());
     }
+    dispatch(updateCart());
   }, []);
   return (
     <>

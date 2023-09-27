@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Badge, Col, Container, Row } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { productServiceObj } from "../../cms/admin/product";
@@ -6,9 +6,12 @@ import { NavLink, useParams } from "react-router-dom";
 import parse from "html-react-parser";
 import { ProductImagePreview } from "../../../components/common/product.image.preview";
 import ReactImageMagnify from "react-image-magnify";
+import { useDispatch } from "react-redux";
+import { setCartItems } from "../../../reducers/cart.reducers";
 
 export const ProductDetail = () => {
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
   const [productDetails, setProductDetails] = useState();
   const [bigImgUrl, setBigImgUrl] = useState("");
   const params = useParams();
@@ -16,7 +19,7 @@ export const ProductDetail = () => {
   const [quantity, setQuantity] = useState(0);
   // console.log(productSlug);
 
-  const getProductDetails = async () => {
+  const getProductDetails = useCallback(async () => {
     try {
       let response = await productServiceObj.getProductBySlug(productSlug);
       // console.log(response);
@@ -31,7 +34,7 @@ export const ProductDetail = () => {
     } finally {
       setLoading(false);
     }
-  };
+  });
 
   const increaseQty = () => {
     const stock = quantity + 1;
@@ -39,15 +42,26 @@ export const ProductDetail = () => {
   };
   const decreaseQty = () => {
     const count = document.querySelector(".count");
-    if (count.valueAsNumber <= 1) return;
+    if (count.valueAsNumber <= 0) return;
 
     const stock = quantity - 1;
     setQuantity(stock);
   };
 
+  const handleAddToCart = (e) => {
+    e.preventDefault();
+    let currentItem = {
+      productId: productDetails._id,
+      qty: quantity,
+    };
+    // console.log(currentItem);
+    dispatch(setCartItems(currentItem));
+    toast.success("Cart Updated Successfully.");
+  };
+
   useEffect(() => {
     getProductDetails();
-  }, []);
+  }, [params]);
   // console.log(productDetails);
   return (
     <>
@@ -152,9 +166,9 @@ export const ProductDetail = () => {
                     {productDetails?.afterDiscount !== null ? (
                       <>
                         <p className="fw-medium">
-                          Rs.{productDetails.afterDiscount}
+                          Rs.{productDetails.afterDiscount.toLocaleString()}
                           <span className="text-danger text-decoration-line-through me-1 ms-1">
-                            Rs.{productDetails.price}
+                            Rs.{productDetails.price.toLocaleString()}
                           </span>
                           <span className="fw-lighter">
                             (-{productDetails.discount}%)
@@ -162,7 +176,11 @@ export const ProductDetail = () => {
                         </p>
                       </>
                     ) : (
-                      <></>
+                      <>
+                        <span className="fw-medium fs-5">
+                          Rs.{productDetails?.price.toLocaleString()}
+                        </span>
+                      </>
                     )}
                   </div>
                   {/* <select
@@ -216,7 +234,10 @@ export const ProductDetail = () => {
                   </div>
 
                   <p className="mt-3">
-                    <button className="btn rounded-pill btn-primary">
+                    <button
+                      onClick={handleAddToCart}
+                      className="btn rounded-pill btn-primary"
+                    >
                       Add To Cart
                     </button>
                   </p>

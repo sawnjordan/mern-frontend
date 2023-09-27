@@ -19,10 +19,10 @@ export const LoginPage = () => {
       // console.log(response, "here");
       localStorage.setItem("token", response.data.data?.accessToken);
       localStorage.setItem("refreshToken", response.data.data?.refreshToken);
-      // localStorage.setItem(
-      //   "user",
-      //   JSON.stringify(response.data.data?.userDetails)
-      // );
+      localStorage.setItem(
+        "user",
+        JSON.stringify(response.data.data?.userDetails)
+      );
       dispatch(setLoggedInUser(response.data.data?.userDetails));
       toast.success("Successfully logged in.");
       navigate(`/${response.data.data.userDetails.role}`);

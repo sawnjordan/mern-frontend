@@ -22,6 +22,11 @@ export const Header = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [categoryData, setCategoryData] = useState(null);
+  const cartItems = useSelector((store) => {
+    if (store.Cart.cart) {
+      return store?.Cart?.cart;
+    }
+  });
 
   const getAllCategories = async () => {
     try {
@@ -37,6 +42,7 @@ export const Header = () => {
   useEffect(() => {
     getAllCategories();
   }, []);
+  // console.log(cartItems);
 
   const renderSubcategories = (parentId) => {
     const subcategories = categoryData.filter(
@@ -116,12 +122,18 @@ export const Header = () => {
                 <span className="text-uppercase fw-lighter">eCommerce</span>
               </NavLink>
               <div className="order-lg-3 d-flex justify-content-between">
-                <Button variant="" className="position-relative" type="button">
-                  <FaShoppingCart size={18} className="icon" />
-                  <span className="position-absolute top-0 start-100 translate-middle badge bg-primary">
-                    5
-                  </span>
-                </Button>
+                <NavLink to={"/cart"}>
+                  <Button
+                    variant=""
+                    className="position-relative"
+                    type="button"
+                  >
+                    <FaShoppingCart size={18} className="icon" />
+                    <span className="position-absolute top-0 start-100 translate-middle badge bg-primary">
+                      {cartItems && cartItems.length}
+                    </span>
+                  </Button>
+                </NavLink>
 
                 <Button
                   type="button"

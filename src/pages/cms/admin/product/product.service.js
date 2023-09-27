@@ -114,6 +114,18 @@ class ProductService extends HttpService {
       throw error;
     }
   };
+
+  getCartDetails = async (cartItems) => {
+    try {
+      let response = await this.postRequest(
+        "/v1/products/cart-details",
+        cartItems
+      );
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  };
 }
 
 export default ProductService;
