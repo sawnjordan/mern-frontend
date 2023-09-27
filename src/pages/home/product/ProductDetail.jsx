@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Badge, Col, Container, Row } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { productServiceObj } from "../../cms/admin/product";
-import { NavLink, useParams } from "react-router-dom";
+import { Link, NavLink, useParams } from "react-router-dom";
 import parse from "html-react-parser";
 import { ProductImagePreview } from "../../../components/common/product.image.preview";
 import ReactImageMagnify from "react-image-magnify";
@@ -56,7 +56,11 @@ export const ProductDetail = () => {
     };
     // console.log(currentItem);
     dispatch(setCartItems(currentItem));
-    toast.success("Cart Updated Successfully.");
+    toast.success(
+      <span>
+        Cart Updated Successfully. <a href="/cart">View Cart</a>
+      </span>
+    );
   };
 
   useEffect(() => {
