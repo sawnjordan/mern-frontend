@@ -87,96 +87,113 @@ export const Cart = () => {
     }
   }, [cartItems]);
 
-  console.log(cartItems);
+  console.log(cartDetails);
   return (
-    <div className="container-fluid nav-margin">
+    <>
       {loading ? (
         <>
-          <div className="fs-2 text-center">Loading...</div>
+          <div className="row nav-margin bg-primary-l1">
+            <div className="col">
+              <h3 className="text-center p-3">Loading...</h3>
+            </div>
+          </div>
         </>
       ) : cartItems && cartItems.length === 0 ? (
         <>
-          <div className="row gx-3">
-            <div className="col-md-12 col-lg-8 col-11 mx-auto mb-lg-0 mb-5 shadow">
-              <div className="cart p-2">
-                <h2 className="py-2 mt-4 fw-bold text-center">
-                  Your cart is empty!!
-                </h2>
-                <p className="text-center">
-                  <NavLink to={"/shop"}>Go to Shop</NavLink>
-                </p>
-              </div>
+          <div className="row nav-margin bg-primary-l1">
+            <div className="col">
+              <h2 className="text-center p-3">Your cart is empty!!</h2>
+              <p className="text-center">
+                <NavLink to={"/shop"}>Go to Shop</NavLink>
+              </p>
             </div>
           </div>
         </>
       ) : (
         <>
-          <div className="row">
-            <div className="col-md-10 col-11 mx-auto">
-              {/* left-side */}
-              <div className="row mt-5 gx-3">
-                <div className="col-md-12 col-lg-8 col-11 mx-auto mb-lg-0 mb-5 shadow">
-                  {cartDetails.details &&
-                    cartDetails.details.map((item, i) => (
-                      <React.Fragment key={i}>
-                        <div className="cart p-2">
-                          {i === 0 ? (
-                            <>
-                              <h2 className="py-2 fw-bold">
-                                {cartDetails.details &&
-                                cartDetails.details.length === 0
-                                  ? "Your cart is empty."
-                                  : `Cart (${cartDetails.details.length} Items)`}
-                              </h2>
-                            </>
-                          ) : (
-                            <></>
-                          )}
-                          <div className="row">
-                            <div className="col-md-4 col-11 mx-auto bg-light d-flex justify-content-center align-items-center shadow">
-                              <NavLink>
-                                <img
-                                  className="img-fluid"
-                                  src={`${
-                                    import.meta.env.VITE_IMAGE_URL
-                                  }/products/${item.image}`}
-                                  alt=""
-                                  srcSet=""
-                                />
-                              </NavLink>
+          {cartDetails.details && (
+            <div className="row nav-margin bg-primary-l1">
+              <div className="col">
+                <h3 className="text-center p-3">
+                  Cart ({cartDetails.details.length} Items)
+                </h3>
+              </div>
+            </div>
+          )}
+
+          <div className="container">
+            <div className="row mt-4">
+              <div className="col-xl-6 offset-xl-1">
+                {cartDetails.details &&
+                  cartDetails.details.map((item, i) => (
+                    <div key={i} className="card border shadow-none">
+                      <div className="card-body">
+                        <div className="d-flex align-items-start border-bottom pb-3">
+                          <div className="me-4">
+                            <img
+                              src={`${
+                                import.meta.env.VITE_IMAGE_URL
+                              }/products/${item.image}`}
+                              alt=""
+                              className="avatar-lg rounded"
+                            />
+                          </div>
+                          <div className="flex-grow-1 align-self-start overflow-hidden">
+                            <div>
+                              <h5 className="text-wrap font-size-18">
+                                <NavLink
+                                  to={`/product/${item?.id}`}
+                                  className={"nav-link"}
+                                >
+                                  {item?.name}
+                                </NavLink>
+                              </h5>
+
+                              {/* <p className="mb-0 mt-1">
+                                <NavLink to={`/brand/${item.brand?._id}`}>
+                                  <Badge bg="info" className="mb-2">
+                                    {item?.brand?.name}
+                                  </Badge>
+                                </NavLink>
+                              </p> */}
                             </div>
-                            <div className="col-md-8 col-11 mx-auto px-4 mt-2">
-                              <div className="row">
-                                <div className="col-6 card-title">
-                                  <h6 className="mb-2 text-wrap">
-                                    <NavLink
-                                      to={`/product/${item?.slug}`}
-                                      className={"nav-link"}
-                                    >
-                                      {item?.name}
-                                    </NavLink>
-                                  </h6>
-                                  <div>
-                                    <NavLink to={`/brand/${item.brand?._id}`}>
-                                      <Badge bg="info" className="mb-2">
-                                        {item?.brand?.name}
-                                      </Badge>
-                                    </NavLink>
-                                  </div>
+                          </div>
+                          <div className="flex-shrink-0 ms-2">
+                            <ul className="list-inline mb-0 font-size-16">
+                              <li className="list-inline-item">
+                                <Button
+                                  variant=""
+                                  type="button"
+                                  className=" px-1 icon btn ps-0"
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    handleDelete(item.id);
+                                  }}
+                                >
+                                  <i className="fa fa-trash-can"></i>
+                                </Button>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+
+                        <div>
+                          <div className="row">
+                            <div className="col-md-4">
+                              <div className="mt-3">
+                                <p className="text-muted mb-2">Price</p>
+                                <h6 className="mb-0 mt-2">
                                   {item?.afterDiscount !== null ? (
                                     <>
-                                      <p
-                                        style={{ margin: "0" }}
-                                        className="fw-medium me-1"
-                                      >
+                                      <span className="me-1">
                                         Rs.{item.afterDiscount.toLocaleString()}
-                                      </p>
+                                      </span>
                                       <span className="text-danger text-decoration-line-through me-1">
                                         Rs.{item.price.toLocaleString()}
                                       </span>
-                                      <span className="fw-lighter">
+                                      <p className="fw-lighter">
                                         (-{item.prodDis}%)
-                                      </span>
+                                      </p>
                                     </>
                                   ) : (
                                     <>
@@ -185,112 +202,142 @@ export const Cart = () => {
                                       </span>
                                     </>
                                   )}
-                                </div>
-                                <div className="col-6">
-                                  {/* <div className="d-flex justify-content-end mb-2">
-                    <Button variant="" type="button" className="icon btn">
-                      <FaTrash size={18} className="icon me-2" />
-                      Remove Item
-                    </Button>
-                  </div> */}
-                                  <div className="d-flex gap-1 justify-content-end align-items-center">
-                                    {/* <label htmlFor="quantity" className="form-label mt-3">
-                          Quantity:
-                        </label> */}
-                                    <span
-                                      className="btn btn-primary minus"
-                                      onClick={() =>
-                                        decreaseQty(item.id, item.qty)
-                                      }
-                                    >
-                                      -
-                                    </span>
+                                </h6>
+                              </div>
+                            </div>
+                            <div className="col-md-5">
+                              <div className="mt-3">
+                                <p className="text-muted mb-2">Quantity</p>
+                                <div className="d-flex gap-1 align-items-center">
+                                  <span
+                                    className="btn btn-primary minus"
+                                    onClick={() =>
+                                      decreaseQty(item.id, item.qty)
+                                    }
+                                  >
+                                    -
+                                  </span>
 
-                                    <input
-                                      style={{ width: "80px" }}
-                                      type="number"
-                                      className={`count-${item.id} form-control count d-inline`}
-                                      readOnly
-                                      value={item.qty}
-                                    />
+                                  <input
+                                    style={{ width: "80px" }}
+                                    type="number"
+                                    className={`count-${item.id} form-control count d-inline`}
+                                    readOnly
+                                    value={item.qty}
+                                  />
 
-                                    <span
-                                      className="btn btn-primary plus"
-                                      onClick={() =>
-                                        increaseQty(item.id, item.qty)
-                                      }
-                                    >
-                                      +
-                                    </span>
-                                  </div>
+                                  <span
+                                    className="btn btn-primary plus"
+                                    onClick={() =>
+                                      increaseQty(item.id, item.qty)
+                                    }
+                                  >
+                                    +
+                                  </span>
                                 </div>
                               </div>
-
-                              <div className="row mt-5">
-                                <div className="col-4 d-flex">
-                                  <p>
-                                    <Button
-                                      variant=""
-                                      type="button"
-                                      className="icon btn ps-0"
-                                      onClick={(e) => {
-                                        e.preventDefault();
-                                        handleDelete(item.id);
-                                      }}
-                                    >
-                                      <FaTrash /> Remove
-                                    </Button>
-                                  </p>
-                                </div>
-                                <div className="col-8 d-flex justify-content-end">
-                                  <div className="fs-4">
-                                    <span>Total: &nbsp;</span>
-                                    <span className="text-primary">
-                                      {item.amt.toLocaleString()}
-                                    </span>
-                                  </div>
-                                </div>
+                            </div>
+                            <div className="col-md-3">
+                              <div className="mt-3">
+                                <p className="text-muted mb-2">Total</p>
+                                <h5 className="text-primary">
+                                  {item.amt.toLocaleString()}
+                                </h5>
                               </div>
                             </div>
                           </div>
                         </div>
-                        <hr />
-                      </React.Fragment>
-                    ))}
-                </div>
-                {/* right-side */}
-                <div className="col-md-12 col-lg-4 col-11 mx-auto">
-                  <div className="p-3 shadow bg-white">
-                    <h2 className="mb-5">Order Summary</h2>
-                    <div className="d-flex justify-content-between">
-                      <p className="fw-light">SubTotal ( 4 Items)</p>
-                      <p className="">
-                        Rs. {cartDetails?.subTotal.toLocaleString()}
-                      </p>
+                      </div>
                     </div>
-                    <div className="d-flex justify-content-between">
-                      <p className="fw-light">Shipping Charge</p>
-                      <p className="">
-                        Rs. {cartDetails?.shippingFee.toLocaleString()}
-                      </p>
-                    </div>
-                    <div className="d-flex justify-content-between">
-                      <p className="fw-bold">Total</p>
-                      <p className="text-primary">
-                        Rs. {cartDetails?.totalAmt.toLocaleString()}
-                      </p>
-                    </div>
-                    <hr />
-                    <div className="d-flex flex-column">
-                      <Button> Proceed to Checkout</Button>
-                    </div>
+                  ))}
+
+                <div className="row my-4">
+                  <div className="col-sm-6">
+                    <NavLink to={"/shop"}>
+                      <i className="fa fa-arrow-left me-1"></i> Continue
+                      Shopping
+                    </NavLink>
                   </div>
                 </div>
               </div>
+
+              {cartItems && cartItems.length !== 0 ? (
+                <>
+                  <div className="col-xl-4">
+                    <div className="mt-5 mt-lg-0">
+                      <div className="card border shadow-none">
+                        <div className="card-header bg-transparent border-bottom py-3 px-4">
+                          <h5 className="font-size-16 mb-0">
+                            Order Summary
+                            <span className="float-end">#MN0124</span>
+                          </h5>
+                        </div>
+                        <div className="card-body p-4 pt-2">
+                          <div className="table-responsive">
+                            <table className="table mb-0">
+                              <tbody>
+                                <tr>
+                                  <td>Sub Total :</td>
+                                  <td className="text-end">
+                                    Rs. {cartDetails?.subTotal.toLocaleString()}
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td>Discount : </td>
+                                  <td className="text-end">
+                                    {cartDetails?.discount ? (
+                                      <>- Rs. {cartDetails?.discount}</>
+                                    ) : (
+                                      <>0</>
+                                    )}
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td>Shipping Charge :</td>
+                                  <td className="text-end">
+                                    Rs.{" "}
+                                    {cartDetails?.shippingFee.toLocaleString()}
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td>Estimated Tax : </td>
+                                  <td className="text-end">
+                                    {cartDetails?.tax}
+                                  </td>
+                                </tr>
+                                <tr className="bg-light">
+                                  <th>Total :</th>
+                                  <td className="text-end">
+                                    <span className="fw-bold">
+                                      Rs.{" "}
+                                      {cartDetails?.totalAmt.toLocaleString()}
+                                    </span>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                          <div className="text-center d-flex flex-column mt-4">
+                            <a
+                              href="ecommerce-checkout.html"
+                              className="btn btn-primary"
+                            >
+                              <i className="fa fa-cart-shopping me-1"></i>
+                              Checkout
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <></>
+              )}
             </div>
           </div>
         </>
       )}
-    </div>
+    </>
   );
 };
