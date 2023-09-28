@@ -33,12 +33,13 @@ export const AllProductList = () => {
       ) : (
         <>
           <Container className="nav-margin bg-body-secondary" fluid>
-            <Row className="p-3">
+            <Row className="bg-primary-l1">
               <Col sm={12} className="text-center">
-                <h4>Shop</h4>
+                <h3 className="text-center p-3">Shop</h3>
               </Col>
             </Row>
           </Container>
+
           <Container>
             <Row
               id="product-listing"

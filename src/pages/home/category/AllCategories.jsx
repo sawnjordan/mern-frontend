@@ -31,9 +31,9 @@ export const AllCategories = () => {
       ) : (
         <>
           <Container className="nav-margin bg-body-secondary" fluid>
-            <Row className="p-3">
+            <Row className="bg-primary-l1">
               <Col sm={12} className="text-center">
-                <h4>All Categories</h4>
+                <h3 className="text-center p-3">All Categories</h3>
               </Col>
             </Row>
           </Container>

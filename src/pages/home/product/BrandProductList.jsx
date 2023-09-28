@@ -37,9 +37,9 @@ export const BrandProductList = () => {
       ) : (
         <>
           <Container className="nav-margin bg-body-secondary" fluid>
-            <Row className="p-3">
+            <Row className="bg-primary-l1">
               <Col sm={12} className="text-center">
-                <h4>{brandName}</h4>
+                <h3 className="text-center p-3">{brandName}</h3>
               </Col>
             </Row>
           </Container>
