@@ -100,7 +100,7 @@ export const Cart = () => {
         </>
       ) : cartItems && cartItems.length === 0 ? (
         <>
-          <div className="row nav-margin bg-primary-l1">
+          <div className="row nav-margin bg-light">
             <div className="col">
               <h2 className="text-center p-3">Your cart is empty!!</h2>
               <p className="text-center">
@@ -142,7 +142,7 @@ export const Cart = () => {
                             <div>
                               <h5 className="text-wrap font-size-18">
                                 <NavLink
-                                  to={`/product/${item?.id}`}
+                                  to={`/product/id/${item?.id}`}
                                   className={"nav-link"}
                                 >
                                   {item?.name}

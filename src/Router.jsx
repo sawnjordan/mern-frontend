@@ -73,7 +73,14 @@ export const Routing = () => {
                 element={<CategoryProductList />}
               />
               <Route path="brand/:brandId" element={<BrandProductList />} />
-              <Route path="product/:productSlug" element={<ProductDetail />} />
+              <Route
+                path="product/:productSlug"
+                element={<ProductDetail slug={true} />}
+              />
+              <Route
+                path="product/id/:productId"
+                element={<ProductDetail slug={false} />}
+              />
               <Route path="*" element={<NotFound />} />
             </Route>
 

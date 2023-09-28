@@ -9,19 +9,26 @@ import ReactImageMagnify from "react-image-magnify";
 import { useDispatch } from "react-redux";
 import { setCartItems } from "../../../reducers/cart.reducers";
 
-export const ProductDetail = () => {
+export const ProductDetail = ({ slug }) => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const [productDetails, setProductDetails] = useState();
   const [bigImgUrl, setBigImgUrl] = useState("");
   const params = useParams();
-  const { productSlug } = params;
+
+  const { productSlug, productId } = params;
+
   const [quantity, setQuantity] = useState(0);
   // console.log(productSlug);
 
   const getProductDetails = useCallback(async () => {
     try {
-      let response = await productServiceObj.getProductBySlug(productSlug);
+      let response;
+      if (slug) {
+        response = await productServiceObj.getProductBySlug(productSlug);
+      } else {
+        response = await productServiceObj.getProductDetailsById(productId);
+      }
       // console.log(response);
       setProductDetails(response.data?.data);
       setBigImgUrl(
@@ -34,7 +41,7 @@ export const ProductDetail = () => {
     } finally {
       setLoading(false);
     }
-  });
+  }, [slug, productSlug, productId]);
 
   const increaseQty = () => {
     const stock = quantity + 1;
@@ -65,7 +72,7 @@ export const ProductDetail = () => {
 
   useEffect(() => {
     getProductDetails();
-  }, [params]);
+  }, [params, slug]);
   // console.log(productDetails);
   return (
     <>

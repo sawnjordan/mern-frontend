@@ -78,6 +78,17 @@ class ProductService extends HttpService {
     }
   };
 
+  getProductDetailsById = async (id) => {
+    try {
+      let response = await this.getRequest(`/v1/products/id/${id}`, {
+        auth: true,
+      });
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  };
+
   getProductBySlug = async (productSlug) => {
     try {
       let response = await this.getRequest(`/v1/products/slug/${productSlug}`);
