@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { productServiceObj } from "../../cms/admin/product";
 import { toast } from "react-toastify";
-import { updateCart } from "../../../reducers/cart.reducers";
+import { deleteCartItem, setCartItems } from "../../../reducers/cart.reducers";
 import Swal from "sweetalert2";
 
 export const Cart = () => {
@@ -30,34 +30,31 @@ export const Cart = () => {
   };
 
   const increaseQty = (id, qty) => {
-    // console.log(id, qty);
-    let currentItems = JSON.parse(localStorage.getItem("cart"));
+    let currentItem = {
+      productId: id,
+      qty: qty + 1,
+    };
 
-    currentItems.map((item, i) => {
-      if (id === item.productId) {
-        currentItems[i].qty = qty + 1;
-      }
-    });
-
-    localStorage.setItem("cart", JSON.stringify(currentItems));
-    dispatch(updateCart());
-    // console.log(currentItems);
+    dispatch(setCartItems(currentItem));
   };
 
   const decreaseQty = (id, qty) => {
     let countClass = `count-${id}`;
     const count = document.querySelector("." + countClass);
     if (count.valueAsNumber < 2) return;
-    let currentItems = JSON.parse(localStorage.getItem("cart"));
+    // let currentItems = JSON.parse(localStorage.getItem("cart"));
 
-    currentItems.map((item, i) => {
-      if (id === item.productId) {
-        currentItems[i].qty = qty - 1;
-      }
-    });
-
-    localStorage.setItem("cart", JSON.stringify(currentItems));
-    dispatch(updateCart());
+    // currentItems.map((item, i) => {
+    //   if (id === item.productId) {
+    //     currentItems[i].qty = qty - 1;
+    //   }
+    // });
+    let currentItem = {
+      productId: id,
+      qty: qty - 1,
+    };
+    // localStorage.setItem("cart", JSON.stringify(currentItems));
+    dispatch(setCartItems(currentItem));
   };
 
   const handleDelete = (id) => {
@@ -71,12 +68,7 @@ export const Cart = () => {
       confirmButtonText: "Yes, remove item!",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        let updatedItems = cartItems.filter((item) => {
-          return item.productId !== id;
-        });
-        // console.log(updatedItems);
-        localStorage.setItem("cart", JSON.stringify(updatedItems));
-        dispatch(updateCart());
+        dispatch(deleteCartItem({ productId: id, cartItems }));
       }
     });
   };
@@ -85,9 +77,9 @@ export const Cart = () => {
     if (cartItems) {
       getProductListCart();
     }
-  }, [cartItems]);
+  }, [cartItems, dispatch]);
 
-  console.log(cartDetails);
+  // console.log(cartDetails);
   return (
     <>
       {loading ? (
@@ -269,7 +261,7 @@ export const Cart = () => {
                         <div className="card-header bg-transparent border-bottom py-3 px-4">
                           <h5 className="font-size-16 mb-0">
                             Order Summary
-                            <span className="float-end">#MN0124</span>
+                            <span className="float-end"></span>
                           </h5>
                         </div>
                         <div className="card-body p-4 pt-2">
@@ -277,13 +269,13 @@ export const Cart = () => {
                             <table className="table mb-0">
                               <tbody>
                                 <tr>
-                                  <td>Sub Total :</td>
+                                  <td>SubTotal :</td>
                                   <td className="text-end">
                                     Rs. {cartDetails?.subTotal.toLocaleString()}
                                   </td>
                                 </tr>
                                 <tr>
-                                  <td>Discount : </td>
+                                  <td>Discount (Rs.) : </td>
                                   <td className="text-end">
                                     {cartDetails?.discount ? (
                                       <>- Rs. {cartDetails?.discount}</>
@@ -300,9 +292,9 @@ export const Cart = () => {
                                   </td>
                                 </tr>
                                 <tr>
-                                  <td>Estimated Tax : </td>
+                                  <td>Estimated Tax (13%): </td>
                                   <td className="text-end">
-                                    {cartDetails?.tax}
+                                    Rs. {cartDetails?.tax.toLocaleString()}
                                   </td>
                                 </tr>
                                 <tr className="bg-light">
@@ -318,13 +310,10 @@ export const Cart = () => {
                             </table>
                           </div>
                           <div className="text-center d-flex flex-column mt-4">
-                            <a
-                              href="ecommerce-checkout.html"
-                              className="btn btn-primary"
-                            >
+                            <NavLink to="/checkout" className="btn btn-primary">
                               <i className="fa fa-cart-shopping me-1"></i>
                               Checkout
-                            </a>
+                            </NavLink>
                           </div>
                         </div>
                       </div>

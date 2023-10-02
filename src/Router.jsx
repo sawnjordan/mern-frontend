@@ -46,6 +46,7 @@ import { ProductDetail } from "./pages/home/product/ProductDetail";
 import { SearchResult } from "./pages/home/product/SearchResult";
 import { BrandProductList } from "./pages/home/product/BrandProductList";
 import { Cart } from "./pages/home/cart/Cart";
+import { Checkout } from "./pages/home/cart/Checkout";
 // import { AdminCreateBanner } from "./pages/cms/admin/banner/AdminCreateBanner";
 // import { BannerList } from "./pages/cms/admin/banner/BannerList";
 
@@ -64,6 +65,7 @@ export const Routing = () => {
               <Route path="login" element={<LoginPage />} />
               <Route path="register" element={<RegisterPage />} />
               <Route path="cart" element={<Cart />} />
+              <Route path="checkout" element={<Checkout />} />
               <Route path="/activate/:token" element={<ActivateUser />} />
 
               <Route path="forgot-password" element={<ForgotPassword />} />

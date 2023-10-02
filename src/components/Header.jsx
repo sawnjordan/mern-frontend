@@ -130,7 +130,7 @@ export const Header = () => {
                   >
                     <FaShoppingCart size={18} className="icon" />
                     <span className="position-absolute top-0 start-100 translate-middle badge bg-primary">
-                      {cartItems && cartItems.length}
+                      {cartItems && cartItems.length ? cartItems.length : 0}
                     </span>
                   </Button>
                 </NavLink>
