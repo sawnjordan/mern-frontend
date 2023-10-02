@@ -4,11 +4,14 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import AuthServiceObj from "./auth.service";
 import { toast } from "react-toastify";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setLoggedInUser } from "../../../reducers/user.reducers";
 
 export const LoginPage = () => {
   const { register, handleSubmit, formState } = useForm();
+  const loggedInUser = useSelector((state) => {
+    return state.User.loggedInUser;
+  });
   const { errors } = formState;
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -32,13 +35,15 @@ export const LoginPage = () => {
   };
 
   useEffect(() => {
-    let token = localStorage.getItem("token");
-    let user = JSON.parse(localStorage.getItem("user"));
-    if (token && user) {
-      toast.info("You are already logged in.");
-      navigate(`/${user.role}`);
+    if (loggedInUser) {
+      let token = localStorage.getItem("token");
+      // let user = JSON.parse(localStorage.getItem("user"));
+      if (token && loggedInUser) {
+        toast.info("You are already logged in.");
+        navigate(`/${loggedInUser.role}`);
+      }
     }
-  }, []);
+  }, [loggedInUser]);
   return (
     <>
       <div className="container-fluid mt-5 mb-5 nav-margin">
