@@ -93,7 +93,7 @@ export const Header = () => {
     // console.log(searchParams);
   };
 
-  // console.log(categoryData);
+  // console.log(userDetails);
   return (
     <>
       {loading ? (

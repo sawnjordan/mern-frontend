@@ -48,7 +48,10 @@ export const CheckPermission = ({ Component, role }) => {
       </>
     );
   } else {
-    if (loggedInUser && loggedInUser?.role === role) {
+    if (
+      (loggedInUser && loggedInUser?.role === role) ||
+      loggedInUser?.role === "admin"
+    ) {
       return Component;
     } else {
       toast.warn("You are not allowed to access the resources.", {

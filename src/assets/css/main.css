@@ -294,3 +294,41 @@ a {
   border: 1px solid #eff0f2;
   border-radius: 1rem;
 }
+.page-title-overlap {
+  padding-bottom: 6.375rem;
+}
+.page-title-overlap + * {
+  margin-top: -4.875rem;
+}
+.password-toggle {
+  position: relative;
+}
+.password-toggle-btn .password-toggle-check {
+  position: absolute;
+  left: 0;
+  z-index: -1;
+  width: 1rem;
+  height: 1.25rem;
+  opacity: 0;
+}
+.password-toggle-btn {
+  position: absolute;
+  top: 50%;
+  right: 0.625rem;
+  margin-bottom: 0;
+  padding: 0.5rem;
+  transform: translateY(-50%);
+  font-size: 1.0625rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.password-toggle-btn .password-toggle-indicator {
+  transition: color 0.2s ease-in-out;
+  color: #7d879c;
+  font-family: "cartzilla-icons";
+  font-style: normal;
+}
+.password-toggle-btn .password-toggle-indicator::before {
+  content: "";
+}

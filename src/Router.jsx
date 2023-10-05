@@ -48,6 +48,10 @@ import { SearchResult } from "./pages/home/product/SearchResult";
 import { BrandProductList } from "./pages/home/product/BrandProductList";
 import { Cart } from "./pages/home/cart/Cart";
 import { Checkout } from "./pages/home/cart/Checkout";
+import { BuyerLayout } from "./pages/buyer/layout/BuyerLayout";
+import { BuyerDashboard } from "./pages/buyer/components/BuyerDashboard";
+import { BuyerOrders } from "./pages/buyer/BuyerOrders";
+import { BuyerWishList } from "./pages/buyer/BuyerWishList";
 // import { AdminCreateBanner } from "./pages/cms/admin/banner/AdminCreateBanner";
 // import { BannerList } from "./pages/cms/admin/banner/BannerList";
 
@@ -122,6 +126,21 @@ export const Routing = () => {
 
               {/* Admin Order Route */}
               <Route path="orders" element={<AdminOrderList />} />
+            </Route>
+            <Route
+              path="/buyer"
+              element={
+                <CheckPermission Component={<BuyerLayout />} role="buyer" />
+              }
+            >
+              <Route index element={<BuyerDashboard />}></Route>
+              <Route path="orders" element={<BuyerOrders />}></Route>
+              <Route path="wishlist" element={<BuyerWishList />}></Route>
+              {/* <Route path="address" element={<BuyerAddress />}></Route> */}
+              {/* <Route
+                path="password-change"
+                element={<BuyerChangePassword />}
+              ></Route> */}
             </Route>
           </Routes>
         </BrowserRouter>

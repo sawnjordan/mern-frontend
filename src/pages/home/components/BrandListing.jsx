@@ -35,7 +35,7 @@ export const BrandListing = () => {
             <Row className="d-flex justify-content-center">
               {brandList &&
                 brandList.map((brand, i) => (
-                  <Col lg={1} md={3} sm={4} className="mb-3">
+                  <Col lg={1} md={3} sm={4} className="mb-3" key={i}>
                     <NavLink to={`/brand/${brand._id}`} className={"nav-link"}>
                       <Card>
                         <div className="home-brand-image">
