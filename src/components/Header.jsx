@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink, useNavigate, useSearchParams } from "react-router-dom";
 import { logoutUser } from "../reducers/user.reducers";
 import { categoryServiceObj } from "../pages/cms/admin/category";
+import { toast } from "react-toastify";
 export const Header = () => {
   const [show, setShow] = useState(false);
   const [query, setQuery] = useState("");
@@ -71,7 +72,8 @@ export const Header = () => {
     // console.log(state);
     return state.User?.loggedInUser;
   });
-  const handleLogout = async () => {
+  const handleLogout = async (e) => {
+    e.preventDefault();
     try {
       dispatch(logoutUser());
       toast.success("Logged out.");

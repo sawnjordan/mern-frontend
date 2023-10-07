@@ -52,6 +52,7 @@ import { BuyerLayout } from "./pages/buyer/layout/BuyerLayout";
 import { BuyerDashboard } from "./pages/buyer/components/BuyerDashboard";
 import { BuyerOrders } from "./pages/buyer/BuyerOrders";
 import { BuyerWishList } from "./pages/buyer/BuyerWishList";
+import { BuyerChangePassword } from "./pages/buyer/components/BuyerChangePassword";
 // import { AdminCreateBanner } from "./pages/cms/admin/banner/AdminCreateBanner";
 // import { BannerList } from "./pages/cms/admin/banner/BannerList";
 
@@ -128,19 +129,19 @@ export const Routing = () => {
               <Route path="orders" element={<AdminOrderList />} />
             </Route>
             <Route
-              path="/buyer"
+              path="/customer"
               element={
-                <CheckPermission Component={<BuyerLayout />} role="buyer" />
+                <CheckPermission Component={<BuyerLayout />} role="customer" />
               }
             >
               <Route index element={<BuyerDashboard />}></Route>
               <Route path="orders" element={<BuyerOrders />}></Route>
               <Route path="wishlist" element={<BuyerWishList />}></Route>
               {/* <Route path="address" element={<BuyerAddress />}></Route> */}
-              {/* <Route
+              <Route
                 path="password-change"
                 element={<BuyerChangePassword />}
-              ></Route> */}
+              ></Route>
             </Route>
           </Routes>
         </BrowserRouter>

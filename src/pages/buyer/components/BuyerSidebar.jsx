@@ -6,7 +6,7 @@ export const BuyerSidebar = () => {
   const loggedInUser = useSelector((state) => {
     return state.User?.loggedInUser;
   });
-  console.log(loggedInUser);
+  // console.log(loggedInUser);
   return (
     <aside className="col-lg-4 pt-4 pt-lg-0 pe-xl-5">
       <div className="bg-white rounded-3 shadow-lg pt-1 mb-5 mb-lg-0">
@@ -53,7 +53,7 @@ export const BuyerSidebar = () => {
             <li className="border-bottom mb-0">
               <NavLink
                 className="text-dark d-flex align-items-center px-4 py-3"
-                to="/buyer/orders"
+                to="/customer/orders"
               >
                 <i className="ci-bag opacity-60 me-2"></i>Orders
                 <span className="fs-sm text-muted ms-auto">1</span>
@@ -62,7 +62,7 @@ export const BuyerSidebar = () => {
             <li className="border-bottom mb-0">
               <NavLink
                 className="text-dark d-flex align-items-center px-4 py-3"
-                to="/buyer/wishlist"
+                to="/customer/wishlist"
               >
                 <i className="ci-heart opacity-60 me-2"></i>Wishlist
                 <span className="fs-sm text-muted ms-auto">3</span>
@@ -76,7 +76,7 @@ export const BuyerSidebar = () => {
             <li className="border-bottom mb-0">
               <NavLink
                 className="text-dark d-flex align-items-center px-4 py-3"
-                to="/buyer"
+                to="/customer"
               >
                 <i className="ci-user opacity-60 me-2"></i>Profile info
               </NavLink>
@@ -92,7 +92,7 @@ export const BuyerSidebar = () => {
             <li className="mb-0">
               <NavLink
                 className="text-dark d-flex align-items-center px-4 py-3"
-                to="/buyer/password-change"
+                to="/customer/password-change"
               >
                 <i className="ci-card opacity-60 me-2"></i>Change Password
               </NavLink>
@@ -100,7 +100,7 @@ export const BuyerSidebar = () => {
             <li className="mb-0">
               <NavLink
                 className="text-dark d-flex align-items-center px-4 py-3"
-                to="/buyer/payment"
+                to="/customer/payment"
               >
                 <i className="ci-card opacity-60 me-2"></i>Payment methods
               </NavLink>

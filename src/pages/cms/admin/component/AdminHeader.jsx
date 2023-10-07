@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../../../../reducers/user.reducers";
@@ -93,9 +93,9 @@ export const AdminHeader = () => {
                 <hr className="dropdown-divider" />
               </li>
               <li>
-                <a className="dropdown-item" onClick={handleLogout}>
+                <Link className="dropdown-item" onClick={handleLogout}>
                   Logout
-                </a>
+                </Link>
               </li>
             </ul>
           </li>

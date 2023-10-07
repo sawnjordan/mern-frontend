@@ -65,6 +65,18 @@ class UserService extends HttpService {
       throw error;
     }
   };
+  updateMe = async (data) => {
+    console.log(data);
+    try {
+      let response = await this.putRequest(`/v1/user/update`, data, {
+        auth: true,
+        file: true,
+      });
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  };
 
   getUserById = async (id) => {
     try {

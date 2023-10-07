@@ -17,36 +17,6 @@ export const AdminUpdateBanner = () => {
   const navigate = useNavigate();
   let allowedExt = ["jpg", "png", "jpeg", "webp", "gif", "svg"];
 
-  //   const bannerSchema = Yup.object().shape({
-  //     title: Yup.string().required("Title is required."),
-  //     link: Yup.string().url().nullable(),
-  //     status: Yup.string()
-  //       .matches(/active|inactive/, "Invalid value for status.")
-  //       .default("inactive"),
-  //     image: Yup.mixed()
-  //       .test("required", "No any file uploaded.", (value) => {
-  //         return value && value.length !== 0;
-  //       })
-  //       .test(
-  //         "fileSize",
-  //         "The file size is too large. Max file size 3 MB",
-  //         (value) => {
-  //           return value && value.length !== 0 && value[0].size <= 3000000;
-  //         }
-  //       )
-  //       .test(
-  //         "fileExtension",
-  //         "Invalid file type. Please upload image.",
-  //         (value) => {
-  //           return (
-  //             value &&
-  //             value.length !== 0 &&
-  //             allowedExt.includes(value[0].name.split(".").pop().toLowerCase())
-  //           );
-  //         }
-  //       ),
-  //   });
-
   const bannerSchema = Yup.object().shape({
     title: Yup.string().required("Title is required."),
     link: Yup.string().url().nullable(),

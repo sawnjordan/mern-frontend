@@ -83,7 +83,7 @@ export const AdminUpdateUser = () => {
     try {
       let response = await userServiceObj.getUserById(id);
       const userData = response.data?.data;
-      console.log(userData);
+      // console.log(userData);
       setUserDetails(userData);
       setValue("name", userData?.name);
       setValue("email", userData?.email);
@@ -331,7 +331,11 @@ export const AdminUpdateUser = () => {
 
                     <div className="row">
                       <div className="col-lg-3 d-flex align-items-center offset-lg-3 mt-4">
-                        <button className="btn btn-primary" disabled={loading}>
+                        <button
+                          className="btn btn-primary"
+                          type="submit"
+                          disabled={loading}
+                        >
                           Update
                         </button>
                       </div>
