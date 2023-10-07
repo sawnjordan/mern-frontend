@@ -1,198 +1,217 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { OrderServiceObj } from "../cms/admin/order";
+import { format } from "date-fns";
+import { Link, NavLink } from "react-router-dom";
 
 export const BuyerOrders = () => {
+  const [myOrder, setMyOrder] = useState();
+  const [loading, setLoading] = useState(true);
+
+  const getMyOrders = async () => {
+    try {
+      let response = await OrderServiceObj.getMyOrders();
+      // console.log(response);
+      setMyOrder(response.data?.data);
+    } catch (error) {
+      toast.error("Something went wrong!");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getMyOrders();
+  }, []);
+  // console.log(myOrder);
+
   return (
-    <section class="col-lg-8">
-      <div class="d-flex justify-content-between align-items-center pt-lg-2 pb-4 pb-lg-5 mb-lg-3">
-        <div class="d-flex align-items-center">
-          <label
-            class="d-none d-lg-block fs-sm text-light text-nowrap opacity-75 me-2"
-            for="order-sort"
-          >
-            Sort orders:
-          </label>
-          <label
-            class="d-lg-none fs-sm text-nowrap opacity-75 me-2"
-            for="order-sort"
-          >
-            Sort orders:
-          </label>
-          <select class="form-select" id="order-sort">
-            <option>All</option>
-            <option>Delivered</option>
-            <option>In Progress</option>
-            <option>Delayed</option>
-            <option>Canceled</option>
-          </select>
-        </div>
-        <a
-          class="btn btn-primary btn-sm d-none d-lg-inline-block"
-          href="account-signin.html"
-        >
-          <i class="ci-sign-out me-2"></i>Sign out
-        </a>
-      </div>
-      <div class="table-responsive fs-md mb-4">
-        <table class="table table-hover mb-0">
-          <thead>
-            <tr>
-              <th>Order #</th>
-              <th>Date Purchased</th>
-              <th>Status</th>
-              <th>Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="py-3">
-                <a
-                  class="nav-link-style fw-medium fs-sm"
-                  href="#order-details"
-                  data-bs-toggle="modal"
-                >
-                  34VB5540K83
-                </a>
-              </td>
-              <td class="py-3">May 21, 2019</td>
-              <td class="py-3">
-                <span class="badge bg-info m-0">In Progress</span>
-              </td>
-              <td class="py-3">$358.75</td>
-            </tr>
-            <tr>
-              <td class="py-3">
-                <a
-                  class="nav-link-style fw-medium fs-sm"
-                  href="#order-details"
-                  data-bs-toggle="modal"
-                >
-                  78A643CD409
-                </a>
-              </td>
-              <td class="py-3">December 09, 2018</td>
-              <td class="py-3">
-                <span class="badge bg-danger m-0">Canceled</span>
-              </td>
-              <td class="py-3">
-                <span>$760.50</span>
-              </td>
-            </tr>
-            <tr>
-              <td class="py-3">
-                <a
-                  class="nav-link-style fw-medium fs-sm"
-                  href="#order-details"
-                  data-bs-toggle="modal"
-                >
-                  112P45A90V2
-                </a>
-              </td>
-              <td class="py-3">October 15, 2018</td>
-              <td class="py-3">
-                <span class="badge bg-warning m-0">Delayed</span>
-              </td>
-              <td class="py-3">$1,264.00</td>
-            </tr>
-            <tr>
-              <td class="py-3">
-                <a
-                  class="nav-link-style fw-medium fs-sm"
-                  href="#order-details"
-                  data-bs-toggle="modal"
-                >
-                  28BA67U0981
-                </a>
-              </td>
-              <td class="py-3">July 19, 2018</td>
-              <td class="py-3">
-                <span class="badge bg-success m-0">Delivered</span>
-              </td>
-              <td class="py-3">$198.35</td>
-            </tr>
-            <tr>
-              <td class="py-3">
-                <a
-                  class="nav-link-style fw-medium fs-sm"
-                  href="#order-details"
-                  data-bs-toggle="modal"
-                >
-                  502TR872W2
-                </a>
-              </td>
-              <td class="py-3">April 04, 2018</td>
-              <td class="py-3">
-                <span class="badge bg-success m-0">Delivered</span>
-              </td>
-              <td class="py-3">$2,133.90</td>
-            </tr>
-            <tr>
-              <td class="py-3">
-                <a
-                  class="nav-link-style fw-medium fs-sm"
-                  href="#order-details"
-                  data-bs-toggle="modal"
-                >
-                  47H76G09F33
-                </a>
-              </td>
-              <td class="py-3">March 30, 2018</td>
-              <td class="py-3">
-                <span class="badge bg-success m-0">Delivered</span>
-              </td>
-              <td class="py-3">$86.40</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <nav
-        class="d-flex justify-content-between pt-2"
-        aria-label="Page navigation"
-      >
-        <ul class="pagination">
-          <li class="page-item">
-            <a class="page-link" href="#">
-              <i class="ci-arrow-left me-2"></i>Prev
-            </a>
-          </li>
-        </ul>
-        <ul class="pagination">
-          <li class="page-item d-sm-none">
-            <span class="page-link page-link-static">1 / 5</span>
-          </li>
-          <li class="page-item active d-none d-sm-block" aria-current="page">
-            <span class="page-link">
-              1<span class="visually-hidden">(current)</span>
-            </span>
-          </li>
-          <li class="page-item d-none d-sm-block">
-            <a class="page-link" href="#">
-              2
-            </a>
-          </li>
-          <li class="page-item d-none d-sm-block">
-            <a class="page-link" href="#">
-              3
-            </a>
-          </li>
-          <li class="page-item d-none d-sm-block">
-            <a class="page-link" href="#">
-              4
-            </a>
-          </li>
-          <li class="page-item d-none d-sm-block">
-            <a class="page-link" href="#">
-              5
-            </a>
-          </li>
-        </ul>
-        <ul class="pagination">
-          <li class="page-item">
-            <a class="page-link" href="#" aria-label="Next">
-              Next<i class="ci-arrow-right ms-2"></i>
-            </a>
-          </li>
-        </ul>
-      </nav>
-    </section>
+    <>
+      {loading ? (
+        <>
+          <div className="col-lg-8 text-white">Loading...</div>
+        </>
+      ) : (
+        <>
+          <section className="col-lg-8">
+            <div className="d-flex justify-content-between align-items-center pt-lg-2 pb-4 pb-lg-5 mb-lg-3">
+              <div className="d-flex align-items-center">
+                <h6 className="fs-base text-light mb-0">Order Details:</h6>
+              </div>
+              <a
+                className="btn btn-primary btn-sm d-none d-lg-inline-block"
+                href="account-signin.html"
+              >
+                <i className="ci-sign-out me-2"></i>Sign out
+              </a>
+            </div>
+            <div className="table-responsive fs-md mb-4">
+              <table className="table table-hover mb-0">
+                <thead>
+                  <tr>
+                    <th>Order #</th>
+                    <th>Date Purchased</th>
+                    <th>Status</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {myOrder &&
+                    myOrder.map((order, i) => (
+                      <tr key={i}>
+                        <td className="py-3">
+                          <NavLink
+                            className="nav-link-style fw-medium fs-sm"
+                            data-bs-toggle="modal"
+                            data-bs-target={`#order-detail-${order._id}`}
+                          >
+                            {order._id}
+                          </NavLink>
+                        </td>
+
+                        <td className="py-3">
+                          {format(new Date(order?.createdAt), "MMMM dd, yyyy")}
+                        </td>
+                        <td className="py-3">
+                          {order.status === "new" ? (
+                            <>
+                              <span className="badge bg-info m-0">
+                                In Progress
+                              </span>
+                            </>
+                          ) : order.status === "cancelled" ? (
+                            <span className="badge bg-danger m-0">
+                              Cancelled
+                            </span>
+                          ) : order.status === "delivered" ? (
+                            <span className="badge bg-success m-0">
+                              Delivered
+                            </span>
+                          ) : (
+                            <></>
+                          )}
+                        </td>
+                        <td className="py-3">Rs. {order.totalAmt}</td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+              {myOrder &&
+                myOrder.map((order, i) => (
+                  <div
+                    key={i}
+                    className="modal fade"
+                    id={`order-detail-${order._id}`}
+                    aria-hidden="true"
+                    aria-labelledby={`order-detail-${order._id}`}
+                  >
+                    <div className="modal-dialog modal-lg modal-dialog-scrollable">
+                      <div className="modal-content">
+                        <div className="modal-header">
+                          <h5 className="modal-title">
+                            Order No - {order._id}
+                          </h5>
+                          <button
+                            className="btn-close"
+                            type="button"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                          ></button>
+                        </div>
+                        <div className="modal-body pb-0">
+                          {order.orderDetails.map((detail, i) => (
+                            <div
+                              key={i}
+                              className={`d-sm-flex justify-content-between my-4 ${
+                                i === order.orderDetails.length - 1
+                                  ? ""
+                                  : "pb-3 pb-sm-2 border-bottom"
+                              } `}
+                            >
+                              <div className="d-sm-flex text-center text-sm-start">
+                                <a
+                                  className="d-inline-block flex-shrink-0 mx-auto"
+                                  href="shop-single-v1.html"
+                                  style={{ width: "10rem" }}
+                                >
+                                  <img
+                                    className="img img-fluid"
+                                    src={`${
+                                      import.meta.env.VITE_IMAGE_URL
+                                    }/products/${detail.id.images[0]}`}
+                                    alt="Product"
+                                  />
+                                </a>
+                                <div className="ps-sm-4 pt-2">
+                                  <h5 className="product-title fs-base mb-2">
+                                    <a href={`/product/id/${detail.id._id}`}>
+                                      {detail.id.name}
+                                    </a>
+                                  </h5>
+                                  {detail?.brand ? (
+                                    <>
+                                      <div className="fs-sm">
+                                        <span className="text-muted me-2">
+                                          Brand:
+                                        </span>
+                                        {detail.brand.name}
+                                      </div>
+                                    </>
+                                  ) : (
+                                    <></>
+                                  )}
+                                  {/* <div className="fs-sm">
+                                    <span className="text-muted me-2">
+                                      Color:
+                                    </span>
+                                    Pink / Beige / Dark blue
+                                  </div> */}
+                                  <div className="fs-lg text-accent pt-2">
+                                    {/* 22.<small>50</small> */}
+                                    Rs. {detail.price.toLocaleString()}
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="pt-2 ps-sm-3 mx-auto mx-sm-0 text-center">
+                                <div className="text-muted mb-2">Quantity:</div>
+                                {detail.qty}
+                              </div>
+                              <div className="pt-2 ps-sm-3 mx-auto mx-sm-0 text-center">
+                                <div className="text-muted mb-2">Subtotal</div>
+                                {/* $22.<small>50</small> */}
+                                Rs. {detail.amt.toLocaleString()}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                        <div className="modal-footer flex-wrap justify-content-between bg-primary-l3 fs-md">
+                          {/* <div className="px-2 py-1">
+                            <span className="text-muted">Subtotal:&nbsp;</span>
+                            <span>Rs. {subAmt.toLocaleString()}</span>
+                          </div> */}
+                          <div className="px-2 py-1">
+                            <span className="text-muted">Shipping:&nbsp;</span>
+                            <span>{order.shippingFee.toLocaleString()}</span>
+                          </div>
+                          <div className="px-2 py-1">
+                            <span className="text-muted">Tax:&nbsp;</span>
+                            <span>Rs. {order.tax}</span>
+                          </div>
+                          <div className="px-2 py-1">
+                            <span className="text-muted">Total:&nbsp;</span>
+                            <span className="fs-lg">
+                              Rs. {order.totalAmt.toLocaleString()}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+            </div>
+          </section>
+        </>
+      )}
+    </>
   );
 };

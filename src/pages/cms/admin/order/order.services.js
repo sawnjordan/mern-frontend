@@ -9,6 +9,14 @@ class OrderService extends HttpService {
       throw error;
     }
   };
+  getMyOrders = async () => {
+    try {
+      let response = await this.getRequest("v1/orders/me", { auth: true });
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  };
 }
 
 export default OrderService;
