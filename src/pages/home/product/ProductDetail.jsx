@@ -2,18 +2,32 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Badge, Col, Container, Row } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { productServiceObj } from "../../cms/admin/product";
-import { Link, NavLink, useParams } from "react-router-dom";
+import { Link, NavLink, useNavigate, useParams } from "react-router-dom";
 import parse from "html-react-parser";
 import { ProductImagePreview } from "../../../components/common/product.image.preview";
 import ReactImageMagnify from "react-image-magnify";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setCartItems } from "../../../reducers/cart.reducers";
+import userProdServiceObj from "./product.services";
+import { FaHeart } from "react-icons/fa";
+import { getUserWishlist } from "../../../reducers/wishlist.reducers";
 
 export const ProductDetail = ({ slug }) => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const [productDetails, setProductDetails] = useState();
   const [bigImgUrl, setBigImgUrl] = useState("");
+  const navigate = useNavigate();
+  const loggedInUser = useSelector((state) => {
+    if (state.User?.loggedInUser) {
+      return state.User?.loggedInUser;
+    }
+  });
+  const wishlist = useSelector((state) => {
+    if (state.Wishlist?.wishlist) {
+      return state.Wishlist?.wishlist;
+    }
+  });
   const params = useParams();
 
   const { productSlug, productId } = params;
@@ -70,9 +84,50 @@ export const ProductDetail = ({ slug }) => {
     );
   };
 
+  const handleAddToWishlist = async (productId) => {
+    // console.log(productId);
+    // console.log(loggedInUser);
+    if (!loggedInUser) {
+      toast.warn("Please Login First.");
+      navigate("/login");
+    } else {
+      try {
+        let response = await userProdServiceObj.addToWishlist(productId);
+        const wishlistData = response.data?.data;
+        // console.log(wishlistData);
+        if (wishlistData?.isAdded) {
+          toast.success("Product added to wishlist.");
+        } else {
+          toast.success("Product removed from wishlist.");
+        }
+        dispatch(getUserWishlist());
+      } catch (error) {
+        toast.error("Something went wrong!!");
+      }
+    }
+  };
+
+  const isWishListAdded = () => {
+    if (productDetails && wishlist) {
+      const isAdded = wishlist.wishlist.filter((item) => {
+        return item._id === productDetails._id;
+      });
+      if (isAdded.length > 0) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  };
+
   useEffect(() => {
     getProductDetails();
-  }, [params, slug]);
+    if (loggedInUser) {
+      dispatch(getUserWishlist());
+    }
+  }, [params, slug, loggedInUser]);
+
+  // console.log(wishlist?.wishlist);
   // console.log(productDetails);
   return (
     <>
@@ -142,37 +197,88 @@ export const ProductDetail = ({ slug }) => {
                 </Col>
                 <Col lg={6} className="mt-5 p-4 bg-primary-l4 rounded-2">
                   <div className="product-content-right">
-                    <p style={{ margin: "0" }}>
-                      <NavLink
-                        className={"nav-link"}
-                        style={{ display: "inline-block" }}
-                        to={"/shop"}
-                      >
-                        Home
-                      </NavLink>{" "}
-                      /{" "}
-                      <NavLink
-                        className={"nav-link"}
-                        style={{ display: "inline-block" }}
-                        to={`/brand/${productDetails?.brand?._id}`}
-                      >
-                        {productDetails?.brand?.name}
-                      </NavLink>
-                    </p>
-                    <p style={{ margin: "0" }}>
-                      {productDetails.categories.map((cat, i) => (
-                        <NavLink key={i} to={`/category/${cat?.slug}`}>
-                          <Badge bg="warning me-1 mt-3">{cat.name}</Badge>
-                        </NavLink>
-                      ))}
-                    </p>
-                    <p style={{ margin: "0" }} className="mb-2">
-                      <NavLink to={`/brand/${productDetails.brand?.slug}`}>
-                        <Badge bg="info" className="me-1 mt-4">
-                          {productDetails.brand?.name}
-                        </Badge>
-                      </NavLink>
-                    </p>
+                    <div className="d-flex justify-content-between align-items-center mb-2">
+                      <div>
+                        <p style={{ margin: "0" }}>
+                          <NavLink
+                            className={"nav-link"}
+                            style={{ display: "inline-block" }}
+                            to={"/shop"}
+                          >
+                            Home
+                          </NavLink>{" "}
+                          /{" "}
+                          <NavLink
+                            className={"nav-link"}
+                            style={{ display: "inline-block" }}
+                            to={`/brand/${productDetails?.brand?._id}`}
+                          >
+                            {productDetails?.brand?.name}
+                          </NavLink>
+                        </p>
+                        <p style={{ margin: "0" }}>
+                          {productDetails.categories.map((cat, i) => (
+                            <NavLink key={i} to={`/category/${cat?.slug}`}>
+                              <Badge bg="warning me-1 mt-3">{cat.name}</Badge>
+                            </NavLink>
+                          ))}
+                        </p>
+                        <p style={{ margin: "0" }} className="mb-2">
+                          <NavLink to={`/brand/${productDetails.brand?.slug}`}>
+                            <Badge bg="info" className="me-1 mt-4">
+                              {productDetails.brand?.name}
+                            </Badge>
+                          </NavLink>
+                        </p>
+                      </div>
+                      <div className="div">
+                        {!loggedInUser ? (
+                          <>
+                            <button
+                              className="btn-wishlist me-0 me-lg-n3"
+                              type="button"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                handleAddToWishlist(productDetails._id);
+                              }}
+                            >
+                              <FaHeart size={26} />
+                            </button>
+                          </>
+                        ) : (
+                          <>
+                            {wishlist && productDetails && isWishListAdded() ? (
+                              <>
+                                <button
+                                  className="btn-wishlist-added me-0 me-lg-n3"
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    handleAddToWishlist(productDetails._id);
+                                  }}
+                                >
+                                  <FaHeart size={26} />
+                                </button>
+                              </>
+                            ) : (
+                              <>
+                                <button
+                                  className="btn-wishlist me-0 me-lg-n3"
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    handleAddToWishlist(productDetails._id);
+                                  }}
+                                >
+                                  <FaHeart size={26} />
+                                </button>
+                              </>
+                            )}
+                          </>
+                        )}
+                      </div>
+                    </div>
+
                     <h2>{productDetails?.name}</h2>
                     {productDetails?.afterDiscount !== null ? (
                       <>
