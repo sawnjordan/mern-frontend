@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 
-export const BuyerPageHeader = () => {
+export const BuyerPageHeader = ({ breadcrumb }) => {
   const loggedInUser = useSelector((state) => {
     return state?.User?.loggedInUser;
   });
@@ -24,13 +24,13 @@ export const BuyerPageHeader = () => {
                 className="breadcrumb-item text-nowrap active"
                 aria-current="page"
               >
-                Profile
+                {breadcrumb?.link}
               </li>
             </ol>
           </nav>
         </div>
         <div className="order-lg-1 pe-lg-4 text-center text-lg-start">
-          <h1 className="h3 text-light mb-0">My Profile</h1>
+          <h1 className="h3 text-light mb-0">{breadcrumb?.title}</h1>
         </div>
       </div>
     </div>

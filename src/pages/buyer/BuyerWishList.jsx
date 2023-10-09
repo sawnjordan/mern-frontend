@@ -4,11 +4,13 @@ import {
   getUserWishlist,
   updateUserWishlist,
 } from "../../reducers/wishlist.reducers";
-import { NavLink } from "react-router-dom";
+import { NavLink, useOutletContext } from "react-router-dom";
 import { toast } from "react-toastify";
 
 export const BuyerWishList = () => {
   const dispatch = useDispatch();
+  const { breadcrumb } = useOutletContext();
+
   const { wishlist, loading } = useSelector((state) => {
     if (state?.Wishlist) {
       return state?.Wishlist;
@@ -48,9 +50,7 @@ export const BuyerWishList = () => {
         <>
           <section className="col-lg-8">
             <div className="d-none d-lg-flex justify-content-between align-items-center pt-lg-3 pb-4 pb-lg-5 mb-lg-3">
-              <h6 className="fs-base text-light mb-0">
-                List of items you added to wishlist:
-              </h6>
+              <h6 className="fs-base text-light mb-0">{breadcrumb?.text}</h6>
               <a className="btn btn-primary btn-sm" href="account-signin.html">
                 <i className="ci-sign-out me-2"></i>Sign out
               </a>

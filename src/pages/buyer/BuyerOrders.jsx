@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { OrderServiceObj } from "../cms/admin/order";
 import { format } from "date-fns";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useOutletContext } from "react-router-dom";
 
 export const BuyerOrders = () => {
   const [myOrder, setMyOrder] = useState();
   const [loading, setLoading] = useState(true);
+  const { breadcrumb } = useOutletContext();
 
   const getMyOrders = async () => {
     try {
@@ -36,7 +37,7 @@ export const BuyerOrders = () => {
           <section className="col-lg-8">
             <div className="d-flex justify-content-between align-items-center pt-lg-2 pb-4 pb-lg-5 mb-lg-3">
               <div className="d-flex align-items-center">
-                <h6 className="fs-base text-light mb-0">Order Details:</h6>
+                <h6 className="fs-base text-light mb-0">{breadcrumb?.text}</h6>
               </div>
               <a
                 className="btn btn-primary btn-sm d-none d-lg-inline-block"
