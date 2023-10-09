@@ -1,6 +1,11 @@
 import React from "react";
+import { useSelector } from "react-redux";
+import { NavLink } from "react-router-dom";
 
 export const BuyerPageHeader = () => {
+  const loggedInUser = useSelector((state) => {
+    return state?.User?.loggedInUser;
+  });
   return (
     <div className="page-title-overlap bg-dark pt-4">
       <div className="container d-lg-flex justify-content-between py-2 py-lg-3">
@@ -13,7 +18,7 @@ export const BuyerPageHeader = () => {
                 </a>
               </li>
               <li className="breadcrumb-item text-nowrap">
-                <a href="#">Account</a>
+                <NavLink to={`/${loggedInUser?.role}`}>Account</NavLink>
               </li>
               <li
                 className="breadcrumb-item text-nowrap active"

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { OrderServiceObj } from "../../cms/admin/order";
+import { FaEnvelope } from "react-icons/fa";
 
 export const BuyerSidebar = () => {
   const [loading, setLoading] = useState(true);
@@ -9,10 +10,15 @@ export const BuyerSidebar = () => {
   const loggedInUser = useSelector((state) => {
     return state.User?.loggedInUser;
   });
+  const wishlist = useSelector((state) => {
+    if (state?.Wishlist) {
+      return state.Wishlist?.wishlist;
+    }
+  });
   const getMyOrders = async () => {
     try {
       let response = await OrderServiceObj.getMyOrders();
-      console.log(response);
+      // console.log(response);
       let orderData = response.data?.data?.length;
       setTotalOrders(orderData);
     } catch (error) {
@@ -21,11 +27,11 @@ export const BuyerSidebar = () => {
       setLoading(false);
     }
   };
-  console.log(totalOrders);
+  // console.log(totalOrders);
   useEffect(() => {
     getMyOrders();
   }, []);
-  // console.log(loggedInUser);
+  // console.log(wishlist);
   return (
     <>
       {loading ? (
@@ -57,9 +63,9 @@ export const BuyerSidebar = () => {
                   </div>
                   <div className="ps-md-3">
                     <h3 className="fs-base mb-0">{loggedInUser?.name}</h3>
-                    <span className="text-accent fs-sm">
-                      {loggedInUser?.email}
-                    </span>
+                    <p className="text-accent fs-sm mt-2 fst-italic">
+                      <FaEnvelope className="me-2" /> {loggedInUser?.email}
+                    </p>
                   </div>
                 </div>
                 <a
@@ -73,7 +79,7 @@ export const BuyerSidebar = () => {
               </div>
               <div className="d-lg-block collapse" id="account-menu">
                 <div className="bg-primary-l1 px-4 py-3">
-                  <h3 className="fs-sm mb-0 text-white">Dashboard</h3>
+                  <h4 className="fs-sm mb-0 text-white">Dashboard</h4>
                 </div>
                 <ul className="list-unstyled mb-0">
                   <li className="border-bottom mb-0">
@@ -93,12 +99,14 @@ export const BuyerSidebar = () => {
                       to="/customer/wishlist"
                     >
                       <i className="ci-heart opacity-60 me-2"></i>Wishlist
-                      <span className="fs-sm text-muted ms-auto">3</span>
+                      <span className="fs-sm text-muted ms-auto">
+                        {wishlist?.wishlist.length}
+                      </span>
                     </NavLink>
                   </li>
                 </ul>
                 <div className="bg-primary-l1 px-4 py-3">
-                  <h3 className="fs-sm mb-0 text-white">Account settings</h3>
+                  <h4 className="fs-sm mb-0 text-white">Account settings</h4>
                 </div>
                 <ul className="list-unstyled mb-0">
                   <li className="border-bottom mb-0">

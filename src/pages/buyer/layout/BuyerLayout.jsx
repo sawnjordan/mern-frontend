@@ -5,6 +5,7 @@ import { getLoggedInUser } from "../../../reducers/user.reducers";
 import { BuyerPageHeader } from "../components/BuyerPageHeader";
 import { BuyerSidebar } from "../components/BuyerSidebar";
 import { Outlet } from "react-router-dom";
+import { getUserWishlist } from "../../../reducers/wishlist.reducers";
 
 export const BuyerLayout = () => {
   const dispatch = useDispatch();
@@ -12,6 +13,7 @@ export const BuyerLayout = () => {
     let token = localStorage.getItem("token") ?? null;
     if (token) {
       dispatch(getLoggedInUser());
+      dispatch(getUserWishlist());
     }
   }, []);
   return (

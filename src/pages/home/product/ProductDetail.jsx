@@ -93,9 +93,10 @@ export const ProductDetail = ({ slug }) => {
     } else {
       try {
         let response = await userProdServiceObj.addToWishlist(productId);
-        const wishlistData = response.data?.data;
+        // const wishlistData = response.data?.data;
+        const isAdded = response.data?.isAdded;
         // console.log(wishlistData);
-        if (wishlistData?.isAdded) {
+        if (isAdded) {
           toast.success("Product added to wishlist.");
         } else {
           toast.success("Product removed from wishlist.");
