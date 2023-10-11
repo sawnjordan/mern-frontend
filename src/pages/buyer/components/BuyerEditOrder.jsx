@@ -63,6 +63,8 @@ export const BuyerEditOrder = () => {
         <>
           <div className="col-lg-8 text-white">Loading...</div>
         </>
+      ) : myOrder && myOrder.length === 0 ? (
+        <div className="col-lg-8 text-white">Order not found...</div>
       ) : (
         myOrder && (
           <>
