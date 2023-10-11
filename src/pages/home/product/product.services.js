@@ -35,10 +35,30 @@ class ProductServices extends HttpService {
       throw error;
     }
   };
+  getMyOrder = async (orderId) => {
+    try {
+      let response = await this.getRequest(`/v1/orders/me/${orderId}`, {
+        auth: true,
+      });
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  };
 
   updateUserOrder = async (orderId, data) => {
     try {
       let response = await this.putRequest(`/v1/orders/${orderId}`, data, {
+        auth: true,
+      });
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  };
+  updateMyOrder = async (orderId, data) => {
+    try {
+      let response = await this.putRequest(`/v1/orders/me/${orderId}`, data, {
         auth: true,
       });
       return response;

@@ -3,6 +3,8 @@ import { toast } from "react-toastify";
 import { OrderServiceObj } from "../cms/admin/order";
 import { format } from "date-fns";
 import { Link, NavLink, useOutletContext } from "react-router-dom";
+import { Button } from "react-bootstrap";
+import { FaEdit } from "react-icons/fa";
 
 export const BuyerOrders = () => {
   const [myOrder, setMyOrder] = useState();
@@ -52,8 +54,10 @@ export const BuyerOrders = () => {
                   <tr>
                     <th>Order #</th>
                     <th>Date Purchased</th>
+                    <th>Buyer Name</th>
                     <th>Status</th>
                     <th>Total</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -73,6 +77,8 @@ export const BuyerOrders = () => {
                         <td className="py-3">
                           {format(new Date(order?.createdAt), "MMMM dd, yyyy")}
                         </td>
+                        <td className="py-3">{order.buyer?.name}</td>
+
                         <td className="py-3">
                           {order.status === "new" ? (
                             <>
@@ -93,6 +99,17 @@ export const BuyerOrders = () => {
                           )}
                         </td>
                         <td className="py-3">Rs. {order.totalAmt}</td>
+                        <td className="py-3">
+                          <NavLink to={`/customer/order/${order?._id}`}>
+                            <Button
+                              variant=""
+                              className="link-success"
+                              size="sm"
+                            >
+                              <FaEdit />
+                            </Button>
+                          </NavLink>
+                        </td>
                       </tr>
                     ))}
                 </tbody>

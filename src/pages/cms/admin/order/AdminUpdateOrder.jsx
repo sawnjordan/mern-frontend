@@ -52,7 +52,7 @@ export const AdminUpdateOrder = () => {
           <>
             <div className="row d-flex justify-content-around">
               <div className="col-12 col-lg-7 order-details">
-                <h1 className="mt-4">Banner List</h1>
+                <h1 className="mt-4">Order List</h1>
                 <ol className="breadcrumb mb-4">
                   <li className="breadcrumb-item">
                     <NavLink to="/admin">Dashboard</NavLink>

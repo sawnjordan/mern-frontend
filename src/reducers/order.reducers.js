@@ -13,6 +13,18 @@ export const getUserOrder = createAsyncThunk(
     }
   }
 );
+export const getMyOrder = createAsyncThunk(
+  "order/getMyOrder",
+  async (orderId) => {
+    try {
+      let response = await userProdServiceObj.getMyOrder(orderId);
+      //   console.log(response.data.data);
+      return response.data?.data;
+    } catch (error) {
+      throw "Something went wrong while fetching order.";
+    }
+  }
+);
 // export const updateUserOrder = createAsyncThunk(
 //   "order/updateUserOrder",
 //   async (productId, data) => {
@@ -27,7 +39,7 @@ export const getUserOrder = createAsyncThunk(
 
 const OrderSlice = createSlice({
   name: "order",
-  initialState: { order: null },
+  initialState: { order: null, myOrder: null },
 
   extraReducers: (builder) => {
     builder.addCase(getUserOrder.pending, (state, action) => {
@@ -42,18 +54,17 @@ const OrderSlice = createSlice({
       state.order = null;
       state.loading = false;
     });
-    // builder.addCase(updateUserOrder.pending, (state, action) => {
-    //   state.order = null;
-    //   state.loading = true;
-    // });
-    // builder.addCase(updateUserOrder.fulfilled, (state, action) => {
-    //   state.order = action.payload;
-    //   state.loading = false;
-    // });
-    // builder.addCase(updateUserOrder.rejected, (state, action) => {
-    //   state.order = null;
-    //   state.loading = false;
-    // });
+    builder.addCase(getMyOrder.pending, (state, action) => {
+      state.order = null;
+      state.loading = true;
+    });
+    builder.addCase(getMyOrder.fulfilled, (state, action) => {
+      state.myOrder = action.payload;
+      state.loading = false;
+    });
+    builder.addCase(getMyOrder.rejected, (state, action) => {
+      state.loading = false;
+    });
   },
 });
 

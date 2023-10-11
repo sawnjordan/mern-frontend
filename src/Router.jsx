@@ -54,6 +54,7 @@ import { BuyerOrders } from "./pages/buyer/BuyerOrders";
 import { BuyerWishList } from "./pages/buyer/BuyerWishList";
 import { BuyerChangePassword } from "./pages/buyer/components/BuyerChangePassword";
 import { AdminUpdateOrder } from "./pages/cms/admin/order/AdminUpdateOrder";
+import { BuyerEditOrder } from "./pages/buyer/components/BuyerEditOrder";
 // import { AdminCreateBanner } from "./pages/cms/admin/banner/AdminCreateBanner";
 // import { BannerList } from "./pages/cms/admin/banner/BannerList";
 
@@ -138,6 +139,7 @@ export const Routing = () => {
             >
               <Route index element={<BuyerDashboard />}></Route>
               <Route path="orders" element={<BuyerOrders />}></Route>
+              <Route path="order/:orderId" element={<BuyerEditOrder />}></Route>
               <Route path="wishlist" element={<BuyerWishList />}></Route>
               {/* <Route path="address" element={<BuyerAddress />}></Route> */}
               <Route
