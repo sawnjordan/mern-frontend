@@ -202,25 +202,14 @@ footer .list-group-item-action:hover {
   background-color: var(--primary-color-l1);
   color: #ffffff;
 }
-/* Use media queries to adjust the height for larger screens */
-@media (min-width: 768px) {
-  .product-image-height {
-    min-height: 300px;
-  }
+.password-toggle-btn
+  .password-toggle-check:checked
+  ~ .password-toggle-indicator::before {
+  content: "";
 }
-
-@media (min-width: 992px) {
-  .product-image-height {
-    min-height: 350px;
-  }
+.password-toggle-btn .password-toggle-indicator::before {
+  content: "f06e";
 }
-/* media queries */
-@media (min-width: 992px) {
-  .nav-items {
-    border-bottom: none;
-  }
-}
-
 .avatar-lg {
   height: 5rem;
   width: 5rem;
@@ -298,9 +287,33 @@ a {
 .password-toggle-btn .password-toggle-indicator {
   transition: color 0.2s ease-in-out;
   color: #7d879c;
-  font-family: "cartzilla-icons";
+  font-family: "fontAwesome";
   font-style: normal;
 }
+.password-toggle-btn
+  .password-toggle-check:checked
+  ~ .password-toggle-indicator::before {
+  content: "\f070";
+}
 .password-toggle-btn .password-toggle-indicator::before {
-  content: "";
+  content: "\f06e";
+}
+
+/* Use media queries to adjust the height for larger screens */
+@media (min-width: 768px) {
+  .product-image-height {
+    min-height: 300px;
+  }
+}
+
+@media (min-width: 992px) {
+  .product-image-height {
+    min-height: 350px;
+  }
+}
+/* media queries */
+@media (min-width: 992px) {
+  .nav-items {
+    border-bottom: none;
+  }
 }

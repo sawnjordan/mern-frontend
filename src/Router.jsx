@@ -53,6 +53,7 @@ import { BuyerDashboard } from "./pages/buyer/components/BuyerDashboard";
 import { BuyerOrders } from "./pages/buyer/BuyerOrders";
 import { BuyerWishList } from "./pages/buyer/BuyerWishList";
 import { BuyerChangePassword } from "./pages/buyer/components/BuyerChangePassword";
+import { AdminUpdateOrder } from "./pages/cms/admin/order/AdminUpdateOrder";
 // import { AdminCreateBanner } from "./pages/cms/admin/banner/AdminCreateBanner";
 // import { BannerList } from "./pages/cms/admin/banner/BannerList";
 
@@ -127,6 +128,7 @@ export const Routing = () => {
 
               {/* Admin Order Route */}
               <Route path="orders" element={<AdminOrderList />} />
+              <Route path="order/:id" element={<AdminUpdateOrder />} />
             </Route>
             <Route
               path="/customer"

@@ -92,7 +92,7 @@ export const AdminOrderList = () => {
               <FaTrash />
             </Button>
           </NavLink>
-          <NavLink to={`/admin/orders/${row?._id}`}>
+          <NavLink to={`/admin/order/${row?._id}`}>
             <Button variant="" className="link-success" size="sm">
               <FaEdit />
             </Button>
