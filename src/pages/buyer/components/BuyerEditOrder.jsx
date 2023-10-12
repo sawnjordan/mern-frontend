@@ -54,6 +54,7 @@ export const BuyerEditOrder = () => {
   useEffect(() => {
     dispatch(getMyOrder(params?.orderId));
   }, []);
+  console.log(myOrder);
 
   return (
     <>
@@ -246,8 +247,8 @@ export const BuyerEditOrder = () => {
                           onChange={(e) => setStatus(e.target.value)}
                           disabled={status === "cancelled" ? true : false}
                         >
-                          <option value="new" disabled>
-                            New
+                          <option value={myOrder.status} disabled>
+                            {myOrder?.status === "pending" ? "Pending" : "New"}
                           </option>
                           <option value="cancelled">Cancelled</option>
                         </select>
@@ -259,7 +260,7 @@ export const BuyerEditOrder = () => {
                         disabled={status === "cancelled" ? true : false}
                         onClick={(e) => {
                           e.preventDefault();
-                          if (status === "new") {
+                          if (status === "new" || status === "pending") {
                             toast.warn("Status Not changed.");
                           } else {
                             handleUpdateOrder();

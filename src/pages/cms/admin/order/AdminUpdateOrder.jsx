@@ -235,6 +235,7 @@ export const AdminUpdateOrder = () => {
                     value={status}
                     onChange={(e) => setStatus(e.target.value)}
                   >
+                    <option value="new">New</option>
                     <option value="pending">Pending</option>
                     <option value="cancelled">Cancelled</option>
                     <option value="delivered">Delivered</option>

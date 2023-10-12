@@ -139,7 +139,7 @@ export const ProductDetail = ({ slug }) => {
   }, [params, slug, loggedInUser]);
 
   // console.log(isInWishlist, "here");
-  console.log(productDetails);
+  // console.log(productDetails);
   return (
     <>
       {loading ? (
@@ -206,7 +206,7 @@ export const ProductDetail = ({ slug }) => {
                     ))}
                   </Row>
                 </Col>
-                <Col lg={6} className="mt-5 p-4 bg-primary-l4 rounded-2">
+                <Col lg={6} className="mt-5 p-4 bg-light rounded-2">
                   <div className="product-content-right">
                     <div className="d-flex justify-content-between align-items-center mb-2">
                       <div>

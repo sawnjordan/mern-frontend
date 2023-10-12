@@ -95,7 +95,11 @@ export const BuyerOrders = () => {
                               Delivered
                             </span>
                           ) : (
-                            <></>
+                            <>
+                              <span className="badge bg-warning m-0">
+                                Pending
+                              </span>
+                            </>
                           )}
                         </td>
                         <td className="py-3">Rs. {order.totalAmt}</td>
