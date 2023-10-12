@@ -54,7 +54,6 @@ export const BuyerEditOrder = () => {
   useEffect(() => {
     dispatch(getMyOrder(params?.orderId));
   }, []);
-  console.log(myOrder);
 
   return (
     <>
