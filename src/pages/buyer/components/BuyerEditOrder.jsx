@@ -244,6 +244,7 @@ export const BuyerEditOrder = () => {
                           name="status"
                           value={status}
                           onChange={(e) => setStatus(e.target.value)}
+                          disabled={status === "cancelled" ? true : false}
                         >
                           <option value="new" disabled>
                             New
@@ -255,6 +256,7 @@ export const BuyerEditOrder = () => {
                       <button
                         className="btn btn-primary btn-block"
                         type="button"
+                        disabled={status === "cancelled" ? true : false}
                         onClick={(e) => {
                           e.preventDefault();
                           if (status === "new") {

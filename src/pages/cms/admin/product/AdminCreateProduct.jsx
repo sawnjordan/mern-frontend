@@ -29,6 +29,11 @@ export const AdminCreateProduct = () => {
     description: Yup.string().nullable(),
     costPrice: Yup.number().min(1).required("Cost Price is required."),
     price: Yup.number().min(1).required("Selling Price is required."),
+    stock: Yup.number()
+      .required("Stock is required.")
+      .test("is-positive", "Stock must be a positive number", (value) => {
+        return value >= 0;
+      }),
     discount: Yup.number().min(0).default(0),
     brand: Yup.string().required("Brand is required."),
     sellerId: Yup.string().nullable(),
@@ -69,7 +74,7 @@ export const AdminCreateProduct = () => {
     });
     catIds = catIds.join(",");
     data.categories = catIds;
-    console.log(data, "before");
+    // console.log(data, "before");
 
     const formData = new FormData();
     Object.keys(data).map((fieldName) => {
@@ -81,11 +86,12 @@ export const AdminCreateProduct = () => {
         formData.append(fieldName, data[fieldName]);
       }
     });
-    for (const [key, value] of formData.entries()) {
-      console.log(key, value);
-    }
 
     // data.image = data.image[0];
+    // for (const pair of formData.entries()) {
+    //   const [fieldName, fieldValue] = pair;
+    //   console.log(fieldName, fieldValue);
+    // }
 
     //API Integration
 
@@ -94,9 +100,9 @@ export const AdminCreateProduct = () => {
       let response = await productServiceObj.createProduct(formData);
       toast.success(response?.data?.msg);
       navigate("/admin/product");
-      console.log(response);
+      // console.log(response);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       toast.error(error?.data?.msg);
     } finally {
       setLoading(false);
@@ -269,6 +275,29 @@ export const AdminCreateProduct = () => {
                         />
                         <div className="text-danger mt-2">
                           {errors && errors.price?.message}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="row mt-3">
+                      <div className="col-lg-3 d-flex align-items-center">
+                        <label htmlFor="stock" className="form-label fw-medium">
+                          Stock:
+                        </label>
+                      </div>
+
+                      <div className="col-lg-9">
+                        <input
+                          type="number"
+                          {...register("stock", {
+                            required: "Stock is required.",
+                          })}
+                          className="form-control"
+                          placeholder="Enter quantity"
+                          min={0}
+                        />
+                        <div className="text-danger mt-2">
+                          {errors && errors.stock?.message}
                         </div>
                       </div>
                     </div>

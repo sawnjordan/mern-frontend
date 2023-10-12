@@ -35,6 +35,11 @@ export const AdminUpdateProduct = () => {
     discount: Yup.number().min(0).default(0),
     brand: Yup.string().required("Brand is required."),
     sellerId: Yup.string().nullable(),
+    stock: Yup.number()
+      .required("Stock is required.")
+      .test("is-positive", "Stock musdfsdst be a positive number", (value) => {
+        return value >= 0;
+      }),
     status: Yup.string()
       .matches(/active|inactive/, "Invalid value for status.")
       .default("inactive"),
@@ -86,9 +91,9 @@ export const AdminUpdateProduct = () => {
         formData.append(fieldName, data[fieldName]);
       }
     });
-    for (const [key, value] of formData.entries()) {
-      console.log(key, value);
-    }
+    // for (const [key, value] of formData.entries()) {
+    //   console.log(key, value);
+    // }
 
     // data.image = data.image[0];
 
@@ -207,6 +212,7 @@ export const AdminUpdateProduct = () => {
       setValue("description", productData.description);
       setValue("costPrice", productData.costPrice);
       setValue("price", productData.price);
+      setValue("stock", productData.stock);
       setValue("discount", productData.discount);
       setValue("brand", productData?.brand?._id);
       setValue("sellerId", productData?.sellerId?._id);
@@ -367,6 +373,32 @@ export const AdminUpdateProduct = () => {
                             />
                             <div className="text-danger mt-2">
                               {errors && errors.price?.message}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="row mt-3">
+                          <div className="col-lg-3 d-flex align-items-center">
+                            <label
+                              htmlFor="stock"
+                              className="form-label fw-medium"
+                            >
+                              Stock:
+                            </label>
+                          </div>
+
+                          <div className="col-lg-9">
+                            <input
+                              type="number"
+                              {...register("stock", {
+                                required: "Stock is required.",
+                              })}
+                              className="form-control"
+                              placeholder="Enter quantity"
+                              min={0}
+                            />
+                            <div className="text-danger mt-2">
+                              {errors && errors.stock?.message}
                             </div>
                           </div>
                         </div>

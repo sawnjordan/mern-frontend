@@ -35,7 +35,7 @@ export const ProductDetail = ({ slug }) => {
 
   const { productSlug, productId } = params;
 
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(1);
   // console.log(productSlug);
 
   const getProductDetails = useCallback(async () => {
@@ -61,14 +61,17 @@ export const ProductDetail = ({ slug }) => {
   }, [slug, productSlug, productId]);
 
   const increaseQty = () => {
-    const stock = quantity + 1;
+    const count = document.querySelector(".count");
+    if (count.valueAsNumber >= productDetails.stock) return;
+
+    const stock = count.valueAsNumber + 1;
     setQuantity(stock);
   };
   const decreaseQty = () => {
     const count = document.querySelector(".count");
-    if (count.valueAsNumber <= 0) return;
+    if (count.valueAsNumber <= 1) return;
 
-    const stock = quantity - 1;
+    const stock = count.valueAsNumber - 1;
     setQuantity(stock);
   };
 
@@ -135,8 +138,8 @@ export const ProductDetail = ({ slug }) => {
     }
   }, [params, slug, loggedInUser]);
 
-  console.log(isInWishlist, "here");
-  // console.log(productDetails);
+  // console.log(isInWishlist, "here");
+  console.log(productDetails);
   return (
     <>
       {loading ? (
@@ -313,19 +316,6 @@ export const ProductDetail = ({ slug }) => {
                       </>
                     )}
                   </div>
-                  {/* <select
-                    className="form-select mt-3"
-                    style={{ width: "200px" }}
-                    aria-label="Select Size"
-                    defaultValue={""}
-                  >
-                    <option value="">Select Size</option>
-                    <option value="xxl">XXL</option>
-                    <option value="xl">XL</option>
-                    <option value="large">Large</option>
-                    <option value="medium">Medium</option>
-                    <option value="small">Small</option>
-                  </select> */}
 
                   <div className="d-flex gap-3 align-items-center">
                     <label htmlFor="quantity" className="form-label mt-3">
@@ -362,11 +352,33 @@ export const ProductDetail = ({ slug }) => {
                       onClick={}
                     /> */}
                   </div>
+                  <p>
+                    Status:{" "}
+                    {productDetails?.stock === 0 ? (
+                      <>
+                        <Badge bg="danger" className="p-1">
+                          Out of Stock
+                        </Badge>
+                      </>
+                    ) : (
+                      <>
+                        <Badge bg="success" className="p-1">
+                          In Stock
+                          {productDetails?.stock <= 5 ? (
+                            <> ( {productDetails.stock} Item/s )</>
+                          ) : (
+                            <></>
+                          )}
+                        </Badge>
+                      </>
+                    )}
+                  </p>
 
                   <p className="mt-3">
                     <button
                       onClick={handleAddToCart}
                       className="btn rounded-pill btn-primary"
+                      disabled={productDetails?.stock === 0 ? true : false}
                     >
                       Add To Cart
                     </button>

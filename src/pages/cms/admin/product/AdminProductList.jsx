@@ -30,6 +30,10 @@ export const AdminProductList = () => {
       selector: (row) => row.brand.name,
     },
     {
+      name: "Stock",
+      selector: (row) => row.stock,
+    },
+    {
       name: "Seller",
       selector: (row) => row.sellerId.name,
     },
