@@ -298,6 +298,9 @@ a {
 .password-toggle-btn .password-toggle-indicator::before {
   content: "\f06e";
 }
+svg:focus {
+  outline: none;
+}
 
 /* Use media queries to adjust the height for larger screens */
 @media (min-width: 768px) {

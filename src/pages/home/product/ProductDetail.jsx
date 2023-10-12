@@ -11,13 +11,16 @@ import { setCartItems } from "../../../reducers/cart.reducers";
 import userProdServiceObj from "./product.services";
 import { FaHeart } from "react-icons/fa";
 import { getUserWishlist } from "../../../reducers/wishlist.reducers";
+import { Tooltip } from "react-tooltip";
 
 export const ProductDetail = ({ slug }) => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const [productDetails, setProductDetails] = useState();
+  const [wishlistAdded, setWishlistAdded] = useState();
   const [bigImgUrl, setBigImgUrl] = useState("");
   const navigate = useNavigate();
+  const [isInWishlist, setIsInWishlist] = useState(false);
   const loggedInUser = useSelector((state) => {
     if (state.User?.loggedInUser) {
       return state.User?.loggedInUser;
@@ -122,13 +125,17 @@ export const ProductDetail = ({ slug }) => {
   };
 
   useEffect(() => {
+    setIsInWishlist(isWishListAdded());
+  }, [wishlist]);
+
+  useEffect(() => {
     getProductDetails();
     if (loggedInUser) {
       dispatch(getUserWishlist());
     }
   }, [params, slug, loggedInUser]);
 
-  // console.log(wishlist?.wishlist);
+  console.log(isInWishlist, "here");
   // console.log(productDetails);
   return (
     <>
@@ -243,35 +250,40 @@ export const ProductDetail = ({ slug }) => {
                                 handleAddToWishlist(productDetails._id);
                               }}
                             >
-                              <FaHeart size={26} />
+                              <FaHeart
+                                data-tooltip-id="wishlist-add"
+                                size={26}
+                              />
                             </button>
                           </>
                         ) : (
                           <>
-                            {wishlist && productDetails && isWishListAdded() ? (
+                            {wishlist && productDetails && (
                               <>
                                 <button
-                                  className="btn-wishlist-added me-0 me-lg-n3"
+                                  className={
+                                    isInWishlist
+                                      ? "btn-wishlist-added me-0 me-lg-n3"
+                                      : "btn-wishlist me-0 me-lg-n3"
+                                  }
                                   type="button"
                                   onClick={(e) => {
                                     e.preventDefault();
                                     handleAddToWishlist(productDetails._id);
                                   }}
+                                  data-tooltip-id={
+                                    isInWishlist === undefined
+                                      ? ""
+                                      : isInWishlist
+                                      ? "wishlist-remove"
+                                      : "wishlist-add"
+                                  }
                                 >
-                                  <FaHeart size={26} />
-                                </button>
-                              </>
-                            ) : (
-                              <>
-                                <button
-                                  className="btn-wishlist me-0 me-lg-n3"
-                                  type="button"
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                    handleAddToWishlist(productDetails._id);
-                                  }}
-                                >
-                                  <FaHeart size={26} />
+                                  <FaHeart
+                                    // data-tooltip-id="wishlist-remove"
+
+                                    size={26}
+                                  />
                                 </button>
                               </>
                             )}
@@ -381,6 +393,9 @@ export const ProductDetail = ({ slug }) => {
               </Row>
             </Container>
           )}
+
+          <Tooltip id="wishlist-add" content="Add To Wishlist" />
+          <Tooltip id="wishlist-remove" content="Remove From Wishlist" />
         </>
       )}
     </>
