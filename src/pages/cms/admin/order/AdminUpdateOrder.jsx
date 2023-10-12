@@ -13,15 +13,16 @@ export const AdminUpdateOrder = () => {
     return state.Order;
   });
   const { loading, order } = orderState;
-  const [status, setStatus] = useState(null);
-  const [isPaid, setIsPaid] = useState(null);
+  const [status, setStatus] = useState("");
+  const [isPaid, setIsPaid] = useState("");
   const handelUpdateOrder = async () => {
     const data = {
       status,
       isPaid,
     };
+    // console.log(data, "here");
     let response = await userProdServiceObj.updateUserOrder(params.id, data);
-    // console.log(response);
+    console.log(response);
     toast.success(`${response.data?.msg}`);
     navigate("/admin/orders");
   };
@@ -33,6 +34,13 @@ export const AdminUpdateOrder = () => {
       setIsPaid(order.isPaid);
     }
   }, [order]);
+
+  useEffect(() => {
+    // Check if the order is not null before setting the values
+    if (status === "delivered") {
+      setIsPaid(true);
+    }
+  }, [status]);
 
   useEffect(() => {
     dispatch(getUserOrder(params?.id));

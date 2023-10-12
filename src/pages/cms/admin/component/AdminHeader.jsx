@@ -80,14 +80,9 @@ export const AdminHeader = () => {
               aria-labelledby="navbarDropdown"
             >
               <li>
-                <a className="dropdown-item" href="#!">
-                  Settings
-                </a>
-              </li>
-              <li>
-                <a className="dropdown-item" href="#!">
-                  Activity Log
-                </a>
+                <NavLink className="dropdown-item" to="/customer">
+                  Customer Dashboard
+                </NavLink>
               </li>
               <li>
                 <hr className="dropdown-divider" />

@@ -15,9 +15,7 @@ export const BuyerEditOrder = () => {
   });
   const { loading, myOrder } = orderState;
   const [status, setStatus] = useState("");
-  const handelUpdateOrder = async () => {
-    toast.success("Status not changed.");
-
+  const handleUpdateOrder = async () => {
     Swal.fire({
       title: "Cancel Order?",
       text: "You won't be able to revert this!",
@@ -259,7 +257,11 @@ export const BuyerEditOrder = () => {
                         type="button"
                         onClick={(e) => {
                           e.preventDefault();
-                          handelUpdateOrder();
+                          if (status === "new") {
+                            toast.warn("Status Not changed.");
+                          } else {
+                            handleUpdateOrder();
+                          }
                         }}
                       >
                         Update Status

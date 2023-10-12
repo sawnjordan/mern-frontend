@@ -4,14 +4,16 @@ import * as Yup from "yup";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { userServiceObj } from "../../cms/admin/user";
-import { getLoggedInUser } from "../../../reducers/user.reducers";
+import { getLoggedInUser, logoutUser } from "../../../reducers/user.reducers";
 import { toast } from "react-toastify";
-import { useOutletContext } from "react-router-dom";
+import { NavLink, useNavigate, useOutletContext } from "react-router-dom";
+import { FaSignOutAlt } from "react-icons/fa";
 
 export const BuyerDashboard = () => {
   const [loading, setLoading] = useState(false);
   const [newImageUrl, setNewImageUrl] = useState("");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { breadcrumb } = useOutletContext();
 
   const loggedInUser = useSelector((state) => {
@@ -98,6 +100,16 @@ export const BuyerDashboard = () => {
       setLoading(false);
     }
   };
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    try {
+      dispatch(logoutUser());
+      toast.success("Logged out.");
+      navigate("/login");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     setValue("name", loggedInUser?.name);
@@ -113,9 +125,9 @@ export const BuyerDashboard = () => {
     <section className="col-lg-8">
       <div className="d-none d-lg-flex justify-content-between align-items-center pt-lg-3 pb-4 pb-lg-5 mb-lg-3">
         <h6 className="fs-base text-light mb-0">{breadcrumb?.text}</h6>
-        <a className="btn btn-primary btn-sm" href="account-signin.html">
-          <i className="ci-sign-out me-2"></i>Sign out
-        </a>
+        <NavLink className="btn btn-primary btn-sm" onClick={handleLogout}>
+          <FaSignOutAlt /> Sign out
+        </NavLink>
       </div>
       <form
         className="form"
