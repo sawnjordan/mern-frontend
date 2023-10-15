@@ -21,7 +21,7 @@ export const CheckPermission = ({ Component, role }) => {
         // console.log(response);
       }
     } catch (error) {
-      console.log(error, "here");
+      // console.log(error, "here");
       toast.error(error?.data?.msg);
       navigate("/");
       // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZWRkNTFiZWY1Zjg3YTBlOGRkNjM1NSIsImlhdCI6MTY5MzU2MzcwOCwiZXhwIjoxNjk0MTY4NTA4fQ.QWP9KYgm5jdeZoh1SCyDgT1n44TuApTzvrZc0jCgEzo

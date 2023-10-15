@@ -55,6 +55,13 @@ import { BuyerWishList } from "./pages/buyer/BuyerWishList";
 import { BuyerChangePassword } from "./pages/buyer/components/BuyerChangePassword";
 import { AdminUpdateOrder } from "./pages/cms/admin/order/AdminUpdateOrder";
 import { BuyerEditOrder } from "./pages/buyer/components/BuyerEditOrder";
+import { SellerLayout } from "./pages/seller/layout/SellerLayout";
+import { SellerDashboard } from "./pages/seller/components/SellerDashboard";
+import { SellerOrders } from "./pages/seller/SellerOrders";
+import { SellerEditOrder } from "./pages/seller/components/SellerEditOrder";
+import { SellerWishList } from "./pages/seller/SellerWishList";
+import { SellerChangePassword } from "./pages/seller/components/SellerChangePassword";
+import { SellerProducts } from "./pages/seller/components/SellerProducts";
 // import { AdminCreateBanner } from "./pages/cms/admin/banner/AdminCreateBanner";
 // import { BannerList } from "./pages/cms/admin/banner/BannerList";
 
@@ -131,6 +138,8 @@ export const Routing = () => {
               <Route path="orders" element={<AdminOrderList />} />
               <Route path="order/:id" element={<AdminUpdateOrder />} />
             </Route>
+
+            {/* Customer/Buyer Dashboard Route */}
             <Route
               path="/customer"
               element={
@@ -145,6 +154,28 @@ export const Routing = () => {
               <Route
                 path="password-change"
                 element={<BuyerChangePassword />}
+              ></Route>
+            </Route>
+
+            {/* Seller Dashboard Route */}
+            <Route
+              path="/seller"
+              element={
+                <CheckPermission Component={<SellerLayout />} role="seller" />
+              }
+            >
+              <Route index element={<SellerDashboard />}></Route>
+              <Route path="orders" element={<SellerOrders />}></Route>
+              <Route
+                path="order/:orderId"
+                element={<SellerEditOrder />}
+              ></Route>
+              <Route path="wishlist" element={<SellerWishList />}></Route>
+              <Route path="products" element={<SellerProducts />}></Route>
+              {/* <Route path="address" element={<SellerAddress />}></Route> */}
+              <Route
+                path="password-change"
+                element={<SellerChangePassword />}
               ></Route>
             </Route>
           </Routes>

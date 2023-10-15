@@ -32,7 +32,7 @@ class ProductService extends HttpService {
     }
   };
 
-  getAllAdminProduct = async (perPage = 10, page = 1) => {
+  getAllAdminProduct = async (perPage = 100, page = 1) => {
     try {
       let response = await this.getRequest(
         `/v1/products?perPage=${perPage}&page=${page}`,
