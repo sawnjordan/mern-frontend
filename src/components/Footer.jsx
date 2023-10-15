@@ -1,4 +1,5 @@
 import React from "react";
+import footerLogo from "../assets/images/shopping-bag-icon.png";
 import { Col, Container, ListGroup, Navbar, Row } from "react-bootstrap";
 
 export const Footer = () => {
@@ -12,11 +13,7 @@ export const Footer = () => {
                 href="/template/index.html"
                 className="navbar-brand d-flex align-items-center pt-3"
               >
-                <img
-                  src="../../src/assets/images/shopping-bag-icon.png"
-                  alt="Site Logo"
-                  srcSet=""
-                />
+                <img src={footerLogo} alt="Site Logo" srcSet="" />
                 <span className="text-uppercase fw-lighter text-white">
                   eCommerce
                 </span>

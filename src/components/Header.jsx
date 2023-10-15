@@ -8,6 +8,8 @@ import {
   Modal,
   Navbar,
 } from "react-bootstrap";
+import logoImg from "../assets/images/shopping-bag-icon.png";
+
 import { FaSearch, FaShoppingCart, FaUser } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink, useNavigate, useSearchParams } from "react-router-dom";
@@ -115,11 +117,7 @@ export const Header = () => {
                 className="navbar-brand d-flex justify-content-between align-items-center order-lg-0"
                 to="/"
               >
-                <Image
-                  src="../../src/assets/images/shopping-bag-icon.png"
-                  alt="Site Logo"
-                  srcSet=""
-                />
+                <Image src={`${logoImg}`} alt="Site Logo" srcSet="" />
 
                 <span className="text-uppercase fw-lighter">eCommerce</span>
               </NavLink>
