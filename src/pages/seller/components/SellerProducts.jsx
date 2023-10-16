@@ -2,33 +2,20 @@ import React, { useEffect, useState } from "react";
 import { NavLink, useOutletContext } from "react-router-dom";
 import { toast } from "react-toastify";
 import sellerServiceObj from "../seller.services";
+import { useSelector } from "react-redux";
 
 export const SellerProducts = () => {
   const { breadcrumb } = useOutletContext();
   const [sellerProducts, setSellerProducts] = useState();
-  const [sellerProdMeta, setSellerProdMeta] = useState();
   const [loading, setLoading] = useState(false);
   const { getProdCount } = useOutletContext();
 
-  const getSellerProducts = async () => {
-    try {
-      setLoading(true);
-      let response = await sellerServiceObj.getSellerProducts();
-      setSellerProducts(response.data?.data);
-      setSellerProdMeta(response.data?.result);
-      const prodLenght = response.data?.data.length;
-      getProdCount(prodLenght);
-    } catch (error) {
-      toast.error("Something went wrong.");
-    } finally {
-      setLoading(false);
-    }
-  };
+  const productDetails = useSelector((state) => {
+    return state?.Seller?.productDetails;
+  });
 
-  useEffect(() => {
-    getSellerProducts();
-  }, []);
-  console.log(sellerProducts);
+  useEffect(() => {}, []);
+  console.log(productDetails, "here");
 
   return (
     <>
@@ -46,8 +33,8 @@ export const SellerProducts = () => {
               </a>
             </div>
 
-            {sellerProducts &&
-              sellerProducts.map((item, i) => (
+            {productDetails &&
+              productDetails.map((item, i) => (
                 <div
                   key={i}
                   class="d-block d-sm-flex align-items-center py-4 border-bottom"
@@ -60,70 +47,55 @@ export const SellerProducts = () => {
                     <img
                       class="img img-fluid rounded-3"
                       src={`${import.meta.env.VITE_IMAGE_URL}/products/${
-                        item.images[0]
+                        item?.productDetails.images[0]
                       }`}
                       alt="Product"
                     />
                   </a>
                   <div class="text-center text-sm-start">
                     <h3 class="h6 product-title mb-2">
-                      <NavLink to={`/product/id/${item._id}`}>
-                        {item?.name}
+                      <NavLink to={`/product/id/${item?.productDetails._id}`}>
+                        {item?.productDetails?.name}
                       </NavLink>
                     </h3>
                     <div class="d-inline-block text-accent">
-                      {/* Rs. {item.price.toLocaleString()} */}
-                      {item?.afterDiscount !== null ? (
+                      {/* Rs. {item.productDetails.price.toLocaleString()} */}
+                      {item?.productDetails?.afterDiscount !== null ? (
                         <>
                           <p className="fw-medium">
-                            Rs.{item.afterDiscount.toLocaleString()}
+                            Rs.
+                            {item?.productDetails.afterDiscount.toLocaleString()}
                             <span className="text-danger text-decoration-line-through me-1 ms-1">
-                              Rs.{item.price.toLocaleString()}
+                              Rs.{item?.productDetails.price.toLocaleString()}
                             </span>
                             <span className="fw-lighter">
-                              (-{item.discount}%)
+                              (-{item?.productDetails.discount}%)
                             </span>
                           </p>
                         </>
                       ) : (
                         <>
                           <span className="fw-medium fs-5">
-                            Rs.{item?.price.toLocaleString()}
+                            Rs.{item?.productDetails?.price.toLocaleString()}
                           </span>
                         </>
                       )}
                     </div>
                     <div class="d-inline-block text-muted fs-ms border-start ms-2 ps-2">
-                      {sellerProdMeta.map((prod) => (
-                        <>
-                          {prod.prodId === item._id ? (
-                            <>
-                              Sales:{" "}
-                              <span class="fw-medium">
-                                {prod.totalProdQty.toLocaleString()}
-                              </span>
-                            </>
-                          ) : (
-                            <></>
-                          )}
-                        </>
-                      ))}
+                      <>
+                        Sales:{" "}
+                        <span class="fw-medium">
+                          {item?.totalQty.toLocaleString()}
+                        </span>
+                      </>
                     </div>
                     <div class="d-inline-block text-muted fs-ms border-start ms-2 ps-2">
-                      {sellerProdMeta.map((prod) => (
-                        <>
-                          {prod.prodId === item._id ? (
-                            <>
-                              Earnings:{" "}
-                              <span class="fw-medium">
-                                Rs. {prod.totalProdAmt.toLocaleString()}
-                              </span>
-                            </>
-                          ) : (
-                            <></>
-                          )}
-                        </>
-                      ))}
+                      <>
+                        Earnings:{" "}
+                        <span class="fw-medium">
+                          Rs. {item?.totalAmt.toLocaleString()}
+                        </span>
+                      </>
                     </div>
                     <div class="d-flex justify-content-center justify-content-sm-start pt-3">
                       <button

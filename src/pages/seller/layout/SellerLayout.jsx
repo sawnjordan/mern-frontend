@@ -7,6 +7,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import { getUserWishlist } from "../../../reducers/wishlist.reducers";
 import { updateCart } from "../../../reducers/cart.reducers";
 import { SellerPageHeader } from "../components/SellerPageHeader";
+import { getSellerProducts } from "../../../reducers/seller.reducers";
 
 export const SellerLayout = () => {
   const location = useLocation();
@@ -14,15 +15,13 @@ export const SellerLayout = () => {
   const [prodCount, setProdCount] = useState(0);
   const dispatch = useDispatch();
 
-  const getProdCount = (value) => {
-    setProdCount(value);
-  };
   useEffect(() => {
     let token = localStorage.getItem("token") ?? null;
     if (token) {
       dispatch(getLoggedInUser());
       dispatch(getUserWishlist());
       dispatch(updateCart());
+      dispatch(getSellerProducts());
     }
   }, []);
 
@@ -64,8 +63,8 @@ export const SellerLayout = () => {
       <SellerPageHeader breadcrumb={breadcrumb} />
       <div className="container pb-5 mb-2 mb-md-4">
         <div className="row">
-          <SellerSidebar prodCount={prodCount} />
-          <Outlet context={{ breadcrumb, getProdCount }} />
+          <SellerSidebar />
+          <Outlet context={{ breadcrumb }} />
         </div>
       </div>
     </div>

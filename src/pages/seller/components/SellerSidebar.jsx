@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 import { OrderServiceObj } from "../../cms/admin/order";
 import { FaEnvelope } from "react-icons/fa";
 
-export const SellerSidebar = ({ prodCount }) => {
+export const SellerSidebar = () => {
   const [loading, setLoading] = useState(true);
   const [totalOrders, setTotalOrders] = useState();
   const loggedInUser = useSelector((state) => {
@@ -13,6 +13,11 @@ export const SellerSidebar = ({ prodCount }) => {
   const wishlist = useSelector((state) => {
     if (state?.Wishlist) {
       return state.Wishlist?.wishlist;
+    }
+  });
+  const prodData = useSelector((state) => {
+    if (state?.Seller) {
+      return state.Seller?.productDetails;
     }
   });
 
@@ -136,7 +141,7 @@ export const SellerSidebar = ({ prodCount }) => {
                     >
                       <i className="ci-bag opacity-60 me-2"></i>Products
                       <span className="fs-sm text-muted ms-auto">
-                        {prodCount}
+                        {prodData && prodData.length}
                       </span>
                     </NavLink>
                   </li>
