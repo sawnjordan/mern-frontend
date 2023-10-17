@@ -62,6 +62,7 @@ import { SellerEditOrder } from "./pages/seller/components/SellerEditOrder";
 import { SellerWishList } from "./pages/seller/SellerWishList";
 import { SellerChangePassword } from "./pages/seller/components/SellerChangePassword";
 import { SellerProducts } from "./pages/seller/components/SellerProducts";
+import { SocketConfig } from "./config/SocketConfig";
 // import { AdminCreateBanner } from "./pages/cms/admin/banner/AdminCreateBanner";
 // import { BannerList } from "./pages/cms/admin/banner/BannerList";
 
@@ -69,6 +70,7 @@ export const Routing = () => {
   return (
     <>
       <ToastContainer />
+      <SocketConfig />
       <Provider store={store}>
         <BrowserRouter>
           <Routes>

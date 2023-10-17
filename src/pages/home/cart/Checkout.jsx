@@ -5,8 +5,11 @@ import { toast } from "react-toastify";
 import CartServiceObj from "./cart.service";
 import { resetCart } from "../../../reducers/cart.reducers";
 import { productServiceObj } from "../../cms/admin/product";
+import { io } from "socket.io-client";
 
 export const Checkout = () => {
+  const socket = io("http://localhost:3005");
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
@@ -25,10 +28,23 @@ export const Checkout = () => {
     e.preventDefault();
     try {
       let orderDetails = await CartServiceObj.placeOrder(cartItems);
+      // console.log(orderDetails);
+      const orderData = orderDetails.data.data;
+      // console.log(orderData, "adfasdf");
       dispatch(resetCart());
       toast.success(
         "Your order has been placed successfully. You will be confirmed by our representative."
       );
+      orderData.orderDetails.map((item) => {
+        socket.emit("sendOrderNotification", {
+          sellerId: item?.id?.sellerId._id,
+          sellerName: item?.id?.sellerId?.name,
+          productName: item.id?.name,
+          buyerName: loggedInUser?.name,
+          room: "admin-room",
+        });
+      });
+
       navigate("/shop");
       //   console.log(orderDetails);
       //   console.log(cart);
