@@ -3,10 +3,13 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../../../../reducers/user.reducers";
+import { FaBell, FaTractor, FaTrash } from "react-icons/fa";
 
-export const AdminHeader = () => {
+export const AdminHeader = ({ notification }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const notificationCount = notification.length;
+  console.log(notification);
   const toggleSidebar = (e) => {
     e.preventDefault();
     document.body.classList.toggle("sb-sidenav-toggled");
@@ -40,25 +43,15 @@ export const AdminHeader = () => {
         >
           <i className="fas fa-bars"></i>
         </button>
-        <form className="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-          <div className="input-group">
-            <input
-              className="form-control"
-              type="text"
-              placeholder="Search for..."
-              aria-label="Search for..."
-              aria-describedby="btnNavbarSearch"
-            />
-            <button
-              className="btn btn-primary"
-              id="btnNavbarSearch"
-              type="button"
-            >
-              <i className="fas fa-search"></i>
-            </button>
-          </div>
-        </form>
-
+        <form className="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0"></form>
+        <button className="position-relative rounded-5 btn btn-info">
+          <FaBell />
+          {notificationCount > 0 && (
+            <span className="position-absolute top-0 badge bg-danger rounded-circle">
+              {notificationCount}
+            </span>
+          )}
+        </button>
         <ul className="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
           <li className="nav-item dropdown">
             <a

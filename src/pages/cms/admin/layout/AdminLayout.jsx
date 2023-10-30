@@ -41,10 +41,10 @@ export const AdminLayout = () => {
       setNotification((prev) => [...prev, data]);
     });
   }, [socket]);
-  console.log(notification);
+  console.log(notification, "in layout");
   return (
     <>
-      <AdminHeader />
+      <AdminHeader notification={notification} />
 
       <div id="layoutSidenav">
         <AdminSidebar />
