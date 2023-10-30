@@ -29,7 +29,11 @@ export const Cart = () => {
     }
   };
 
-  const increaseQty = (id, qty) => {
+  const increaseQty = (id, qty, stock) => {
+    let countClass = `count-${id}`;
+    const count = document.querySelector("." + countClass);
+
+    if (count.valueAsNumber >= stock) return;
     let currentItem = {
       productId: id,
       qty: qty + 1,
@@ -79,7 +83,7 @@ export const Cart = () => {
     }
   }, [cartItems, dispatch]);
 
-  // console.log(cartDetails);
+  console.log(cartDetails, "here");
   return (
     <>
       {loading ? (
@@ -221,12 +225,33 @@ export const Cart = () => {
                                   <span
                                     className="btn btn-primary plus"
                                     onClick={() =>
-                                      increaseQty(item.id, item.qty)
+                                      increaseQty(item.id, item.qty, item.stock)
                                     }
                                   >
                                     +
                                   </span>
                                 </div>
+                                <p className="mt-2">
+                                  Status:{" "}
+                                  {item?.stock === 0 ? (
+                                    <>
+                                      <Badge bg="danger" className="p-1">
+                                        Out of Stock
+                                      </Badge>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <Badge bg="success" className="p-1">
+                                        In Stock
+                                        {item?.stock <= 5 ? (
+                                          <> ( {item.stock} Item/s )</>
+                                        ) : (
+                                          <></>
+                                        )}
+                                      </Badge>
+                                    </>
+                                  )}
+                                </p>
                               </div>
                             </div>
                             <div className="col-md-3">
