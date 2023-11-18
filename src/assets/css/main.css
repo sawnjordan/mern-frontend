@@ -320,3 +320,20 @@ svg:focus {
     border-bottom: none;
   }
 }
+
+.notifications {
+  position: absolute;
+  top: 56px;
+  right: 0;
+  background-color: var(--primary-color-l4);
+  color: black;
+  font-weight: 300;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  max-width: 300px;
+}
+.notification {
+  padding: 5px;
+  font-style: 14px;
+}

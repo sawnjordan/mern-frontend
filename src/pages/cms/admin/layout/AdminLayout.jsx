@@ -36,6 +36,11 @@ export const AdminLayout = () => {
     }
   }, [socket, loggedInUser]);
 
+  const handleMarkAsRead = () => {
+    // Clear notifications when "Mark as Read" is clicked
+    setNotification([]);
+  };
+
   useEffect(() => {
     socket?.on("getOrderNotification", (data) => {
       setNotification((prev) => [...prev, data]);
@@ -44,7 +49,10 @@ export const AdminLayout = () => {
   console.log(notification, "in layout");
   return (
     <>
-      <AdminHeader notification={notification} />
+      <AdminHeader
+        notification={notification}
+        onMarkAsRead={handleMarkAsRead}
+      />
 
       <div id="layoutSidenav">
         <AdminSidebar />
