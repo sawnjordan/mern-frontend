@@ -10,7 +10,7 @@ export const NotFound = () => {
             <p className="text-danger text-center">
               Oops!!! The resource you are looking for does not exists!!!
             </p>
-            <p className=" text-center ">
+            <p className="text-center">
               <a className="btn btn-link link-primary" href="/">
                 Go to Home page
               </a>
