@@ -1,13 +1,15 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Card, Col, Container, Row } from "react-bootstrap";
+import { Card, Container } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { brandServiceObj } from "../../cms/admin/brand";
 import { NavLink } from "react-router-dom";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import "./BrandListing.css"; // Custom CSS file
 
 export const BrandListing = () => {
   const [loading, setLoading] = useState(true);
-
-  const [brandList, setBrandList] = useState();
+  const [brandList, setBrandList] = useState([]);
 
   const getBrandListForHome = useCallback(async () => {
     try {
@@ -15,54 +17,75 @@ export const BrandListing = () => {
       setBrandList(response.data?.data);
     } catch (error) {
       toast.error(error.data?.msg);
-    } finally {
-      setLoading(false);
     }
   }, []);
 
   useEffect(() => {
     getBrandListForHome();
-  }, []);
+  }, [getBrandListForHome]);
+
+  useEffect(() => {
+    if (brandList.length > 0) {
+      setLoading(false);
+    }
+  }, [brandList]);
+
   return (
     <>
-      {loading ? (
-        <>
-          <div className="text-center fw-medium h3">Loading...</div>
-        </>
-      ) : (
-        <>
-          <Container className="pt-3 pb-3">
-            <Row className="d-flex justify-content-center">
-              {brandList &&
-                brandList.map((brand, i) => (
-                  <Col lg={1} md={3} sm={4} className="mb-3" key={i}>
-                    <NavLink to={`/brand/${brand._id}`} className={"nav-link"}>
-                      <Card>
-                        <div className="home-brand-image">
-                          <img
-                            width={"100px"}
-                            height={"100px"}
-                            variant="top"
-                            className="img-thumbnail"
-                            src={`${import.meta.env.VITE_IMAGE_URL}/brands/${
-                              brand.logo
-                            }`}
-                          />
-                        </div>
-                        <div
-                          style={{ fontSize: "14px" }}
-                          className="text-center p-1"
-                        >
-                          {brand.name}
-                        </div>
-                      </Card>
-                    </NavLink>
-                  </Col>
-                ))}
-            </Row>
-          </Container>
-        </>
-      )}
+      <Container className="pt-3 pb-3">
+        <div className="brand-listing">
+          {loading
+            ? // Show dynamic skeleton loaders based on brandList length during loading
+              Array.from({ length: brandList.length || 10 }).map((_, i) => (
+                <div className="brand-item" key={i}>
+                  <Card className="d-flex align-items-center p-2 shadow-sm rounded-3">
+                    <div className="home-brand-image d-flex justify-content-center">
+                      <Skeleton
+                        height={60}
+                        width={80}
+                        containerClassName="skeleton-image"
+                        borderRadius={8}
+                      />
+                    </div>
+                    <div className="text-center p-2 w-100">
+                      {/* Skeleton loader for title */}
+                      <Skeleton
+                        width="80%"
+                        height={12}
+                        style={{ marginTop: 10, marginBottom: 5 }}
+                      />
+                    </div>
+                  </Card>
+                </div>
+              ))
+            : // Once data is fetched, show the actual items
+              brandList.map((brand, i) => (
+                <div className="brand-item" key={i}>
+                  <NavLink to={`/brand/${brand._id}`} className="nav-link">
+                    <Card className="d-flex align-items-center p-2 shadow-sm rounded-3">
+                      <div className="home-brand-image d-flex justify-content-center">
+                        <img
+                          width="80%"
+                          height="80px"
+                          className="img-thumbnail rounded-3"
+                          src={`${import.meta.env.VITE_IMAGE_URL}/brands/${
+                            brand.logo
+                          }`}
+                          alt={brand.name}
+                        />
+                      </div>
+                      <div
+                        style={{ fontSize: "12px" }}
+                        className="text-center p-2"
+                      >
+                        {brand.name}
+                      </div>
+                    </Card>
+                  </NavLink>
+                </div>
+              ))}
+        </div>
+      </Container>
     </>
   );
 };

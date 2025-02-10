@@ -1,0 +1,63 @@
+/* Flex container for the brand listing */
+.brand-listing {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* Center align items */
+  gap: 1rem; /* Spacing between items */
+  margin: 0 auto; /* Center the container horizontally */
+  padding: 0 5px; /* Reduced padding for compactness */
+}
+
+/* Adjustments for brand item layout */
+.brand-item {
+  flex: 0 0 calc(10% - 1rem); /* 10 items per row */
+  margin-bottom: 1rem; /* Bottom margin for spacing */
+  box-sizing: border-box;
+}
+
+/* Ensure the skeleton is fully visible */
+.brand-item .card {
+  height: 100%; /* Ensure the card takes full height */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between; /* Space out image and text */
+}
+
+/* Skeleton image container */
+.home-brand-image {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Skeleton text container */
+.text-center {
+  width: 100%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+  .brand-item {
+    flex: 0 0 calc(10% - 1rem); /* Ensure 10 items per row on large screens */
+  }
+}
+
+@media (max-width: 992px) {
+  .brand-item {
+    flex: 0 0 calc(12.5% - 1rem); /* 8 items per row on medium screens */
+  }
+}
+
+@media (max-width: 768px) {
+  .brand-item {
+    flex: 0 0 calc(25% - 1rem); /* 4 items per row on small screens */
+  }
+}
+
+@media (max-width: 576px) {
+  .brand-item {
+    flex: 0 0 calc(33.3333% - 1rem); /* 3 items per row on extra-small screens */
+  }
+}

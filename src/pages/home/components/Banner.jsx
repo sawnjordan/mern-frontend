@@ -1,14 +1,12 @@
-import React, { useDebugValue, useEffect, useState } from "react";
-import bannerImg1 from "../../../assets/images/banner-img-1.jpg";
-import bannerImg2 from "../../../assets/images/banner-img-2.jpg";
-import bannerImg3 from "../../../assets/images/banner-img-3.jpg";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { bannerServiceObj } from "../../cms/admin/banner";
-import { NavLink } from "react-router-dom";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css"; // Import the CSS for Skeleton
 
 export const Banner = () => {
   const [loading, setLoading] = useState(true);
-  const [bannerData, setBannerData] = useState();
+  const [bannerData, setBannerData] = useState([]);
 
   const getHomePageBanner = async () => {
     try {
@@ -24,51 +22,47 @@ export const Banner = () => {
   useEffect(() => {
     getHomePageBanner();
   }, []);
-  // console.log(bannerData);
+
   return (
     <>
-      {loading ? (
-        <>
-          <div className="nav-margin text-center fs-3">Loading...</div>
-        </>
-      ) : (
-        <>
-          <section id="header" className="nav-margin mb-3">
-            <div
-              id="carouselExample"
-              className="carousel slide"
-              data-bs-ride="carousel"
-            >
-              <div className="carousel-inner">
-                <div className="carousel-indicators">
-                  <button
-                    type="button"
-                    data-bs-target="#carouselExampleIndicators"
-                    data-bs-slide-to="0"
-                    className="active"
-                    aria-current="true"
-                    aria-label="Slide 1"
-                  ></button>
-                  <button
-                    type="button"
-                    data-bs-target="#carouselExampleIndicators"
-                    data-bs-slide-to="1"
-                    aria-label="Slide 2"
-                  ></button>
-                  <button
-                    type="button"
-                    data-bs-target="#carouselExampleIndicators"
-                    data-bs-slide-to="2"
-                    aria-label="Slide 3"
-                  ></button>
+      <section id="header" className="nav-margin mb-3">
+        <div
+          id="carouselExample"
+          className="carousel slide"
+          data-bs-ride="carousel"
+        >
+          <div className="carousel-inner">
+            {loading ? (
+              // Show skeleton loading while data is being fetched
+              <>
+                <div className="carousel-item active">
+                  {/* <Skeleton height={400} /> Placeholder for banner image */}
+                  <Skeleton
+                    height={400}
+                    baseColor="#f0f0f0"
+                    highlightColor="#e0e0e0"
+                    duration={1.5}
+                  />
+                  <div className="carousel-caption top-0 mt-5 d-md-flex align-items-center flex-column justify-content-center">
+                    <div className="caption-overlay rounded-4">
+                      <Skeleton width={200} height={30} />{" "}
+                      {/* Placeholder for title */}
+                      <Skeleton width={100} height={40} />{" "}
+                      {/* Placeholder for button */}
+                    </div>
+                  </div>
                 </div>
+              </>
+            ) : (
+              // Render actual banner data once loaded
+              <>
                 {bannerData &&
                   bannerData.map((banner, i) =>
                     banner.status === "active" ? (
                       <div
                         key={i}
                         className={
-                          i == 1 ? "carousel-item active" : "carousel-item"
+                          i === 0 ? "carousel-item active" : "carousel-item"
                         }
                       >
                         <img
@@ -80,7 +74,6 @@ export const Banner = () => {
                         />
                         <div className="carousel-caption top-0 mt-5 d-md-flex align-items-center flex-column justify-content-center">
                           <div className="caption-overlay rounded-4">
-                            {/* <p>Samsung</p> */}
                             <h2>{banner?.title}</h2>
                             <a
                               target="_blank"
@@ -96,7 +89,11 @@ export const Banner = () => {
                       <>{/* TODO: Default Coming Soon Fallback */}</>
                     )
                   )}
-              </div>
+              </>
+            )}
+          </div>
+          {!loading && (
+            <>
               <button
                 className="carousel-control-prev"
                 type="button"
@@ -121,10 +118,10 @@ export const Banner = () => {
                 ></span>
                 <span className="visually-hidden">Next</span>
               </button>
-            </div>
-          </section>
-        </>
-      )}
+            </>
+          )}
+        </div>
+      </section>
     </>
   );
 };

@@ -1,0 +1,23 @@
+.skeleton-image {
+  background-color: #e0e0e0; /* Light grey background for the skeleton image */
+  border-radius: 8px; /* Rounded corners for a smoother look */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Slight shadow for depth */
+}
+
+.skeleton-title {
+  background-color: #e0e0e0; /* Light grey background */
+  border-radius: 4px; /* Slight rounding for the title */
+}
+
+.skeleton-description {
+  background-color: #e0e0e0; /* Light grey background */
+  border-radius: 4px; /* Slight rounding for the description */
+}
+
+.product-card-skeleton {
+  background-color: #ffffff; /* White background for the card */
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow around the card */
+  margin-bottom: 30px;
+}
