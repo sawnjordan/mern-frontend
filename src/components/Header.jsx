@@ -26,7 +26,7 @@ export const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
-  const [categoryData, setCategoryData] = useState(null);
+  const [categoryData, setCategoryData] = useState([]);
   const cartItems = useSelector((store) => store?.Cart?.cart);
 
   const getAllCategories = async () => {

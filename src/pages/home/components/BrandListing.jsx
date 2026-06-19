@@ -14,21 +14,17 @@ export const BrandListing = () => {
   const getBrandListForHome = useCallback(async () => {
     try {
       let response = await brandServiceObj.getBrandForHomePage();
-      setBrandList(response.data?.data);
+      setBrandList(response.data?.data || []);
     } catch (error) {
-      toast.error(error.data?.msg);
+      toast.error(error.data?.msg || "Something went wrong.");
+    } finally {
+      setLoading(false);
     }
   }, []);
 
   useEffect(() => {
     getBrandListForHome();
   }, [getBrandListForHome]);
-
-  useEffect(() => {
-    if (brandList.length > 0) {
-      setLoading(false);
-    }
-  }, [brandList]);
 
   return (
     <>
