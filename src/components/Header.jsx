@@ -89,23 +89,21 @@ export const Header = () => {
     <>
       <Navbar
         expand="lg"
-        bg="light"
-        variant="light"
-        className=" fixed-top py-4"
+        className="fixed-top py-3"
       >
         <Container>
           <NavLink
             className="navbar-brand d-flex justify-content-between align-items-center order-lg-0"
             to="/"
           >
-            <Image src={logoImg} alt="Site Logo" />
-            <span className="text-uppercase fw-lighter">eCommerce</span>
+            <Image src={logoImg} alt="MeroBazar Logo" />
+            <span className="text-uppercase fw-bold text-primary ms-2" style={{ letterSpacing: "0.5px" }}>MeroBazar</span>
           </NavLink>
-          <div className="order-lg-3 d-flex justify-content-between">
+          <div className="order-lg-3 d-flex justify-content-between align-items-center">
             <NavLink to={"/cart"}>
-              <Button variant="" className="position-relative">
+              <Button variant="" className="position-relative me-2">
                 <FaShoppingCart size={18} className="icon" />
-                <span className="position-absolute top-0 start-100 translate-middle badge bg-primary">
+                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
                   {cartItems && cartItems.length ? cartItems.length : 0}
                 </span>
               </Button>
@@ -191,14 +189,14 @@ export const Header = () => {
               ) : (
                 <>
                   <li className="nav-items px-2 py-2">
-                    <a href="/" className="nav-link text-uppercase text-dark">
+                    <a href="/" className="nav-link text-uppercase">
                       Home
                     </a>
                   </li>
                   <li className="nav-items px-2 py-2">
                     <NavLink
                       to="/shop"
-                      className="nav-link text-uppercase text-dark"
+                      className="nav-link text-uppercase"
                     >
                       Shop
                     </NavLink>
@@ -206,7 +204,7 @@ export const Header = () => {
 
                   <li className="nav-items px-2 py-2 dropdown">
                     <a
-                      className="nav-link text-uppercase text-dark dropdown-toggle"
+                      className="nav-link text-uppercase dropdown-toggle"
                       href="#"
                       role="button"
                       data-bs-toggle="dropdown"
@@ -239,12 +237,12 @@ export const Header = () => {
                   </li>
 
                   <li className="nav-items px-2 py-2">
-                    <a href="#" className="nav-link text-uppercase text-dark">
+                    <a href="#" className="nav-link text-uppercase">
                       About Us
                     </a>
                   </li>
                   <li className="nav-items px-2 py-2">
-                    <a href="#" className="nav-link text-uppercase text-dark">
+                    <a href="#" className="nav-link text-uppercase">
                       Contact
                     </a>
                   </li>

@@ -8,7 +8,7 @@ export const BannerAds = () => {
         <div className="row">
           <div className="col-lg-12">
             <a href="/">
-              <img className="img-fluid rounded-pill" src={adsImg} alt="" />
+              <img className="img-fluid" src={adsImg} alt="Advertisement Banner" />
             </a>
           </div>
         </div>

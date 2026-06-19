@@ -44,7 +44,7 @@ export const RegisterPage = () => {
       ),
     // image: Yup,
   });
-  const { register, handleSubmit, formState } = useForm({
+  const { register, handleSubmit, formState, setError } = useForm({
     resolver: yupResolver(registerSchema),
   });
   const { errors } = formState;
@@ -80,7 +80,20 @@ export const RegisterPage = () => {
       navigate("/login");
     } catch (error) {
       console.log(error);
-      throw error;
+      if (error && error.data && error.data.msg) {
+        if (typeof error.data.msg === "object") {
+          Object.keys(error.data.msg).forEach((key) => {
+            setError(key, {
+              type: "server",
+              message: error.data.msg[key],
+            });
+          });
+        } else {
+          toast.error(error.data.msg);
+        }
+      } else {
+        toast.error("Registration failed. Please check your details and try again.");
+      }
     } finally {
       setLoading(false);
     }

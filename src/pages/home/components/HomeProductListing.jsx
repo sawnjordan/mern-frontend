@@ -29,18 +29,14 @@ export const HomeProductListing = () => {
 
   return (
     <>
-      <div
-        id="product-listing"
-        className="container-fluid bg-body-secondary pb-4 pt-4 mt-3"
-      >
-        <div className="row">
-          <div className="col-lg-12">
-            <h4 className="text-center">Product Listing</h4>
-            <NavLink to="/shop" className="btn btn-link float-end mb-3">
+      <div id="product-listing">
+        <Container fluid className="px-lg-5">
+          <div className="d-flex justify-content-between align-items-center mb-4">
+            <h3 className="product-listing-heading">Product Listing</h3>
+            <NavLink to="/shop" className="btn-view-all">
               View All
             </NavLink>
           </div>
-        </div>
         {loading ? (
           <Container fluid>
             <Row className="my-3 d-flex justify-content-center">
@@ -75,6 +71,7 @@ export const HomeProductListing = () => {
             </Row>
           </Container>
         )}
+        </Container>
       </div>
     </>
   );

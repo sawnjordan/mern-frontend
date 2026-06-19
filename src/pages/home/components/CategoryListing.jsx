@@ -6,6 +6,7 @@ import { categoryServiceObj } from "../../cms/admin/category";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import "./CategoryListing.css";
+import { NavLink } from "react-router-dom";
 
 export const CategoryListing = () => {
   const [loading, setLoading] = useState(true);
@@ -28,19 +29,14 @@ export const CategoryListing = () => {
 
   return (
     <>
-      <div
-        id="category-listing"
-        className="container-fluid bg-light mt-3 pt-3 mb-3"
-      >
-        <div className="row">
-          <div className="col-lg-12 text-center">
+      <div id="category-listing">
+        <Container fluid className="px-lg-5">
+          <div className="d-flex justify-content-between align-items-center mb-4">
             <h3 className="category-heading">Categories</h3>
-            <a href="#" className="btn btn-primary btn-view-all float-end">
+            <NavLink to="/categories" className="btn-view-all">
               View All
-            </a>
+            </NavLink>
           </div>
-        </div>
-        <Container fluid>
           <Row className="g-4">
             {" "}
             {/* Adjusted gutter size for better spacing */}

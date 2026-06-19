@@ -54,9 +54,8 @@ export const Banner = () => {
                 </div>
               </>
             ) : (
-              // Render actual banner data once loaded
               <>
-                {bannerData &&
+                {bannerData && bannerData.length > 0 ? (
                   bannerData.map((banner, i) =>
                     banner.status === "active" ? (
                       <div
@@ -70,11 +69,11 @@ export const Banner = () => {
                             banner?.image
                           }`}
                           className="d-block w-100"
-                          alt="banner-img-1"
+                          alt={banner?.title}
                         />
                         <div className="carousel-caption top-0 mt-5 d-md-flex align-items-center flex-column justify-content-center">
                           <div className="caption-overlay rounded-4">
-                            <h2>{banner?.title}</h2>
+                            <h2 className="fw-bold mb-3">{banner?.title}</h2>
                             <a
                               target="_blank"
                               href={`${banner.link}`}
@@ -85,10 +84,30 @@ export const Banner = () => {
                           </div>
                         </div>
                       </div>
-                    ) : (
-                      <>{/* TODO: Default Coming Soon Fallback */}</>
-                    )
-                  )}
+                    ) : null
+                  )
+                ) : (
+                  <div className="carousel-item active">
+                    <div 
+                      className="d-flex align-items-center justify-content-center w-100" 
+                      style={{ 
+                        height: "520px", 
+                        background: "linear-gradient(135deg, var(--primary-color) 0%, #312e81 100%)",
+                        color: "#ffffff"
+                      }}
+                    >
+                      <div className="text-center px-4" style={{ animation: "fadeInUp 0.8s ease" }}>
+                        <h1 className="fw-extrabold mb-3 display-4 text-white" style={{ letterSpacing: "-1px" }}>Discover MeroBazar</h1>
+                        <p className="lead mb-4 opacity-90 mx-auto" style={{ maxWidth: "600px", fontSize: "1.1rem" }}>
+                          Welcome to the ultimate ads posting and boosting platform. Explore top categories, featured ads, and premium seller listings today!
+                        </p>
+                        <a href="/shop" className="btn btn-light btn-lg px-4 py-2.5 fw-semibold text-primary shadow-sm" style={{ border: "none", borderRadius: "8px" }}>
+                          Explore Shop
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </>
             )}
           </div>

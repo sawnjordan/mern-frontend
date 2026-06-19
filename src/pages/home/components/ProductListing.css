@@ -1,23 +1,57 @@
+#product-listing {
+  background-color: var(--bg-light);
+  padding: 50px 0;
+  border-top: 1px solid rgba(226, 232, 240, 0.6);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.6);
+}
+
+.product-listing-heading {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--dark-slate);
+  margin-bottom: 0;
+  letter-spacing: -0.5px;
+}
+
+#product-listing .btn-view-all {
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 20px;
+  border-radius: 8px;
+  background: var(--primary-color);
+  color: white !important;
+  text-decoration: none;
+  box-shadow: 0 4px 10px rgba(79, 70, 229, 0.15);
+  transition: all 0.25s ease;
+}
+
+#product-listing .btn-view-all:hover {
+  background: var(--primary-color-l1);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(79, 70, 229, 0.25);
+}
+
 .skeleton-image {
-  background-color: #e0e0e0; /* Light grey background for the skeleton image */
-  border-radius: 8px; /* Rounded corners for a smoother look */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Slight shadow for depth */
+  background-color: #f1f5f9;
+  border-radius: 8px;
 }
 
 .skeleton-title {
-  background-color: #e0e0e0; /* Light grey background */
-  border-radius: 4px; /* Slight rounding for the title */
+  background-color: #f1f5f9;
+  border-radius: 4px;
 }
 
 .skeleton-description {
-  background-color: #e0e0e0; /* Light grey background */
-  border-radius: 4px; /* Slight rounding for the description */
+  background-color: #f1f5f9;
+  border-radius: 4px;
 }
 
 .product-card-skeleton {
-  background-color: #ffffff; /* White background for the card */
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow around the card */
-  margin-bottom: 30px;
+  background-color: #ffffff;
+  border-radius: 14px;
+  padding: 16px;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  box-shadow: var(--card-shadow);
+  margin-bottom: 24px;
 }

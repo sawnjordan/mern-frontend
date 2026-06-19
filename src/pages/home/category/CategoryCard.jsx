@@ -4,17 +4,16 @@ import { NavLink } from "react-router-dom";
 export const CategoryCard = ({ cat }) => {
   return (
     <>
-      <div className="card">
+      <div className="category-card">
         <NavLink
           to={`/category/${cat?.slug}`}
-          className="text-decoration-none text-dark"
+          className="text-decoration-none"
         >
           <img
             src={`${import.meta.env.VITE_IMAGE_URL}/category/${cat.image}`}
-            className="card-img-top equal-height-image img-thumbnail"
-            alt="..."
+            alt={cat?.name}
           />
-          <p className="text-center pt-2 fw-medium">{cat?.name}</p>
+          <p className="category-title text-center">{cat?.name}</p>
         </NavLink>
       </div>
     </>

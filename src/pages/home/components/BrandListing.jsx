@@ -28,60 +28,57 @@ export const BrandListing = () => {
 
   return (
     <>
-      <Container className="pt-3 pb-3">
-        <div className="brand-listing">
-          {loading
-            ? // Show dynamic skeleton loaders based on brandList length during loading
-              Array.from({ length: brandList.length || 10 }).map((_, i) => (
-                <div className="brand-item" key={i}>
-                  <Card className="d-flex align-items-center p-2 shadow-sm rounded-3">
-                    <div className="home-brand-image d-flex justify-content-center">
-                      <Skeleton
-                        height={60}
-                        width={80}
-                        containerClassName="skeleton-image"
-                        borderRadius={8}
-                      />
-                    </div>
-                    <div className="text-center p-2 w-100">
-                      {/* Skeleton loader for title */}
-                      <Skeleton
-                        width="80%"
-                        height={12}
-                        style={{ marginTop: 10, marginBottom: 5 }}
-                      />
-                    </div>
-                  </Card>
-                </div>
-              ))
-            : // Once data is fetched, show the actual items
-              brandList.map((brand, i) => (
-                <div className="brand-item" key={i}>
-                  <NavLink to={`/brand/${brand._id}`} className="nav-link">
-                    <Card className="d-flex align-items-center p-2 shadow-sm rounded-3">
-                      <div className="home-brand-image d-flex justify-content-center">
-                        <img
-                          width="80%"
-                          height="80px"
-                          className="img-thumbnail rounded-3"
-                          src={`${import.meta.env.VITE_IMAGE_URL}/brands/${
-                            brand.logo
-                          }`}
-                          alt={brand.name}
+      <section className="brand-section">
+        <Container>
+          <h3 className="brand-section-heading">Featured Brands</h3>
+          <div className="brand-listing">
+            {loading
+              ? // Show dynamic skeleton loaders based on brandList length during loading
+                Array.from({ length: brandList.length || 10 }).map((_, i) => (
+                  <div className="brand-item" key={i}>
+                    <Card className="d-flex align-items-center p-2">
+                      <div className="home-brand-image">
+                        <Skeleton
+                          height={40}
+                          width={60}
+                          containerClassName="skeleton-image"
+                          borderRadius={6}
                         />
                       </div>
-                      <div
-                        style={{ fontSize: "12px" }}
-                        className="text-center p-2"
-                      >
-                        {brand.name}
+                      <div className="text-center p-2 w-100">
+                        {/* Skeleton loader for title */}
+                        <Skeleton
+                          width="70%"
+                          height={10}
+                          style={{ marginTop: 8 }}
+                        />
                       </div>
                     </Card>
-                  </NavLink>
-                </div>
-              ))}
-        </div>
-      </Container>
+                  </div>
+                ))
+              : // Once data is fetched, show the actual items
+                brandList.map((brand, i) => (
+                  <div className="brand-item" key={i}>
+                    <NavLink to={`/brand/${brand._id}`} className="nav-link">
+                      <Card className="d-flex align-items-center p-2">
+                        <div className="home-brand-image">
+                          <img
+                            src={`${import.meta.env.VITE_IMAGE_URL}/brands/${
+                              brand.logo
+                            }`}
+                            alt={brand.name}
+                          />
+                        </div>
+                        <div className="brand-name-text text-center">
+                          {brand.name}
+                        </div>
+                      </Card>
+                    </NavLink>
+                  </div>
+                ))}
+          </div>
+        </Container>
+      </section>
     </>
   );
 };
